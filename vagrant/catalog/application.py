@@ -10,12 +10,17 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
+# Helper for creating item_id from an item's name.
+def make_item_id(name):
+    return name.replace("'", '').replace(' ', '-').lower()
+
+
 # Helper for redirecting to the home page.
 def go_home():
     return redirect(url_for('show_main'))
 
 
-# Helper for building navigation in layout.html.
+# Helper that makes category list available in templates.
 @app.context_processor
 def inject_categories():
     categories = session.query(Category).all()
@@ -52,7 +57,15 @@ def show_item(category_id, item_id):
 @app.route('/items/new', methods = ['GET', 'POST'])
 def new_item():
     if request.method == 'POST':
-        pass
+        item_name = request.form['name']
+        item_id = make_item_id(item_name)
+        item_desc = request.form['description']
+        item_price = request.form['price']
+        category_id = request.form['category_id']
+        item = Item(id = item_id, name = item_name, description = item_desc,
+                    price = item_price, category_id = category_id)
+        session.add(item)
+        session.commit()
     else:
         return render_template('new_item.html')
 
