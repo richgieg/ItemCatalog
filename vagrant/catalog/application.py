@@ -66,6 +66,8 @@ def new_item():
                     price = item_price, category_id = category_id)
         session.add(item)
         session.commit()
+        return redirect(url_for('show_item', category_id = category_id,
+                                item_id = item_id))
     else:
         return render_template('new_item.html')
 
