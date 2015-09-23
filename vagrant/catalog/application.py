@@ -77,10 +77,14 @@ def edit_item(item_id):
 
 @app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(item_id):
+    try:
+        item = session.query(Item).filter_by(id = item_id).one()
+    except:
+        return go_home()
     if request.method == 'POST':
         pass
     else:
-        return render_template('delete_item.html', item_id = item_id)
+        return render_template('delete_item.html', item = item)
 
 
 if __name__ == '__main__':
