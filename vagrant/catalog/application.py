@@ -82,7 +82,9 @@ def delete_item(item_id):
     except:
         return go_home()
     if request.method == 'POST':
-        pass
+        session.delete(item)
+        session.commit()
+        return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
 
