@@ -25,7 +25,10 @@ def show_main():
 
 @app.route('/<string:category_id>/')
 def show_items(category_id):
-    return render_template('show_items.html', category_id = category_id)
+    category = session.query(Category).filter_by(id = category_id).one()
+    items = session.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    return render_template('show_items.html', category_name = category.name,
+                           items = items)
 
 
 @app.route('/<string:category_id>/<string:item_id>')
