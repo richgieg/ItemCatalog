@@ -2,6 +2,11 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+@app.context_processor
+def inject_navigation():
+    return dict(navigation = ("one", "two", "three"))
+
+
 @app.route('/')
 def show_main():
     return render_template('show_main.html')

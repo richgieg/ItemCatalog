@@ -12,7 +12,13 @@
         <header>
             This is the header
             <nav>
-                This is the nav
+                {% for category_id in navigation %}
+                <li>
+                    <a href="{{ url_for('show_items', category_id = category_id) }}">
+                        {{ category_id }}
+                    </a>
+                </li>
+                {% endfor %}
             </nav>
         </header>
         {% block content %}{% endblock %}
