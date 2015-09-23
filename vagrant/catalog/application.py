@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
 
@@ -10,15 +10,17 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
+# Helper for building navigation in layout.html.
 @app.context_processor
 def inject_categories():
-    categories = session.query(Category)
+    categories = session.query(Category).all()
     return dict(categories = categories)
 
 
 @app.route('/')
 def show_main():
-    return render_template('show_main.html')
+    items = session.query(Item).order_by(desc(Item.created)).limit(10).all()
+    return render_template('show_main.html', items = items)
 
 
 @app.route('/<string:category_id>/')
