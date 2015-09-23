@@ -59,10 +59,14 @@ def new_item():
 
 @app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(item_id):
+    try:
+        item = session.query(Item).filter_by(id = item_id).one()
+    except:
+        return go_home()
     if request.method == 'POST':
         pass
     else:
-        return render_template('edit_item.html', item_id = item_id)
+        return render_template('edit_item.html', item = item)
 
 
 @app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
