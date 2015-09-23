@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -66,6 +66,7 @@ def new_item():
                     price = item_price, category_id = category_id)
         session.add(item)
         session.commit()
+        flash("Item created")
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
     else:
@@ -84,6 +85,7 @@ def edit_item(item_id):
         item.price = request.form['price']
         session.add(item)
         session.commit()
+        flash("Item updated")
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
     else:
@@ -99,11 +101,13 @@ def delete_item(item_id):
     if request.method == 'POST':
         session.delete(item)
         session.commit()
+        flash("Item '%s' deleted" % item.name)
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)
