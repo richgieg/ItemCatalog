@@ -1,5 +1,13 @@
 from flask import Flask, render_template, request
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Category, Item
+
 app = Flask(__name__)
+engine = create_engine('sqlite:///shop_menu.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind = engine)
+session = DBSession()
 
 
 @app.context_processor
