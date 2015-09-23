@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<h2>{{ item.name }}</h2>
-<p>{{ item.description }}</p>
-<p>{{ item.price }}</p>
-<img src="http://placehold.it/400x600" alt="">
+<h2 class="item-name">{{ item.name }}</h2>
+<p class="item-description">{{ item.description }}</p>
+<p class="item-price">{{ item.price }}</p>
+<img class="item-image" src="http://placehold.it/400x600" alt="">
 
 {% endblock %}
