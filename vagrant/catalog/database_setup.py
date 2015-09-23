@@ -19,8 +19,8 @@ class Item(Base):
 
     id = Column(String(80), primary_key=True)
     name = Column(String(80), nullable=False)
-    description = Column(String(250))
-    price = Column(String(8))
+    description = Column(String(1000))
+    price = Column(String(10))
     category_id = Column(String(80), ForeignKey('categories.id'))
     category = relationship(Category)
 
