@@ -41,8 +41,12 @@ def show_items(category_id):
 
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
-    return render_template('show_item.html', category_id = category_id,
-                           item_id = item_id)
+    try:
+        category = session.query(Category).filter_by(id = category_id).one()
+        item = session.query(Item).filter_by(id = item_id).one()
+    except:
+        return go_home()
+    return render_template('show_item.html', item = item)
 
 
 @app.route('/items/new', methods = ['GET', 'POST'])
