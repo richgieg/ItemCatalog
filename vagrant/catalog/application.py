@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -8,6 +8,11 @@ engine = create_engine('sqlite:///shop_menu.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
+
+
+# Helper for redirecting to the home page.
+def go_home():
+    return redirect(url_for('show_main'))
 
 
 # Helper for building navigation in layout.html.
@@ -25,7 +30,10 @@ def show_main():
 
 @app.route('/<string:category_id>/')
 def show_items(category_id):
-    category = session.query(Category).filter_by(id = category_id).one()
+    try:
+        category = session.query(Category).filter_by(id = category_id).one()
+    except:
+        return go_home()
     items = session.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return render_template('show_items.html', category_name = category.name,
                            items = items)
