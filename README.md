@@ -45,7 +45,7 @@ sudo apt-get install vagrant
 *This command will probably work for other versions of Ubuntu as well.*
 
 ----
-## Run the Test Suite
+## Run the Application
 Use a command line terminal for the following steps.
 
 **Clone the repository to your local system, then launch the VM:**
