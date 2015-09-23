@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
@@ -23,19 +23,28 @@ def show_item(category_id, item_id):
                            item_id = item_id)
 
 
-@app.route('/items/new')
+@app.route('/items/new', methods = ['GET', 'POST'])
 def new_item():
-    return render_template('new_item.html')
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('new_item.html')
 
 
-@app.route('/items/<string:item_id>/edit')
+@app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(item_id):
-    return render_template('edit_item.html', item_id = item_id)
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('edit_item.html', item_id = item_id)
 
 
-@app.route('/items/<string:item_id>/delete')
+@app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(item_id):
-    return render_template('delete_item.html', item_id = item_id)
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('delete_item.html', item_id = item_id)
 
 
 if __name__ == '__main__':
