@@ -11,8 +11,9 @@ session = DBSession()
 
 
 @app.context_processor
-def inject_navigation():
-    return dict(navigation = ("one", "two", "three"))
+def inject_categories():
+    categories = session.query(Category)
+    return dict(categories = categories)
 
 
 @app.route('/')

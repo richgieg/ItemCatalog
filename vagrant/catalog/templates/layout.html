@@ -12,10 +12,10 @@
         <header>
             This is the header
             <nav>
-                {% for category_id in navigation %}
+                {% for category in categories %}
                 <li>
-                    <a href="{{ url_for('show_items', category_id = category_id) }}">
-                        {{ category_id }}
+                    <a href="{{ url_for('show_items', category_id = category.id) }}">
+                        {{ category.name }}
                     </a>
                 </li>
                 {% endfor %}
