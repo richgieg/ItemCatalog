@@ -64,7 +64,13 @@ def edit_item(item_id):
     except:
         return go_home()
     if request.method == 'POST':
-        pass
+        item.name = request.form['name']
+        item.description = request.form['description']
+        item.price = request.form['price']
+        session.add(item)
+        session.commit()
+        return redirect(url_for('show_item', category_id = item.category_id,
+                                item_id = item.id))
     else:
         return render_template('edit_item.html', item = item)
 
