@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -81,6 +81,8 @@ def show_item(category_id, item_id):
 
 @app.route('/items/<string:category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
+    if 'username' not in session:
+        abort(404)
     try:
         category = catalog.query(Category).filter_by(id = category_id).one()
     except:
@@ -103,6 +105,8 @@ def new_item(category_id):
 
 @app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(item_id):
+    if 'username' not in session:
+        abort(404)
     try:
         item = catalog.query(Item).filter_by(id = item_id).one()
     except:
@@ -123,6 +127,8 @@ def edit_item(item_id):
 
 @app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(item_id):
+    if 'username' not in session:
+        abort(404)
     try:
         item = catalog.query(Item).filter_by(id = item_id).one()
     except:
