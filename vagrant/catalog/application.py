@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
 from werkzeug import secure_filename
 from sqlalchemy import create_engine, desc
@@ -23,7 +24,7 @@ catalog = db_session()
 
 def allowed_image_file(filename):
     return '.' in filename and \
-        filename.rsplit('.', 1)[1] in ALLOWED_IMAGE_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
 
 
 # Aborts if user is not logged in.
@@ -124,13 +125,9 @@ def new_item(category_id):
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
                     price = item_price, category_id = category.id)
-        file = request.files['file']
+        file = request.files['image_file']
         if file and allowed_image_file(file.filename):
-            filename, extension = os.path.splitext(file.filename)
-            filename = item_id + extension
-            image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
-            file.save(image_path)
-            item.image_path = '/' + image_path
+            item.image_path = save_item_image(item, file)
         catalog.add(item)
         catalog.commit()
         flash("Item created")
@@ -138,6 +135,22 @@ def new_item(category_id):
                                 item_id = item_id))
     else:
         return render_template('new_item.html', category = category)
+
+
+def save_item_image(item, file):
+    delete_item_image_if_exists(item)
+    filename, extension = os.path.splitext(file.filename)
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    filename = '%s-%s%s' % (item.id, timestamp, extension.lower())
+    image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
+    file.save(image_path)
+    return '/' + image_path
+
+
+def delete_item_image_if_exists(item):
+    # Skip the initial slash in file path.
+    if item.image_path:
+        os.remove(item.image_path[1:])
 
 
 @app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
@@ -149,6 +162,9 @@ def edit_item(category_id, item_id):
         item.description = request.form['description']
         item.price = request.form['price']
         item.category_id = request.form['category_id']
+        file = request.files['image_file']
+        if file and allowed_image_file(file.filename):
+            item.image_path = save_item_image(item, file)
         catalog.add(item)
         catalog.commit()
         flash("Item updated")
@@ -163,6 +179,7 @@ def delete_item(category_id, item_id):
     abort_if_not_logged_in()
     item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
+        delete_item_image_if_exists(item)
         catalog.delete(item)
         catalog.commit()
         flash("Item '%s' deleted" % item.name)
