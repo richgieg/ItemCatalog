@@ -3,6 +3,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from xml.etree import ElementTree as ET
 
 Base = declarative_base()
 
@@ -32,6 +33,21 @@ class Item(Base):
             'price': self.price,
             'category_id': self.category_id
         }
+
+    @property
+    def xml(self):
+        item = ET.Element('item')
+        category_id = ET.SubElement(item, 'category_id')
+        category_id.text = self.category_id
+        description = ET.SubElement(item, 'description')
+        description.text = self.description
+        item_id = ET.SubElement(item, 'id')
+        item_id.text = self.id
+        name = ET.SubElement(item, 'name')
+        name.text = self.name
+        price = ET.SubElement(item, 'price')
+        price.text = self.price
+        return ET.tostring(item)
 
 
 engine = create_engine('sqlite:///catalog.db')

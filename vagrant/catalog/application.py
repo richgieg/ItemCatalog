@@ -59,6 +59,16 @@ def inject_categories():
     return dict(categories = categories)
 
 
+# Helper that concatenates the XML output from a list of items into proper XML.
+def xmlify(items):
+    lines = []
+    lines.append('<?xml version="1.0"?>')
+    lines.append('<items>')
+    lines += [i.xml for i in items]
+    lines.append('</items>')
+    return '\n'.join(lines)
+
+
 @app.route('/login')
 def login():
     session['username'] = 'dummy'
@@ -142,10 +152,17 @@ def delete_item(category_id, item_id):
         return render_template('delete_item.html', item = item)
 
 
+# JSON / XML endpoints
 @app.route('/catalog.json')
 def show_all_items_json():
     items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
     return jsonify(Items=[i.serialize for i in items])
+
+
+@app.route('/catalog.xml')
+def show_all_items_xml():
+    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
+    return xmlify(items)
 
 
 @app.route('/<string:category_id>.json')
@@ -155,10 +172,23 @@ def show_items_json(category_id):
     return jsonify(Items=[i.serialize for i in items])
 
 
+@app.route('/<string:category_id>.xml')
+def show_items_xml(category_id):
+    category = get_category_or_abort(category_id)
+    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    return xmlify(items)
+
+
 @app.route('/<string:category_id>/<string:item_id>.json')
 def show_item_json(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return jsonify(Item=item.serialize)
+
+
+@app.route('/<string:category_id>/<string:item_id>.xml')
+def show_item_xml(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    return xmlify([item])
 
 
 if __name__ == '__main__':
