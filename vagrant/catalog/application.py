@@ -14,6 +14,30 @@ catalog = db_session()
 SITE_TITLE = "Music Shop"
 
 
+# Aborts if user is not logged in.
+def abort_if_not_logged_in():
+    if 'username' not in session:
+        abort(404)
+
+
+# Returns the requested Category object or aborts if it doesn't exist.
+def get_category_or_abort(category_id):
+    try:
+        return catalog.query(Category).filter_by(id = category_id).one()
+    except:
+        print "category"
+        abort(404)
+
+
+# Returns the requested Item object or aborts if it doesn't exist.
+def get_item_or_abort(item_id):
+    try:
+        return catalog.query(Item).filter_by(id = item_id).one()
+    except:
+        print "item"
+        abort(404)
+
+
 # Filter for creating the proper title for the templates.
 @app.template_filter('title')
 def title_filter(page_title):
@@ -55,10 +79,7 @@ def show_main():
 
 @app.route('/<string:category_id>/')
 def show_items(category_id):
-    try:
-        category = catalog.query(Category).filter_by(id = category_id).one()
-    except:
-        abort(404)
+    category = get_category_or_abort(category_id)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return render_template('show_items.html', category = category,
                            items = items)
@@ -66,22 +87,15 @@ def show_items(category_id):
 
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
-    try:
-        category = catalog.query(Category).filter_by(id = category_id).one()
-        item = catalog.query(Item).filter_by(id = item_id).one()
-    except:
-        abort(404)
+    category = get_category_or_abort(category_id)
+    item = get_item_or_abort(item_id)
     return render_template('show_item.html', item = item)
 
 
 @app.route('/<string:category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
-    if 'username' not in session:
-        abort(404)
-    try:
-        category = catalog.query(Category).filter_by(id = category_id).one()
-    except:
-        abort(404)
+    abort_if_not_logged_in()
+    category = get_category_or_abort(category_id)
     if request.method == 'POST':
         item_name = request.form['name']
         item_id = make_item_id(item_name)
@@ -100,13 +114,9 @@ def new_item(category_id):
 
 @app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(category_id, item_id):
-    if 'username' not in session:
-        abort(404)
-    try:
-        category = catalog.query(Category).filter_by(id = category_id).one()
-        item = catalog.query(Item).filter_by(id = item_id).one()
-    except:
-        abort(404)
+    abort_if_not_logged_in()
+    category = get_category_or_abort(category_id)
+    item = get_item_or_abort(item_id)
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
@@ -123,13 +133,9 @@ def edit_item(category_id, item_id):
 
 @app.route('/<string:category_id>/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(category_id, item_id):
-    if 'username' not in session:
-        abort(404)
-    try:
-        category = catalog.query(Category).filter_by(id = category_id).one()
-        item = catalog.query(Item).filter_by(id = item_id).one()
-    except:
-        abort(404)
+    abort_if_not_logged_in()
+    category = get_category_or_abort(category_id)
+    item = get_item_or_abort(item_id)
     if request.method == 'POST':
         catalog.delete(item)
         catalog.commit()
