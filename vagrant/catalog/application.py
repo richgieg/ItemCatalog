@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -38,6 +38,18 @@ def go_home():
 def inject_categories():
     categories = catalog.query(Category).all()
     return dict(categories = categories)
+
+
+@app.route('/login')
+def login():
+    session['username'] = 'dummy'
+    return redirect(url_for('show_main'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('show_main'))
 
 
 @app.route('/')

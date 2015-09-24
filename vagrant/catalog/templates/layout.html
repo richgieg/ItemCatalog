@@ -11,6 +11,13 @@
     <div class="container">
         <header>
             <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
+
+            {% if 'username' not in session %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+
             <nav>
                 {% for category in categories %}
                 <li>
@@ -21,16 +28,19 @@
                 {% endfor %}
             </nav>
         </header>
+
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-        {% for message in messages %}
-            <li><strong>{{ message }}</strong></li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li><strong>{{ message }}</strong></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
         {% endwith %}
+
         {% block content %}{% endblock %}
+
         <footer>
             This is the footer
         </footer>
