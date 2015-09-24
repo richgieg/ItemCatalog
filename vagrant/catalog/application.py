@@ -28,11 +28,6 @@ def make_item_id(name):
     return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
 
 
-# Helper for redirecting to the home page.
-def go_home():
-    return redirect(url_for('show_main'))
-
-
 # Helper that makes category list available in templates.
 @app.context_processor
 def inject_categories():
@@ -63,7 +58,7 @@ def show_items(category_id):
     try:
         category = catalog.query(Category).filter_by(id = category_id).one()
     except:
-        return go_home()
+        abort(404)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return render_template('show_items.html', category = category,
                            items = items)
@@ -75,18 +70,18 @@ def show_item(category_id, item_id):
         category = catalog.query(Category).filter_by(id = category_id).one()
         item = catalog.query(Item).filter_by(id = item_id).one()
     except:
-        return go_home()
+        abort(404)
     return render_template('show_item.html', item = item)
 
 
-@app.route('/items/<string:category_id>/new', methods = ['GET', 'POST'])
+@app.route('/<string:category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
     if 'username' not in session:
         abort(404)
     try:
         category = catalog.query(Category).filter_by(id = category_id).one()
     except:
-        return go_home()
+        abort(404)
     if request.method == 'POST':
         item_name = request.form['name']
         item_id = make_item_id(item_name)
@@ -103,14 +98,15 @@ def new_item(category_id):
         return render_template('new_item.html', category = category)
 
 
-@app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
-def edit_item(item_id):
+@app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
+def edit_item(category_id, item_id):
     if 'username' not in session:
         abort(404)
     try:
+        category = catalog.query(Category).filter_by(id = category_id).one()
         item = catalog.query(Item).filter_by(id = item_id).one()
     except:
-        return go_home()
+        abort(404)
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
@@ -125,14 +121,15 @@ def edit_item(item_id):
         return render_template('edit_item.html', item = item)
 
 
-@app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
-def delete_item(item_id):
+@app.route('/<string:category_id>/<string:item_id>/delete', methods = ['GET', 'POST'])
+def delete_item(category_id, item_id):
     if 'username' not in session:
         abort(404)
     try:
+        category = catalog.query(Category).filter_by(id = category_id).one()
         item = catalog.query(Item).filter_by(id = item_id).one()
     except:
-        return go_home()
+        abort(404)
     if request.method == 'POST':
         catalog.delete(item)
         catalog.commit()

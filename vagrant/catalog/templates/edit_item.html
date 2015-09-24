@@ -5,13 +5,17 @@
 
 <h2>Edit Item</h2>
 
-<form action="{{ url_for('edit_item', item_id = item.id) }}" method="POST">
+<form action="{{ url_for('edit_item', category_id = item.category_id, item_id = item.id) }}" method="POST">
     Name:<br>
     <input type="text" size="30" name="name" value="{{ item.name }}"><br><br>
     Category:<br>
-    <select name="category_id" value="{{ item.category_id }}">
+    <select name="category_id">
         {% for category in categories %}
-        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% if category.id == item.category_id %}
+            <option value="{{ category.id }}" selected="selected">{{ category.name }}</option>
+        {% else %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endif %}
         {% endfor %}
     </select><br><br>
     Description:<br>
