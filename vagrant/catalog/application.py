@@ -85,10 +85,20 @@ def show_items(category_id):
                            items = items)
 
 
+@app.route('/<string:category_id>.json')
+def show_items_json(category_id):
+    return "JSON!"
+
+
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return render_template('show_item.html', item = item)
+
+
+@app.route('/<string:category_id>/<string:item_id>.json')
+def show_item_json(category_id, item_id):
+    return "JSON!"
 
 
 @app.route('/<string:category_id>/new', methods = ['GET', 'POST'])
