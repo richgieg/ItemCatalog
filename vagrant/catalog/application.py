@@ -22,9 +22,28 @@ db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 
+# Check if image file is allowed to be uploaded.
 def allowed_image_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+
+
+# Save uploaded item image to disk.
+def save_item_image(item, file):
+    delete_item_image_if_exists(item)
+    filename, extension = os.path.splitext(file.filename)
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    filename = '%s-%s%s' % (item.id, timestamp, extension.lower())
+    image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
+    file.save(image_path)
+    return '/' + image_path
+
+
+# Delete existing item image.
+def delete_item_image_if_exists(item):
+    if item.image_path:
+        # Skip the initial slash in file path.
+        os.remove(item.image_path[1:])
 
 
 # Aborts if user is not logged in.
@@ -135,22 +154,6 @@ def new_item(category_id):
                                 item_id = item_id))
     else:
         return render_template('new_item.html', category = category)
-
-
-def save_item_image(item, file):
-    delete_item_image_if_exists(item)
-    filename, extension = os.path.splitext(file.filename)
-    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-    filename = '%s-%s%s' % (item.id, timestamp, extension.lower())
-    image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
-    file.save(image_path)
-    return '/' + image_path
-
-
-def delete_item_image_if_exists(item):
-    # Skip the initial slash in file path.
-    if item.image_path:
-        os.remove(item.image_path[1:])
 
 
 @app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
