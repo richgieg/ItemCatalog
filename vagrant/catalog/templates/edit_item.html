@@ -4,11 +4,19 @@
 <h2>Edit Item</h2>
 
 <form action="{{ url_for('edit_item', item_id = item.id) }}" method="POST">
-    <input type="text" size="30" name="name" value="{{ item.name }}"><br>
-    <input type="textarea" name="description" value="{{ item.description }}"><br>
-    <input type="text" size="10" name="price" value="{{ item.price }}"><br>
+    Name:<br>
+    <input type="text" size="30" name="name" value="{{ item.name }}"><br><br>
+    Category:<br>
+    <select name="category_id" value="{{ item.category_id }}">
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select><br><br>
+    Description:<br>
+    <textarea rows="10" cols="50" name="description">{{ item.description }}</textarea><br><br>
+    Price:<br>
+    <input type="text" size="10" name="price" value="{{ item.price }}"><br><br>
     <input type="submit" value="Submit">
-    <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
 </form>
 
 {% endblock %}

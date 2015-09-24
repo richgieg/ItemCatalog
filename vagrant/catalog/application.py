@@ -83,6 +83,7 @@ def edit_item(item_id):
         item.name = request.form['name']
         item.description = request.form['description']
         item.price = request.form['price']
+        item.category_id = request.form['category_id']
         session.add(item)
         session.commit()
         flash("Item updated")
