@@ -79,23 +79,26 @@ def show_item(category_id, item_id):
     return render_template('show_item.html', item = item)
 
 
-@app.route('/items/new', methods = ['GET', 'POST'])
-def new_item():
+@app.route('/items/<string:category_id>/new', methods = ['GET', 'POST'])
+def new_item(category_id):
+    try:
+        category = catalog.query(Category).filter_by(id = category_id).one()
+    except:
+        return go_home()
     if request.method == 'POST':
         item_name = request.form['name']
         item_id = make_item_id(item_name)
         item_desc = request.form['description']
         item_price = request.form['price']
-        category_id = request.form['category_id']
         item = Item(id = item_id, name = item_name, description = item_desc,
-                    price = item_price, category_id = category_id)
+                    price = item_price, category_id = category.id)
         catalog.add(item)
         catalog.commit()
         flash("Item created")
-        return redirect(url_for('show_item', category_id = category_id,
+        return redirect(url_for('show_item', category_id = category.id,
                                 item_id = item_id))
     else:
-        return render_template('new_item.html')
+        return render_template('new_item.html', category = category)
 
 
 @app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
