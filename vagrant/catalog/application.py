@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -144,7 +144,8 @@ def delete_item(category_id, item_id):
 
 @app.route('/catalog.json')
 def show_all_items_json():
-    return "JSON!"
+    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
+    return jsonify(CatalogItems=[i.serialize(True) for i in items])
 
 
 @app.route('/<string:category_id>.json')
