@@ -25,7 +25,7 @@ def title_filter(page_title):
 
 # Helper for creating item_id from an item's name.
 def make_item_id(name):
-    return name.replace("'", '').replace(' ', '-').lower()
+    return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
 
 
 # Helper for redirecting to the home page.
