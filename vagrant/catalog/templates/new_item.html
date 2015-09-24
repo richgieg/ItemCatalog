@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}{{ "Create New Item" | title }}{% endblock %}
+{% block title %}{{ ("New Item in %s" % category.name) | title }}{% endblock %}
 
 {% block content %}
 
