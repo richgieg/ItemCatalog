@@ -64,7 +64,8 @@ steps.*
 **Connect to the VM via SSH, then run the application:**
 ```
 vagrant ssh
-python /vagrant/catalog/application.py
+cd /vagrant/catalog
+python application.py
 ```
 
 **Navigate to the following URL in your browser:**
