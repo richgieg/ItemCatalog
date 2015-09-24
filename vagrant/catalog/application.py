@@ -10,6 +10,19 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
+# Define constant for the site's primary title.
+SITE_TITLE = "Music Shop"
+
+
+# Filter for creating the proper title for the templates.
+@app.template_filter('title')
+def title_filter(page_title):
+    if not page_title:
+        return SITE_TITLE
+    else:
+        return "%s | %s" % (page_title, SITE_TITLE)
+
+
 # Helper for creating item_id from an item's name.
 def make_item_id(name):
     return name.replace("'", '').replace(' ', '-').lower()
