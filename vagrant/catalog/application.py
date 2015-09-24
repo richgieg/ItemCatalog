@@ -25,7 +25,6 @@ def get_category_or_abort(category_id):
     try:
         return catalog.query(Category).filter_by(id = category_id).one()
     except:
-        print "category"
         abort(404)
 
 
@@ -34,7 +33,6 @@ def get_item_or_abort(item_id):
     try:
         return catalog.query(Item).filter_by(id = item_id).one()
     except:
-        print "item"
         abort(404)
 
 
