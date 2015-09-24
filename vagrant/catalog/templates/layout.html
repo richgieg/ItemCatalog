@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <header>
-            This is the header
+            <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
             <nav>
                 {% for category in categories %}
                 <li>

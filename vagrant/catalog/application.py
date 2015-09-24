@@ -53,7 +53,7 @@ def show_items(category_id):
     except:
         return go_home()
     items = session.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
-    return render_template('show_items.html', category_name = category.name,
+    return render_template('show_items.html', category = category,
                            items = items)
 
 
