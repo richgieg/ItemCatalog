@@ -23,16 +23,15 @@ class Item(Base):
     category_id = Column(String(80), ForeignKey('categories.id'))
     category = relationship(Category)
 
-    def serialize(self, include_category=False):
-        data = {
+    @property
+    def serialize(self):
+        return {
             'id': self.id,
             'name': self.name,
             'description': self.description,
-            'price': self.price
+            'price': self.price,
+            'category_id': self.category_id
         }
-        if include_category:
-            data['category_id'] = self.category_id
-        return data
 
 
 engine = create_engine('sqlite:///catalog.db')

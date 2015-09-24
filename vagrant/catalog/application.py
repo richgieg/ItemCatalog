@@ -145,17 +145,20 @@ def delete_item(category_id, item_id):
 @app.route('/catalog.json')
 def show_all_items_json():
     items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
-    return jsonify(CatalogItems=[i.serialize(True) for i in items])
+    return jsonify(Items=[i.serialize for i in items])
 
 
 @app.route('/<string:category_id>.json')
 def show_items_json(category_id):
-    return "JSON!"
+    category = get_category_or_abort(category_id)
+    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    return jsonify(Items=[i.serialize for i in items])
 
 
 @app.route('/<string:category_id>/<string:item_id>.json')
 def show_item_json(category_id, item_id):
-    return "JSON!"
+    item = get_item_or_abort(item_id, category_id)
+    return jsonify(Item=item.serialize)
 
 
 if __name__ == '__main__':
