@@ -19,6 +19,7 @@
     Price:<br>
     <input type="text" size="10" name="price" value="{{ item.price }}"><br><br>
     <input type="submit" value="Submit">
+    <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
 </form>
 
 {% endblock %}
