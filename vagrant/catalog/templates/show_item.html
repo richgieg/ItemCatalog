@@ -12,6 +12,8 @@
 
 <p class="item-description">{{ item.description }}</p>
 <p class="item-price">{{ item.price }}</p>
+{% if item.image_path %}
 <img class="item-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
+{% endif %}
 
 {% endblock %}
