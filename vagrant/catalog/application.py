@@ -85,20 +85,10 @@ def show_items(category_id):
                            items = items)
 
 
-@app.route('/<string:category_id>.json')
-def show_items_json(category_id):
-    return "JSON!"
-
-
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return render_template('show_item.html', item = item)
-
-
-@app.route('/<string:category_id>/<string:item_id>.json')
-def show_item_json(category_id, item_id):
-    return "JSON!"
 
 
 @app.route('/<string:category_id>/new', methods = ['GET', 'POST'])
@@ -150,6 +140,21 @@ def delete_item(category_id, item_id):
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
+
+
+@app.route('/catalog.json')
+def show_all_items_json():
+    return "JSON!"
+
+
+@app.route('/<string:category_id>.json')
+def show_items_json(category_id):
+    return "JSON!"
+
+
+@app.route('/<string:category_id>/<string:item_id>.json')
+def show_item_json(category_id, item_id):
+    return "JSON!"
 
 
 if __name__ == '__main__':
