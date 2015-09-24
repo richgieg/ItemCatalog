@@ -22,6 +22,11 @@ db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 
+# Helper for creating item_id from an item's name.
+def make_item_id(name):
+    return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
+
+
 # Check if image file is allowed to be uploaded.
 def allowed_image_file(filename):
     return '.' in filename and \
@@ -61,6 +66,16 @@ def get_category_or_abort(category_id):
         abort(404)
 
 
+# Helper that concatenates the XML output from a list of items into proper XML.
+def xmlify(items):
+    lines = []
+    lines.append('<?xml version="1.0"?>')
+    lines.append('<items>')
+    lines += [i.xml for i in items]
+    lines.append('</items>')
+    return '\n'.join(lines)
+
+
 # Returns the requested Item object or aborts if it doesn't exist. Or if the
 # item exists in the database, but it isn't linked to the specified category,
 # then abort() will be called.
@@ -80,26 +95,11 @@ def title_filter(page_title):
         return "%s | %s" % (page_title, SITE_TITLE)
 
 
-# Helper for creating item_id from an item's name.
-def make_item_id(name):
-    return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
-
-
-# Helper that makes category list available in templates.
+# Context Processor that makes category list available in templates.
 @app.context_processor
 def inject_categories():
     categories = catalog.query(Category).all()
     return dict(categories = categories)
-
-
-# Helper that concatenates the XML output from a list of items into proper XML.
-def xmlify(items):
-    lines = []
-    lines.append('<?xml version="1.0"?>')
-    lines.append('<items>')
-    lines += [i.xml for i in items]
-    lines.append('</items>')
-    return '\n'.join(lines)
 
 
 @app.route('/login')
@@ -192,17 +192,11 @@ def delete_item(category_id, item_id):
         return render_template('delete_item.html', item = item)
 
 
-# JSON / XML endpoints
+# JSON endpoints.
 @app.route('/catalog.json')
 def show_all_items_json():
     items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
     return jsonify(Items=[i.serialize for i in items])
-
-
-@app.route('/catalog.xml')
-def show_all_items_xml():
-    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
-    return xmlify(items)
 
 
 @app.route('/<string:category_id>.json')
@@ -212,17 +206,24 @@ def show_items_json(category_id):
     return jsonify(Items=[i.serialize for i in items])
 
 
+@app.route('/<string:category_id>/<string:item_id>.json')
+def show_item_json(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    return jsonify(Item=item.serialize)
+
+
+# XML endpoints.
+@app.route('/catalog.xml')
+def show_all_items_xml():
+    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
+    return xmlify(items)
+
+
 @app.route('/<string:category_id>.xml')
 def show_items_xml(category_id):
     category = get_category_or_abort(category_id)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return xmlify(items)
-
-
-@app.route('/<string:category_id>/<string:item_id>.json')
-def show_item_json(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    return jsonify(Item=item.serialize)
 
 
 @app.route('/<string:category_id>/<string:item_id>.xml')
@@ -231,6 +232,7 @@ def show_item_xml(category_id, item_id):
     return xmlify([item])
 
 
+# Run the application.
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
