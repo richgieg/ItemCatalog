@@ -28,7 +28,7 @@ def allowed_image_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
 
 
-# Save uploaded item image to disk.
+# Save uploaded image to disk and set item's image_path field.
 def save_item_image(item, file):
     delete_item_image_if_exists(item)
     filename, extension = os.path.splitext(file.filename)
@@ -36,7 +36,8 @@ def save_item_image(item, file):
     filename = '%s-%s%s' % (item.id, timestamp, extension.lower())
     image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
     file.save(image_path)
-    return '/' + image_path
+    # Add leading slash so path works in HTML img tags.
+    item.image_path = '/' + image_path
 
 
 # Delete existing item image.
@@ -146,7 +147,7 @@ def new_item(category_id):
                     price = item_price, category_id = category.id)
         file = request.files['image_file']
         if file and allowed_image_file(file.filename):
-            item.image_path = save_item_image(item, file)
+            save_item_image(item, file)
         catalog.add(item)
         catalog.commit()
         flash("Item created")
@@ -167,7 +168,7 @@ def edit_item(category_id, item_id):
         item.category_id = request.form['category_id']
         file = request.files['image_file']
         if file and allowed_image_file(file.filename):
-            item.image_path = save_item_image(item, file)
+            save_item_image(item, file)
         catalog.add(item)
         catalog.commit()
         flash("Item updated")
