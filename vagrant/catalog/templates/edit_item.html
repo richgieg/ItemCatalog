@@ -23,6 +23,9 @@
     Price:<br>
     <input type="text" size="10" name="price" value="{{ item.price }}"><br><br>
     Image:<br>
+    {% if item.image_path %}
+    <img class="item-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br>
+    {% endif %}
     <input type="file" name="image_file"><br><br>
     <input type="submit" value="Submit">
     <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
