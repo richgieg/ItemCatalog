@@ -1,4 +1,6 @@
+import os
 import sys
+from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -7,6 +9,7 @@ from xml.etree import ElementTree as ET
 
 Base = declarative_base()
 
+IMAGE_DIRECTORY = 'static/images'
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -24,6 +27,23 @@ class Item(Base):
     created = Column(DateTime, default=func.now())
     category_id = Column(String(80), ForeignKey('categories.id'))
     category = relationship(Category)
+
+    # Save uploaded image to disk and set item's image_path field.
+    def save_image(self, file):
+        self.delete_image()
+        filename, extension = os.path.splitext(file.filename)
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        filename = '%s-%s%s' % (self.id, timestamp, extension.lower())
+        image_path = os.path.join(IMAGE_DIRECTORY, filename)
+        file.save(image_path)
+        # Add leading slash so path works in HTML img tags.
+        self.image_path = '/' + image_path
+
+    # Delete image file from disk, if exists.
+    def delete_image(self):
+        if self.image_path:
+            # Skip the initial slash in file path.
+            os.remove(self.image_path[1:])
 
     @property
     def serialize(self):

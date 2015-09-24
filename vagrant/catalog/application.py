@@ -1,7 +1,4 @@
-import os
-from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
-from werkzeug import secure_filename
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -9,13 +6,11 @@ from database_setup import Base, Category, Item
 
 # Define constants.
 SITE_TITLE = 'Music Shop'
-IMAGE_DIRECTORY = 'static/images'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 
 
 # Set up the app.
 app = Flask(__name__)
-app.config['IMAGE_DIRECTORY'] = IMAGE_DIRECTORY
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 db_session = sessionmaker(bind = engine)
@@ -31,25 +26,6 @@ def make_item_id(name):
 def allowed_image_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
-
-
-# Save uploaded image to disk and set item's image_path field.
-def save_item_image(item, file):
-    delete_item_image_if_exists(item)
-    filename, extension = os.path.splitext(file.filename)
-    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-    filename = '%s-%s%s' % (item.id, timestamp, extension.lower())
-    image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
-    file.save(image_path)
-    # Add leading slash so path works in HTML img tags.
-    item.image_path = '/' + image_path
-
-
-# Delete existing item image.
-def delete_item_image_if_exists(item):
-    if item.image_path:
-        # Skip the initial slash in file path.
-        os.remove(item.image_path[1:])
 
 
 # Aborts if user is not logged in.
@@ -147,7 +123,7 @@ def new_item(category_id):
                     price = item_price, category_id = category.id)
         file = request.files['image_file']
         if file and allowed_image_file(file.filename):
-            save_item_image(item, file)
+            item.save_image(file)
         catalog.add(item)
         catalog.commit()
         flash("Item created")
@@ -168,7 +144,7 @@ def edit_item(category_id, item_id):
         item.category_id = request.form['category_id']
         file = request.files['image_file']
         if file and allowed_image_file(file.filename):
-            save_item_image(item, file)
+            item.save_image(file)
         catalog.add(item)
         catalog.commit()
         flash("Item updated")
@@ -183,7 +159,7 @@ def delete_item(category_id, item_id):
     abort_if_not_logged_in()
     item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
-        delete_item_image_if_exists(item)
+        item.delete_image()
         catalog.delete(item)
         catalog.commit()
         flash("Item '%s' deleted" % item.name)
