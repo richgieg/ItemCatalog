@@ -28,10 +28,12 @@ def get_category_or_abort(category_id):
         abort(404)
 
 
-# Returns the requested Item object or aborts if it doesn't exist.
-def get_item_or_abort(item_id):
+# Returns the requested Item object or aborts if it doesn't exist. Or if the
+# item exists in the database, but it isn't linked to the specified category,
+# then abort() will be called.
+def get_item_or_abort(item_id, category_id):
     try:
-        return catalog.query(Item).filter_by(id = item_id).one()
+        return catalog.query(Item).filter_by(id = item_id, category_id = category_id).one()
     except:
         abort(404)
 
@@ -85,8 +87,7 @@ def show_items(category_id):
 
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
-    category = get_category_or_abort(category_id)
-    item = get_item_or_abort(item_id)
+    item = get_item_or_abort(item_id, category_id)
     return render_template('show_item.html', item = item)
 
 
@@ -113,8 +114,7 @@ def new_item(category_id):
 @app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(category_id, item_id):
     abort_if_not_logged_in()
-    category = get_category_or_abort(category_id)
-    item = get_item_or_abort(item_id)
+    item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
@@ -132,8 +132,7 @@ def edit_item(category_id, item_id):
 @app.route('/<string:category_id>/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(category_id, item_id):
     abort_if_not_logged_in()
-    category = get_category_or_abort(category_id)
-    item = get_item_or_abort(item_id)
+    item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
         catalog.delete(item)
         catalog.commit()
