@@ -6,8 +6,8 @@ from database_setup import Base, Category, Item
 app = Flask(__name__)
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
-DBSession = sessionmaker(bind = engine)
-session = DBSession()
+db_session = sessionmaker(bind = engine)
+catalog = db_session()
 
 
 # Define constant for the site's primary title.
@@ -36,23 +36,23 @@ def go_home():
 # Helper that makes category list available in templates.
 @app.context_processor
 def inject_categories():
-    categories = session.query(Category).all()
+    categories = catalog.query(Category).all()
     return dict(categories = categories)
 
 
 @app.route('/')
 def show_main():
-    items = session.query(Item).order_by(desc(Item.created)).limit(10).all()
+    items = catalog.query(Item).order_by(desc(Item.created)).limit(10).all()
     return render_template('show_main.html', items = items)
 
 
 @app.route('/<string:category_id>/')
 def show_items(category_id):
     try:
-        category = session.query(Category).filter_by(id = category_id).one()
+        category = catalog.query(Category).filter_by(id = category_id).one()
     except:
         return go_home()
-    items = session.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return render_template('show_items.html', category = category,
                            items = items)
 
@@ -60,8 +60,8 @@ def show_items(category_id):
 @app.route('/<string:category_id>/<string:item_id>')
 def show_item(category_id, item_id):
     try:
-        category = session.query(Category).filter_by(id = category_id).one()
-        item = session.query(Item).filter_by(id = item_id).one()
+        category = catalog.query(Category).filter_by(id = category_id).one()
+        item = catalog.query(Item).filter_by(id = item_id).one()
     except:
         return go_home()
     return render_template('show_item.html', item = item)
@@ -77,8 +77,8 @@ def new_item():
         category_id = request.form['category_id']
         item = Item(id = item_id, name = item_name, description = item_desc,
                     price = item_price, category_id = category_id)
-        session.add(item)
-        session.commit()
+        catalog.add(item)
+        catalog.commit()
         flash("Item created")
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
@@ -89,7 +89,7 @@ def new_item():
 @app.route('/items/<string:item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(item_id):
     try:
-        item = session.query(Item).filter_by(id = item_id).one()
+        item = catalog.query(Item).filter_by(id = item_id).one()
     except:
         return go_home()
     if request.method == 'POST':
@@ -97,8 +97,8 @@ def edit_item(item_id):
         item.description = request.form['description']
         item.price = request.form['price']
         item.category_id = request.form['category_id']
-        session.add(item)
-        session.commit()
+        catalog.add(item)
+        catalog.commit()
         flash("Item updated")
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
@@ -109,12 +109,12 @@ def edit_item(item_id):
 @app.route('/items/<string:item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(item_id):
     try:
-        item = session.query(Item).filter_by(id = item_id).one()
+        item = catalog.query(Item).filter_by(id = item_id).one()
     except:
         return go_home()
     if request.method == 'POST':
-        session.delete(item)
-        session.commit()
+        catalog.delete(item)
+        catalog.commit()
         flash("Item '%s' deleted" % item.name)
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
