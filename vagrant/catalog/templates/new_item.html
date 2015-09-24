@@ -5,13 +5,15 @@
 
 <h2>New Item in {{ category.name }}</h2>
 
-<form action="{{ url_for('new_item', category_id = category.id) }}" method="POST">
+<form action="{{ url_for('new_item', category_id = category.id) }}"
+      enctype="multipart/form-data" method="POST">
     Name:<br>
     <input type="text" size="30" name="name"><br><br>
     Description:<br>
     <textarea rows="10" cols="50" name="description"></textarea><br><br>
     Price:<br>
     <input type="text" size="10" name="price"><br><br>
+    <input type="file" name="file"><br><br>
     <input type="submit" value="Submit">
     <a href="{{ url_for('show_items', category_id = category.id) }}">Cancel</a>
 </form>

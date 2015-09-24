@@ -12,6 +12,6 @@
 
 <p class="item-description">{{ item.description }}</p>
 <p class="item-price">{{ item.price }}</p>
-<img class="item-image" src="http://placehold.it/400x600" alt="">
+<img class="item-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
 
 {% endblock %}

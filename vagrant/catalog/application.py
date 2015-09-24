@@ -1,17 +1,29 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
+from werkzeug import secure_filename
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
 
+
+# Define constants.
+SITE_TITLE = 'Music Shop'
+IMAGE_DIRECTORY = 'static/images'
+ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
+
+
+# Set up the app.
 app = Flask(__name__)
+app.config['IMAGE_DIRECTORY'] = IMAGE_DIRECTORY
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 
-# Define constant for the site's primary title.
-SITE_TITLE = "Music Shop"
+def allowed_image_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1] in ALLOWED_IMAGE_EXTENSIONS
 
 
 # Aborts if user is not logged in.
@@ -112,6 +124,13 @@ def new_item(category_id):
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
                     price = item_price, category_id = category.id)
+        file = request.files['file']
+        if file and allowed_image_file(file.filename):
+            filename, extension = os.path.splitext(file.filename)
+            filename = item_id + extension
+            image_path = os.path.join(app.config['IMAGE_DIRECTORY'], filename)
+            file.save(image_path)
+            item.image_path = '/' + image_path
         catalog.add(item)
         catalog.commit()
         flash("Item created")
