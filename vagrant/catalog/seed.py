@@ -1,10 +1,12 @@
 from os import remove
+from os.path import isfile
 from shutil import copytree
 from shutil import rmtree
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# Remove catalog.db before importing Base (which recreates it).
-remove('catalog.db')
+# Remove catalog.db, if exists, before importing Base (which recreates it).
+if isfile('catalog.db'):
+    remove('catalog.db')
 from catalog import Base
 from catalog import Category
 from catalog import Item
