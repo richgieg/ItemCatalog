@@ -10,6 +10,7 @@ if isfile('catalog.db'):
 from catalog import Base
 from catalog import Category
 from catalog import Item
+from catalog import ITEM_IMAGE_DIRECTORY
 
 
 CATEGORIES = [
@@ -234,7 +235,7 @@ def seed_items():
 
 # Copy seed images to img.
 rmtree('img', ignore_errors = True)
-copytree('seed_images', 'img')
+copytree('seed_images', ITEM_IMAGE_DIRECTORY)
 
 # Create database session.
 engine = create_engine('sqlite:///catalog.db')

@@ -13,7 +13,7 @@ from sqlalchemy.orm import relationship
 
 
 # Define constants.
-IMAGE_DIRECTORY = 'img'
+ITEM_IMAGE_DIRECTORY = 'img'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 
 
@@ -51,7 +51,7 @@ class Item(Base):
             filename, extension = os.path.splitext(file.filename)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             filename = '%s-%s%s' % (self.id, timestamp, extension.lower())
-            image_path = os.path.join(IMAGE_DIRECTORY, filename)
+            image_path = os.path.join(ITEM_IMAGE_DIRECTORY, filename)
             file.save(image_path)
             # Add leading slash so path works in HTML img tags.
             self.image_path = '/' + image_path

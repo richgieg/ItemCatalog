@@ -14,6 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from catalog import Base
 from catalog import Category
 from catalog import Item
+from catalog import ITEM_IMAGE_DIRECTORY
 
 
 # Define constants.
@@ -87,9 +88,9 @@ def inject_categories():
     return dict(categories = categories)
 
 
-@app.route('/img/<path:filename>')
+@app.route('/img/<filename>')
 def serve_image(filename):
-    return send_from_directory('img', filename)
+    return send_from_directory(ITEM_IMAGE_DIRECTORY, filename)
 
 
 @app.route('/login')
