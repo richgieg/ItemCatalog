@@ -112,7 +112,7 @@ def show_main():
     return render_template('show_main.html', items = items)
 
 
-@app.route('/<string:category_id>/')
+@app.route('/<category_id>/')
 def show_items(category_id):
     category = get_category_or_abort(category_id)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
@@ -120,13 +120,13 @@ def show_items(category_id):
                            items = items)
 
 
-@app.route('/<string:category_id>/<string:item_id>')
+@app.route('/<category_id>/<item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return render_template('show_item.html', item = item)
 
 
-@app.route('/<string:category_id>/new', methods = ['GET', 'POST'])
+@app.route('/<category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
     abort_if_not_logged_in()
     category = get_category_or_abort(category_id)
@@ -147,7 +147,7 @@ def new_item(category_id):
         return render_template('new_item.html', category = category)
 
 
-@app.route('/<string:category_id>/<string:item_id>/edit', methods = ['GET', 'POST'])
+@app.route('/<category_id>/<item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(category_id, item_id):
     abort_if_not_logged_in()
     item = get_item_or_abort(item_id, category_id)
@@ -166,7 +166,7 @@ def edit_item(category_id, item_id):
         return render_template('edit_item.html', item = item)
 
 
-@app.route('/<string:category_id>/<string:item_id>/delete', methods = ['GET', 'POST'])
+@app.route('/<category_id>/<item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(category_id, item_id):
     abort_if_not_logged_in()
     item = get_item_or_abort(item_id, category_id)
@@ -187,14 +187,14 @@ def show_all_items_json():
     return jsonify(Items=[i.serialize for i in items])
 
 
-@app.route('/<string:category_id>.json')
+@app.route('/<category_id>.json')
 def show_items_json(category_id):
     category = get_category_or_abort(category_id)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return jsonify(Items=[i.serialize for i in items])
 
 
-@app.route('/<string:category_id>/<string:item_id>.json')
+@app.route('/<category_id>/<item_id>.json')
 def show_item_json(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return jsonify(Item=item.serialize)
@@ -207,14 +207,14 @@ def show_all_items_xml():
     return xmlify(items)
 
 
-@app.route('/<string:category_id>.xml')
+@app.route('/<category_id>.xml')
 def show_items_xml(category_id):
     category = get_category_or_abort(category_id)
     items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
     return xmlify(items)
 
 
-@app.route('/<string:category_id>/<string:item_id>.xml')
+@app.route('/<category_id>/<item_id>.xml')
 def show_item_xml(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return xmlify([item])
