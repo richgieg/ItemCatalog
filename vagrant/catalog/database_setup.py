@@ -1,5 +1,4 @@
 import os
-import sys
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
