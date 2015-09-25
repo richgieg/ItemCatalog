@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from catalog import Base, Category
@@ -42,3 +43,6 @@ for category in categories:
     catalog.add(Category(id = category['id'], name = category['name']))
 
 catalog.commit()
+
+# Create directory for item images.
+os.mkdir('static/images')
