@@ -61,10 +61,11 @@ configuration must take place. Please be patient. Once the process is complete,
 your terminal prompt will be returned, thus allowing you to execute the next
 steps.*
 
-**Connect to the VM via SSH, then run the application:**
+**Connect to the VM via SSH, seed the database, then run the application:**
 ```
 vagrant ssh
 cd /vagrant/catalog
+python seed.py
 python application.py
 ```
 
