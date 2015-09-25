@@ -1,7 +1,8 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from catalog import Base, Category
+from catalog import Base
+from catalog import Category
 
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
