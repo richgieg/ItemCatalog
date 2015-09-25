@@ -1,7 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
-from sqlalchemy import create_engine, desc
+from flask import abort
+from flask import flash
+from flask import Flask
+from flask import jsonify
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import session
+from flask import url_for
+from sqlalchemy import create_engine
+from sqlalchemy import desc
 from sqlalchemy.orm import sessionmaker
-from catalog import Base, Category, Item
+from catalog import Base
+from catalog import Category
+from catalog import Item
 
 
 # Define constants.
