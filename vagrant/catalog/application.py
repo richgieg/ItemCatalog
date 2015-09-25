@@ -5,6 +5,7 @@ from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask import send_from_directory
 from flask import session
 from flask import url_for
 from sqlalchemy import create_engine
@@ -84,6 +85,11 @@ def title_filter(page_title):
 def inject_categories():
     categories = catalog.query(Category).all()
     return dict(categories = categories)
+
+
+@app.route('/img/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('img', filename)
 
 
 @app.route('/login')

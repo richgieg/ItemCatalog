@@ -13,7 +13,7 @@ from sqlalchemy.orm import relationship
 
 
 # Define constants.
-IMAGE_DIRECTORY = 'static/images'
+IMAGE_DIRECTORY = 'img'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 
 
