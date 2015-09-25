@@ -1,10 +1,15 @@
 import os
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func
+from xml.etree import ElementTree as ET
+from sqlalchemy import Column
+from sqlalchemy import create_engine
+from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy import func
+from sqlalchemy import Integer
+from sqlalchemy import String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
-from xml.etree import ElementTree as ET
 
 
 # Define constants.
