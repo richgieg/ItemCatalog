@@ -29,7 +29,11 @@ catalog = db_session()
 
 # Helper for creating item_id from an item's name.
 def make_item_id(name):
-    return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
+    item_id = name
+    mapping = [("'", ''), ('"', ''), (' ', '-'), ('(', ''), (')', '')]
+    for k, v in mapping:
+        item_id = item_id.replace(k, v)
+    return item_id.lower()
 
 
 # Aborts if user is not logged in.
