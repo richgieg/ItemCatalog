@@ -6,7 +6,6 @@ from catalog import Base, Category, Item
 
 # Define constants.
 SITE_TITLE = 'Music Shop'
-ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 
 
 # Set up the app.
@@ -20,12 +19,6 @@ catalog = db_session()
 # Helper for creating item_id from an item's name.
 def make_item_id(name):
     return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
-
-
-# Check if image file is of a legal file type.
-def allowed_image_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
 
 
 # Aborts if user is not logged in.
@@ -121,9 +114,7 @@ def new_item(category_id):
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
                     price = item_price, category_id = category.id)
-        file = request.files['image_file']
-        if file and allowed_image_file(file.filename):
-            item.save_image(file)
+        item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
         flash("Item created")
@@ -142,9 +133,7 @@ def edit_item(category_id, item_id):
         item.description = request.form['description']
         item.price = request.form['price']
         item.category_id = request.form['category_id']
-        file = request.files['image_file']
-        if file and allowed_image_file(file.filename):
-            item.save_image(file)
+        item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
         flash("Item updated")

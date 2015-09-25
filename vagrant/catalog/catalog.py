@@ -6,9 +6,21 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from xml.etree import ElementTree as ET
 
+
+# Define constants.
+IMAGE_DIRECTORY = 'static/images'
+ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
+
+
+# Define ORM base class.
 Base = declarative_base()
 
-IMAGE_DIRECTORY = 'static/images'
+
+# Check if image file is of a legal file type.
+def allowed_image_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -29,14 +41,15 @@ class Item(Base):
 
     # Save uploaded image to disk and set item's image_path field.
     def save_image(self, file):
-        self.delete_image()
-        filename, extension = os.path.splitext(file.filename)
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        filename = '%s-%s%s' % (self.id, timestamp, extension.lower())
-        image_path = os.path.join(IMAGE_DIRECTORY, filename)
-        file.save(image_path)
-        # Add leading slash so path works in HTML img tags.
-        self.image_path = '/' + image_path
+        if file and allowed_image_file(file.filename):
+            self.delete_image()
+            filename, extension = os.path.splitext(file.filename)
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            filename = '%s-%s%s' % (self.id, timestamp, extension.lower())
+            image_path = os.path.join(IMAGE_DIRECTORY, filename)
+            file.save(image_path)
+            # Add leading slash so path works in HTML img tags.
+            self.image_path = '/' + image_path
 
     # Delete image file from disk, if exists.
     def delete_image(self):
