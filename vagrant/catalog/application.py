@@ -22,7 +22,7 @@ def make_item_id(name):
     return name.replace("'", '').replace('"', '').replace(' ', '-').lower()
 
 
-# Check if image file is allowed to be uploaded.
+# Check if image file is of a legal file type.
 def allowed_image_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
