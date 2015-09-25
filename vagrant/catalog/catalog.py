@@ -16,7 +16,7 @@ ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 Base = declarative_base()
 
 
-# Check if image file is of a legal file type.
+# Helper that checks if image file is of a legal file type.
 def allowed_image_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
