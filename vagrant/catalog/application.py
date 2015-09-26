@@ -1,3 +1,5 @@
+import re
+from unicodedata import normalize
 from flask import abort
 from flask import flash
 from flask import Flask
@@ -29,14 +31,16 @@ db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 
-# Helper for creating item_id from an item's name.
-def make_item_id(name):
-    item_id = name
-    mapping = [("'", ''), ('"', ''), (' ', '-'), ('(', ''), (')', ''),
-               ('/', '-'), ('\\', '-'), ('<', ''), ('>', '')]
-    for k, v in mapping:
-        item_id = item_id.replace(k, v)
-    return item_id.lower()
+# Helper for making a slug to be used as an item id.
+def slugify(text):
+    punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+    delim = u'-'
+    result = []
+    for word in punct_re.split(text.lower()):
+        word = normalize('NFKD', word).encode('ascii', 'ignore')
+        if word:
+            result.append(word)
+    return unicode(delim.join(result))
 
 
 # Aborts if user is not logged in.
@@ -132,7 +136,7 @@ def new_item(category_id):
     category = get_category_or_abort(category_id)
     if request.method == 'POST':
         item_name = request.form['name']
-        item_id = make_item_id(item_name)
+        item_id = slugify(item_name)
         item_desc = request.form['description']
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
