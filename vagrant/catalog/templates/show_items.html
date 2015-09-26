@@ -12,10 +12,14 @@
 {% if items %}
 {% for item in items %}
 <div class="item-tile">
-    <h3 class="item-tile-name">
-        <a href="{{ url_for('show_item', category_id = category.id, item_id = item.id) }}">{{ item.name }}</a>
-    </h3>
-    <p class="item-tile-description">{{ item.description }}</p>
+    {% if item.image_path %}
+    <a href="{{ url_for('show_item', category_id = category.id, item_id = item.id) }}">
+        <img class="item-tile-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
+    </a>
+    {% endif %}
+    <a href="{{ url_for('show_item', category_id = category.id, item_id = item.id) }}">
+        <h3 class="item-tile-name">{{ item.name }}</h3>
+    </a>
     <p class="item-tile-price">{{ item.price }}</p>
 </div>
 {% endfor %}
