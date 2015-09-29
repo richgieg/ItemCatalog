@@ -1,4 +1,6 @@
+import random
 import re
+import string
 from unicodedata import normalize
 from flask import abort
 from flask import flash
@@ -29,6 +31,12 @@ engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 db_session = sessionmaker(bind = engine)
 catalog = db_session()
+
+
+# Helper for making a nonce value.
+def get_nonce():
+    return ''.join(random.choice(string.ascii_uppercase + string.digits)
+                   for x in xrange(32))
 
 
 # Helper for making a slug to be used as an item id.
