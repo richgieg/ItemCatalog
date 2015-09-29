@@ -56,9 +56,8 @@ def slugify(text):
 
 
 # Aborts if user is not logged in.
-def abort_if_not_logged_in():
-    if 'username' not in session:
-        abort(404)
+def logged_in():
+    return 'username' in session
 
 
 # Verifies that POST requests have the correct anti-CSRF token.
@@ -99,6 +98,11 @@ def remove_expired_csrf_tokens():
             tokens_to_remove.append(token)
     for token in tokens_to_remove:
         session['csrf_tokens'].pop(token)
+
+
+# Removes all anti-CSRF tokens.
+def purge_csrf_tokens():
+    session.pop('csrf_tokens', None)
 
 
 # Returns the requested Category object or aborts if it doesn't exist.
@@ -153,13 +157,20 @@ def serve_image(filename):
 @app.route('/login')
 def login():
     session['username'] = 'dummy'
-    return redirect(url_for('show_main'))
+    source = request.args.get('source')
+    if source is None:
+        return redirect(url_for('show_main'))
+    return redirect(source)
 
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('show_main'))
+    purge_csrf_tokens()
+    source = request.args.get('source')
+    if source is None:
+        return redirect(url_for('show_main'))
+    return redirect(source)
 
 
 @app.route('/')
@@ -184,7 +195,8 @@ def show_item(category_id, item_id):
 
 @app.route('/<category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
-    abort_if_not_logged_in()
+    if not logged_in():
+        return redirect(url_for('show_items', category_id = category_id))
     category = get_category_or_abort(category_id)
     if request.method == 'POST':
         item_name = request.form['name']
@@ -205,7 +217,9 @@ def new_item(category_id):
 
 @app.route('/<category_id>/<item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(category_id, item_id):
-    abort_if_not_logged_in()
+    if not logged_in():
+        return redirect(url_for('show_item', category_id = category_id,
+                                item_id = item_id))
     item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
         item.name = request.form['name']
@@ -224,7 +238,9 @@ def edit_item(category_id, item_id):
 
 @app.route('/<category_id>/<item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(category_id, item_id):
-    abort_if_not_logged_in()
+    if not logged_in():
+        return redirect(url_for('show_item', category_id = category_id,
+                                item_id = item_id))
     item = get_item_or_abort(item_id, category_id)
     if request.method == 'POST':
         item.delete_image()
@@ -278,6 +294,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'awesome_secret_key'
+    app.secret_key = 'amazing_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)

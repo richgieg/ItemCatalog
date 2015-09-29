@@ -14,9 +14,9 @@
             <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
 
             {% if 'username' not in session %}
-                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('login', source = request.path) }}">Login</a>
             {% else %}
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('logout', source = request.path) }}">Logout</a>
             {% endif %}
 
             <nav>
