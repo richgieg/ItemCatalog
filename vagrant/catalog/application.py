@@ -1,6 +1,8 @@
 import random
 import re
 import string
+from datetime import datetime
+from datetime import timedelta
 from unicodedata import normalize
 from flask import abort
 from flask import flash
@@ -23,6 +25,8 @@ from catalog import ITEM_IMAGE_DIRECTORY
 
 # Define constants.
 SITE_TITLE = 'Music Shop'
+CSRF_TOKEN_TTL = timedelta(minutes = 15)
+MAX_ACTIVE_FORMS = 32
 
 
 # Set up the app.
@@ -33,13 +37,13 @@ db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 
-# Helper for making a nonce value.
+# Returns a nonce value to be used as an anti-CSRF token.
 def get_nonce():
     return ''.join(random.choice(string.ascii_uppercase + string.digits)
                    for x in xrange(32))
 
 
-# Helper for making a slug to be used as an item id.
+# Returns a slug to be used as an item id.
 def slugify(text):
     punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
     delim = u'-'
@@ -55,6 +59,46 @@ def slugify(text):
 def abort_if_not_logged_in():
     if 'username' not in session:
         abort(404)
+
+
+# Verifies that POST requests have the correct anti-CSRF token.
+@app.before_request
+def csrf_protect():
+    if request.method == 'POST':
+        remove_expired_csrf_tokens()
+        post_token = request.form.get('_csrf_token')
+        if post_token not in session['csrf_tokens']:
+            abort(403, 'Invalid anti-CSRF token.')
+        session['csrf_tokens'].pop(post_token)
+
+
+# Generates an anti-CSRF token for a form.
+def generate_csrf_token():
+    # Create the csrf_tokens dictionary if it doesn't exist yet.
+    if 'csrf_tokens' not in session:
+        session['csrf_tokens'] = {}
+    remove_expired_csrf_tokens()
+    # If too many forms are active, prevent new ones from being created.
+    if len(session['csrf_tokens']) >= MAX_ACTIVE_FORMS:
+        abort(403, 'Too many active forms.')
+    # Generate token, then store it and its expiration value.
+    token = get_nonce()
+    session['csrf_tokens'][token] = datetime.now() + CSRF_TOKEN_TTL
+    return token
+
+
+# Make generate_csrf_token() available to templates as csrf_token().
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
+
+
+# Remove expired anti-CSRF tokens.
+def remove_expired_csrf_tokens():
+    tokens_to_remove = []
+    for token, expiration in session['csrf_tokens'].iteritems():
+        if datetime.now() > expiration:
+            tokens_to_remove.append(token)
+    for token in tokens_to_remove:
+        session['csrf_tokens'].pop(token)
 
 
 # Returns the requested Category object or aborts if it doesn't exist.
@@ -234,6 +278,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
+    app.secret_key = 'awesome_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)
