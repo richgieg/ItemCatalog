@@ -7,6 +7,10 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+    </script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+    </script>
 </head>
 <body>
     <div class="container">
@@ -14,9 +18,19 @@
             <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
 
             {% if 'username' not in session %}
-                <a href="{{ url_for('login', source = request.path) }}">Login</a>
+                <div id="signinButton">
+                    <span class="g-signin"
+                        data-scope="openid email"
+                        data-clientid="191985455830-6rgo9t6ossaspcr620aant7tq4lq4g3f.apps.googleusercontent.com"
+                        data-redirecturi="postmessage"
+                        data-accesstype="offline"
+                        data-cookiepolicy="single_host_origin"
+                        data-callback="signInCallback"
+                        data-approvalprompt="force">
+                    </span>
+                </div>
             {% else %}
-                <a href="{{ url_for('logout', source = request.path) }}">Logout</a>
+                <a id="signout" href="#">Sign Out</a>
             {% endif %}
 
             <nav>
@@ -46,5 +60,62 @@
             This is the footer
         </footer>
     </div>
+
+    {% if 'username' not in session %}
+        <script>
+            function signInCallback(authResult) {
+                if (authResult['code']) {
+                    // Send the one-time-use code to the server. If the server
+                    // responds, write a 'login successful' message to the page
+                    // and then redirect back to the main restaurants page.
+                    var fd = new FormData();
+                    fd.append('code', authResult['code']);
+                    fd.append('_csrf_token', '{{ csrf_token() }}')
+                    $.ajax({
+                        type: 'POST',
+                        url: "/gconnect",
+                        processData: false,
+                        contentType: false,
+                        data: fd,
+                        success: function(result) {
+                            if (result) {
+                                window.location.href = '{{ request.path }}';
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown + ' - ' + jqXHR.responseText);
+                        }
+                    });
+                } else if (authResult['error']) {
+                    console.log('There was an error: ' + authResult['error']);
+                } else {
+                    $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+                }
+            }
+        </script>
+    {% else %}
+        <script>
+            $('#signout').click(function() {
+                var fd = new FormData();
+                fd.append('_csrf_token', '{{ csrf_token() }}')
+                $.ajax({
+                    type: 'POST',
+                    url: "/gdisconnect",
+                    processData: false,
+                    contentType: false,
+                    data: fd,
+                    success: function(result) {
+                        if (result) {
+                            window.location.href = '{{ request.path }}';
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown + ' - ' + jqXHR.responseText);
+                    }
+                });
+            })
+        </script>
+    {% endif %}
+
 </body>
 </html>

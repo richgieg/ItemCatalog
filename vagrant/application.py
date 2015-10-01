@@ -1,22 +1,33 @@
+# Standard library imports.
+import json
 import random
 import re
 import string
 from datetime import datetime
 from datetime import timedelta
 from unicodedata import normalize
+
+# Third-party imports.
+import httplib2
+import requests
 from flask import abort
 from flask import flash
 from flask import Flask
 from flask import jsonify
+from flask import make_response
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import send_from_directory
 from flask import session
 from flask import url_for
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import FlowExchangeError
 from sqlalchemy import create_engine
 from sqlalchemy import desc
 from sqlalchemy.orm import sessionmaker
+
+# Application-specific imports.
 from catalog import Base
 from catalog import Category
 from catalog import Item
@@ -25,9 +36,8 @@ from catalog import ITEM_IMAGE_DIRECTORY
 
 # Define constants.
 SITE_TITLE = 'Music Shop'
-CSRF_TOKEN_TTL = timedelta(minutes = 15)
-MAX_ACTIVE_FORMS = 32
-
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
 
 # Set up the app.
 app = Flask(__name__)
@@ -60,49 +70,25 @@ def logged_in():
     return 'username' in session
 
 
-# Verifies that POST requests have the correct anti-CSRF token.
+# Verifies that all POST requests have the correct anti-CSRF token.
 @app.before_request
 def csrf_protect():
     if request.method == 'POST':
-        remove_expired_csrf_tokens()
         post_token = request.form.get('_csrf_token')
-        if post_token not in session['csrf_tokens']:
+        if post_token != session['csrf_token']:
             abort(403, 'Invalid anti-CSRF token.')
-        session['csrf_tokens'].pop(post_token)
 
 
-# Generates an anti-CSRF token for a form.
+# Generates an anti-CSRF token to be used for POST requests.
 def generate_csrf_token():
-    # Create the csrf_tokens dictionary if it doesn't exist yet.
-    if 'csrf_tokens' not in session:
-        session['csrf_tokens'] = {}
-    remove_expired_csrf_tokens()
-    # If too many forms are active, prevent new ones from being created.
-    if len(session['csrf_tokens']) >= MAX_ACTIVE_FORMS:
-        abort(403, 'Too many active forms.')
-    # Generate token, then store it and its expiration value.
-    token = get_nonce()
-    session['csrf_tokens'][token] = datetime.now() + CSRF_TOKEN_TTL
-    return token
+    if 'csrf_token' not in session:
+        session['csrf_token'] = get_nonce()
+    print session['csrf_token']
+    return session['csrf_token']
 
 
 # Make generate_csrf_token() available to templates as csrf_token().
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
-
-
-# Remove expired anti-CSRF tokens.
-def remove_expired_csrf_tokens():
-    tokens_to_remove = []
-    for token, expiration in session['csrf_tokens'].iteritems():
-        if datetime.now() > expiration:
-            tokens_to_remove.append(token)
-    for token in tokens_to_remove:
-        session['csrf_tokens'].pop(token)
-
-
-# Removes all anti-CSRF tokens.
-def purge_csrf_tokens():
-    session.pop('csrf_tokens', None)
 
 
 # Returns the requested Category object or aborts if it doesn't exist.
@@ -154,23 +140,135 @@ def serve_image(filename):
     return send_from_directory(ITEM_IMAGE_DIRECTORY, filename)
 
 
-@app.route('/login')
-def login():
-    session['username'] = 'dummy'
-    source = request.args.get('source')
-    if source is None:
-        return redirect(url_for('show_main'))
-    return redirect(source)
+@app.route('/gconnect', methods=['POST'])
+def gconnect():
+    code = request.form.get('code')
+    try:
+        # Upgrade the authorization code into a credentials object.
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope = '')
+        oauth_flow.redirect_uri = 'postmessage'
+        credentials = oauth_flow.step2_exchange(code)
+    except FlowExchangeError:
+        response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Check that the access token is valid.
+    access_token = credentials.access_token
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
+           % access_token)
+    h = httplib2.Http()
+    result = json.loads(h.request(url, 'GET')[1])
+
+    # If there was an error in the access token info, abort.
+    if result.get('error') is not None:
+        response = make_response(json.dumps(result.get('error')), 500)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Verify that the access token is used for the intended user.
+    gplus_id = credentials.id_token['sub']
+    if result['user_id'] != gplus_id:
+        response = make_response(
+            json.dumps("Token's user ID doesn't match given user ID."), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    if result['issued_to'] != CLIENT_ID:
+        response = make_response(
+            json.dumps("Token's client ID doesn't match app's."), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Check to see if user is already logged in.
+    stored_credentials = session.get('credentials')
+    stored_gplus_id = session.get('gplus_id')
+    if stored_credentials is not None and gplus_id == stored_gplus_id:
+        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Store the access token in the session for later use.
+    session['credentials'] = credentials.access_token
+    session['gplus_id'] = gplus_id
+
+    # Get user info
+    userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
+    params = {'access_token': credentials.access_token, 'alt': 'json'}
+    answer = requests.get(userinfo_url, params=params)
+    data = answer.json()
+    session['username'] = data['name']
+    session['picture'] = data['picture']
+    session['email'] = data['email']
+
+    # Check if user exists in database. If not, create new user.
+    user_id = get_user_id(session['email'])
+    if not user_id:
+        user_id = create_user()
+    session['user_id'] = user_id
+
+    # Inform user that they are logged in.
+    flash("you are now logged in as %s" % session['username'])
+    return "Login successful."
 
 
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    purge_csrf_tokens()
-    source = request.args.get('source')
-    if source is None:
-        return redirect(url_for('show_main'))
-    return redirect(source)
+# Helper method that clears the user session context.
+def reset_session():
+    del session['credentials']
+    del session['gplus_id']
+    del session['username']
+    del session['email']
+    del session['picture']
+    del session['csrf_token']
+
+
+@app.route('/gdisconnect', methods=['POST'])
+def gdisconnect():
+    # Only disconnect a connected user.
+    credentials = session.get('credentials')
+    if credentials is None:
+        response = make_response(json.dumps('Current user not connected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    # Execute HTTP GET request to revoke current token.
+    access_token = credentials
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    if result['status'] == '200':
+        reset_session()
+        return "Logout successul."
+    else:
+        # For whatever reason, the given token was invalid.
+        reset_session()
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.'), 400)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+
+def get_user_id(email):
+#     try:
+#         user = catalog.query(User).filter_by(email = email).one()
+#         return user.id
+#     except:
+#         return None
+    return 1
+
+
+def get_user_info(user_id):
+    user = catalog.query(User).filter_by(id = user_id).one()
+    return user
+
+
+# def create_user():
+#     user = User(name = session['username'],
+#                 email = session['email'],
+#                 picture = session['picture'])
+#     catalog.add(new_user)
+#     catalog.commit()
+#     user = catalog.query(User).filter_by(email = session['email']).one()
+#     return user.id
 
 
 @app.route('/')
@@ -294,6 +392,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'amazing_secret_key'
+    app.secret_key = 'wild_secret_key_man'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)
