@@ -64,7 +64,7 @@ steps.*
 **Connect to the VM via SSH, seed the database, then run the application:**
 ```
 vagrant ssh
-cd /vagrant/catalog
+cd /vagrant
 python seed.py
 python application.py
 ```
