@@ -134,10 +134,18 @@ def get_user_info(user_id):
     return user
 
 
-def create_user():
-    user = User(name = session['username'],
-                email = session['email'],
-                picture = session['picture'])
+def update_user_info(user_id, name, picture):
+    user = catalog.query(User).filter_by(id = user_id).one()
+    user.name = name
+    user.picture = picture
+    catalog.add(user)
+    catalog.commit()
+
+
+def create_user(name, email, picture):
+    user = User(name = name,
+                email = email,
+                picture = picture)
     catalog.add(user)
     catalog.commit()
     user = catalog.query(User).filter_by(email = session['email']).one()
@@ -230,14 +238,24 @@ def gconnect():
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
     data = answer.json()
-    session['username'] = data['name']
-    session['picture'] = data['picture']
+    # If the name field isn't blank, set the user's name to that. Otherwise,
+    # set the user's name to their email address.
+    if data['name']:
+        session['username'] = data['name']
+    else:
+        session['username'] = data['email']
     session['email'] = data['email']
+    session['picture'] = data['picture']
 
-    # Check if user exists in database. If not, create new user.
+    # Check if user exists in database and update their info just in case any
+    # of their info has changed since their last login. If the user doesn't
+    # exist, create new user.
     user_id = get_user_id(session['email'])
     if not user_id:
-        user_id = create_user()
+        user_id = create_user(session['username'], session['email'],
+                              session['picture'])
+    else:
+        update_user_info(user_id, session['username'], session['picture'])
     session['user_id'] = user_id
 
     # Inform user that they are logged in.

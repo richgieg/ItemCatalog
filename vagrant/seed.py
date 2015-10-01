@@ -11,16 +11,17 @@ from catalog import Base
 from catalog import Category
 from catalog import Item
 from catalog import ITEM_IMAGE_DIRECTORY
+from catalog import User
 
 
-# USERS = [
-#     {
-#         'id': 1,
-#         'name': asdf,
-#         'email': asdf,
-#         'picture': asdf
-#     }
-# ]
+USERS = [
+    {
+        'id': 1,
+        'name': 'musicshop999@gmail.com',
+        'email': 'musicshop999@gmail.com',
+        'picture': 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg'
+    }
+]
 
 
 CATEGORIES = [
@@ -227,6 +228,13 @@ ITEMS = [
 ]
 
 
+def seed_users():
+    for user in USERS:
+        catalog.add(User(id = user['id'], name = user['name'],
+                         email = user['email'], picture = user['picture']))
+    catalog.commit()
+
+
 def seed_categories():
     for category in CATEGORIES:
         catalog.add(Category(id = category['id'], name = category['name']))
@@ -254,5 +262,6 @@ db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
 # Seed the database.
+seed_users()
 seed_categories()
 seed_items()

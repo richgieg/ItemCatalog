@@ -28,11 +28,11 @@ def allowed_image_file(filename):
 
 
 class User(Base):
-  __tablename__ = 'users'
-  id = Column(Integer, primary_key=True)
-  name = Column(String(256), nullable=False)
-  email = Column(String(256), nullable=False)
-  picture = Column(String(256))
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(256), nullable=False)
+    email = Column(String(256), nullable=False)
+    picture = Column(String(256), nullable=False)
 
 
 class Category(Base):
