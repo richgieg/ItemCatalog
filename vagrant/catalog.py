@@ -23,25 +23,33 @@ Base = declarative_base()
 
 # Helper that checks if image file is of a legal file type.
 def allowed_image_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+    return ('.' in filename and
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS)
+
+
+class User(Base):
+  __tablename__ = 'users'
+  id = Column(Integer, primary_key=True)
+  name = Column(String(256), nullable=False)
+  email = Column(String(256), nullable=False)
+  picture = Column(String(256))
 
 
 class Category(Base):
     __tablename__ = 'categories'
-    id = Column(String(80), primary_key=True)
-    name = Column(String(80), nullable=False)
+    id = Column(String(256), primary_key=True)
+    name = Column(String(256), nullable=False)
 
 
 class Item(Base):
     __tablename__ = 'items'
-    id = Column(String(80), primary_key=True)
-    name = Column(String(80), nullable=False)
-    description = Column(String(1000))
+    id = Column(String(256), primary_key=True)
+    name = Column(String(256), nullable=False)
+    description = Column(String(1024))
     price = Column(String(10))
-    image_path = Column(String(80))
+    image_path = Column(String(256))
     created = Column(DateTime, default=func.now())
-    category_id = Column(String(80), ForeignKey('categories.id'))
+    category_id = Column(String(256), ForeignKey('categories.id'))
     category = relationship(Category)
 
     # Save uploaded image to disk and set item's image_path field.

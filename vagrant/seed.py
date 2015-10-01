@@ -13,6 +13,16 @@ from catalog import Item
 from catalog import ITEM_IMAGE_DIRECTORY
 
 
+# USERS = [
+#     {
+#         'id': 1,
+#         'name': asdf,
+#         'email': asdf,
+#         'picture': asdf
+#     }
+# ]
+
+
 CATEGORIES = [
     {
         'id': 'guitars',

@@ -32,6 +32,7 @@ from catalog import Base
 from catalog import Category
 from catalog import Item
 from catalog import ITEM_IMAGE_DIRECTORY
+from catalog import User
 
 
 # Define constants.
@@ -121,12 +122,11 @@ def reset_session():
 
 
 def get_user_id(email):
-#     try:
-#         user = catalog.query(User).filter_by(email = email).one()
-#         return user.id
-#     except:
-#         return None
-    return 1
+    try:
+        user = catalog.query(User).filter_by(email = email).one()
+        return user.id
+    except:
+        return None
 
 
 def get_user_info(user_id):
@@ -134,14 +134,14 @@ def get_user_info(user_id):
     return user
 
 
-# def create_user():
-#     user = User(name = session['username'],
-#                 email = session['email'],
-#                 picture = session['picture'])
-#     catalog.add(new_user)
-#     catalog.commit()
-#     user = catalog.query(User).filter_by(email = session['email']).one()
-#     return user.id
+def create_user():
+    user = User(name = session['username'],
+                email = session['email'],
+                picture = session['picture'])
+    catalog.add(user)
+    catalog.commit()
+    user = catalog.query(User).filter_by(email = session['email']).one()
+    return user.id
 
 
 # Filter for creating the proper title for the templates.
