@@ -304,6 +304,19 @@ def show_items(category_id):
                            items = items)
 
 
+@app.route('/my-items/')
+def show_user_items():
+    if not logged_in():
+        return redirect(url_for('show_main'))
+    items = (
+        catalog.query(Item)
+            .filter_by(user_id = session['user_id'])
+            .order_by(desc(Item.created))
+            .all()
+    )
+    return render_template('my_items.html', items = items)
+
+
 @app.route('/<category_id>/<item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)

@@ -30,6 +30,7 @@
                     </span>
                 </div>
             {% else %}
+                <a href="{{ url_for('show_user_items') }}">My Items</a><br>
                 <a id="signout" href="#">Sign Out [{{ session['username'] }}]</a>
             {% endif %}
 
