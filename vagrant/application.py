@@ -307,7 +307,8 @@ def show_items(category_id):
 @app.route('/<category_id>/<item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
-    return render_template('show_item.html', item = item)
+    return render_template('show_item.html', item = item,
+                           user_authorized = item.user_id == session['user_id'])
 
 
 @app.route('/<category_id>/new', methods = ['GET', 'POST'])
@@ -321,7 +322,8 @@ def new_item(category_id):
         item_desc = request.form['description']
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
-                    price = item_price, category_id = category.id)
+                    price = item_price, category_id = category.id,
+                    user_id = session['user_id'])
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
@@ -338,6 +340,8 @@ def edit_item(category_id, item_id):
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
     item = get_item_or_abort(item_id, category_id)
+    if item.user_id != session['user_id']:
+        abort(403)
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
@@ -359,6 +363,8 @@ def delete_item(category_id, item_id):
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
     item = get_item_or_abort(item_id, category_id)
+    if item.user_id != session['user_id']:
+        abort(403)
     if request.method == 'POST':
         item.delete_image()
         catalog.delete(item)

@@ -51,6 +51,8 @@ class Item(Base):
     created = Column(DateTime, default=func.now())
     category_id = Column(String(256), ForeignKey('categories.id'))
     category = relationship(Category)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User)
 
     # Save uploaded image to disk and set item's image_path field.
     def save_image(self, file):

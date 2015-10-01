@@ -63,7 +63,8 @@ ITEMS = [
         "id": "daddario-exl110-nickel-light-electric-guitar-strings-3-pack",
         "image_path": "/img/daddario-exl110-nickel-light-electric-guitar-strings-3-pack-20150925043619.png",
         "name": "D'Addario EXL110 Nickel Light Electric Guitar Strings 3-Pack",
-        "price": "$9.99"
+        "price": "$9.99",
+        "user_id": 1
     },
     {
         "category_id": "accessories",
@@ -71,7 +72,8 @@ ITEMS = [
         "id": "daddario-planet-waves-american-stage-instrument-cable",
         "image_path": "/img/daddario-planet-waves-american-stage-instrument-cable-20150925043735.png",
         "name": "D'Addario Planet Waves American Stage Instrument Cable",
-        "price": "$19.95"
+        "price": "$19.95",
+        "user_id": 1
     },
     {
         "category_id": "accessories",
@@ -79,7 +81,8 @@ ITEMS = [
         "id": "gator-gp-standard-100-padded-5-piece-standard-drum-bag-set",
         "image_path": "/img/gator-gp-standard-100-padded-5-piece-standard-drum-bag-set-20150925043911.png",
         "name": "Gator GP-Standard-100 Padded 5-Piece Standard Drum Bag Set",
-        "price": "$139.99"
+        "price": "$139.99",
+        "user_id": 1
     },
     {
         "category_id": "amplifiers-effects",
@@ -87,7 +90,8 @@ ITEMS = [
         "id": "ampeg-pf-500-portaflex-and-pf-115he-stack",
         "image_path": "/img/ampeg-pf-500-portaflex-and-pf-115he-stack-20150925035647.png",
         "name": "Ampeg PF-500 Portaflex and PF-115HE Stack",
-        "price": "$799.98"
+        "price": "$799.98",
+        "user_id": 1
     },
     {
         "category_id": "amplifiers-effects",
@@ -95,7 +99,8 @@ ITEMS = [
         "id": "fender-blues-junior-lacquered-tweed-15w-1x12-combo",
         "image_path": "/img/fender-blues-junior-lacquered-tweed-15w-1x12-combo-20150925035526.png",
         "name": "Fender Blues Junior Lacquered Tweed 15W 1x12 Combo",
-        "price": "$599.99"
+        "price": "$599.99",
+        "user_id": 1
     },
     {
         "category_id": "amplifiers-effects",
@@ -103,7 +108,8 @@ ITEMS = [
         "id": "marshall-2555x-silver-jubilee-100-w-tube-guitar-head",
         "image_path": "/img/marshall-2555x-silver-jubilee-100-w-tube-guitar-head-20150925035802.png",
         "name": "Marshall 2555X Silver Jubilee 100 W Tube Guitar Head",
-        "price": "$1899.99"
+        "price": "$1899.99",
+        "user_id": 1
     },
     {
         "category_id": "bass",
@@ -111,7 +117,8 @@ ITEMS = [
         "id": "ibanez-sr505-5-string-electric-bass-guitar",
         "image_path": "/img/ibanez-sr505-5-string-electric-bass-guitar-20150925035347.png",
         "name": "Ibanez SR505 5-String Electric Bass Guitar",
-        "price": "$649.99"
+        "price": "$649.99",
+        "user_id": 1
     },
     {
         "category_id": "bass",
@@ -119,7 +126,8 @@ ITEMS = [
         "id": "mtd-kingston-andrew-gouche-signature-6-string-electric-bass",
         "image_path": "/img/mtd-kingston-andrew-gouche-signature-6-string-electric-bass-20150925035145.png",
         "name": "MTD Kingston Andrew Gouche Signature 6-String Electric Bass",
-        "price": "$2149.00"
+        "price": "$2149.00",
+        "user_id": 1
     },
     {
         "category_id": "bass",
@@ -127,7 +135,8 @@ ITEMS = [
         "id": "squier-vintage-modified-jaguar-bass-special-ss-short-scale",
         "image_path": "/img/squier-vintage-modified-jaguar-bass-special-ss-short-scale-20150925042500.png",
         "name": "Squier Vintage Modified Jaguar Bass Special SS (Short Scale)",
-        "price": "$179.99"
+        "price": "$179.99",
+        "user_id": 1
     },
     {
         "category_id": "drums-percussion",
@@ -135,7 +144,8 @@ ITEMS = [
         "id": "dw-performance-series-5-piece-shell-pack",
         "image_path": "/img/dw-performance-series-5-piece-shell-pack-20150925035916.png",
         "name": "DW Performance Series 5-Piece Shell Pack",
-        "price": "$2044.97"
+        "price": "$2044.97",
+        "user_id": 1
     },
     {
         "category_id": "drums-percussion",
@@ -143,7 +153,8 @@ ITEMS = [
         "id": "pdp-double-drive-8-piece-shell-pack",
         "image_path": "/img/pdp-double-drive-8-piece-shell-pack-20150925040142.png",
         "name": "PDP Double Drive 8-Piece Shell Pack",
-        "price": "$729.99"
+        "price": "$729.99",
+        "user_id": 1
     },
     {
         "category_id": "drums-percussion",
@@ -151,7 +162,8 @@ ITEMS = [
         "id": "yamaha-stage-custom-birch-5-piece-shell-pack-with-22-bass-drum",
         "image_path": "/img/yamaha-stage-custom-birch-5-piece-shell-pack-with-22-bass-drum-20150925040011.png",
         "name": "Yamaha Stage Custom Birch 5-Piece Shell Pack with 22\" Bass Drum",
-        "price": "$649.99"
+        "price": "$649.99",
+        "user_id": 1
     },
     {
         "category_id": "guitars",
@@ -159,7 +171,8 @@ ITEMS = [
         "id": "epiphone-pr-150-acoustic-guitar",
         "image_path": "/img/epiphone-pr-150-acoustic-guitar-20150925034301.png",
         "name": "Epiphone PR-150 Acoustic Guitar",
-        "price": "$99.99"
+        "price": "$99.99",
+        "user_id": 1
     },
     {
         "category_id": "guitars",
@@ -167,7 +180,8 @@ ITEMS = [
         "id": "fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar",
         "image_path": "/img/fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar-20150925034151.png",
         "name": "Fender Limited Edition American Standard Stratocaster Rosewood Fingerboard Electric Guitar",
-        "price": "$999.99"
+        "price": "$999.99",
+        "user_id": 1
     },
     {
         "category_id": "guitars",
@@ -175,7 +189,8 @@ ITEMS = [
         "id": "gibson-2015-les-paul-traditional-electric-guitar",
         "image_path": "/img/gibson-2015-les-paul-traditional-electric-guitar-20150925040736.png",
         "name": "Gibson 2015 Les Paul Traditional Electric Guitar",
-        "price": "$2447.00"
+        "price": "$2447.00",
+        "user_id": 1
     },
     {
         "category_id": "live-sound",
@@ -183,7 +198,8 @@ ITEMS = [
         "id": "gem-sound-pxa115t-usb-15-powered-speaker-pair",
         "image_path": "/img/gem-sound-pxa115t-usb-15-powered-speaker-pair-20150925040332.png",
         "name": "Gem Sound PXA115T-USB 15\" Powered Speaker Pair",
-        "price": "$699.98"
+        "price": "$699.98",
+        "user_id": 1
     },
     {
         "category_id": "live-sound",
@@ -191,7 +207,8 @@ ITEMS = [
         "id": "qsc-kw181-powered-sub-woofer-18-1000w",
         "image_path": "/img/qsc-kw181-powered-sub-woofer-18-1000w-20150925040443.png",
         "name": "QSC KW181 Powered Sub Woofer 18\" 1000W",
-        "price": "$1399.00"
+        "price": "$1399.00",
+        "user_id": 1
     },
     {
         "category_id": "live-sound",
@@ -199,7 +216,8 @@ ITEMS = [
         "id": "yamaha-s115v-2-way-15-club-series-v-speaker-pair",
         "image_path": "/img/yamaha-s115v-2-way-15-club-series-v-speaker-pair-20150925040631.png",
         "name": "Yamaha S115V 2-Way 15\" Club Series V Speaker Pair",
-        "price": "$759.98"
+        "price": "$759.98",
+        "user_id": 1
     },
     {
         "category_id": "recording-gear",
@@ -207,7 +225,8 @@ ITEMS = [
         "id": "akai-professional-rpm500-black-studio-monitor",
         "image_path": "/img/akai-professional-rpm500-black-studio-monitor-20150925042919.png",
         "name": "Akai Professional RPM500 Black Studio Monitor",
-        "price": "$149.00"
+        "price": "$149.00",
+        "user_id": 1
     },
     {
         "category_id": "recording-gear",
@@ -215,7 +234,8 @@ ITEMS = [
         "id": "focusrite-scarlett-2i2-mxl-990-package",
         "image_path": "/img/focusrite-scarlett-2i2-mxl-990-package-20150925042749.png",
         "name": "Focusrite Scarlett 2i2 MXL 990 Package",
-        "price": "$349.99"
+        "price": "$349.99",
+        "user_id": 1
     },
     {
         "category_id": "recording-gear",
@@ -223,7 +243,8 @@ ITEMS = [
         "id": "yamaha-hs8-powered-studio-monitor",
         "image_path": "/img/yamaha-hs8-powered-studio-monitor-20150925043334.png",
         "name": "Yamaha HS8 Powered Studio Monitor",
-        "price": "$349.99"
+        "price": "$349.99",
+        "user_id": 1
     }
 ]
 
@@ -247,7 +268,8 @@ def seed_items():
             Item(id = item['id'], name = item['name'],
                  description = item['description'], price = item['price'],
                  image_path = item['image_path'],
-                 category_id = item['category_id']))
+                 category_id = item['category_id'],
+                 user_id = item['user_id']))
     catalog.commit()
 
 
