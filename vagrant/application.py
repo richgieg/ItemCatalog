@@ -70,15 +70,6 @@ def logged_in():
     return 'username' in session
 
 
-# Verifies that all POST requests have the correct anti-CSRF token.
-@app.before_request
-def csrf_protect():
-    if request.method == 'POST':
-        post_token = request.form.get('_csrf_token')
-        if post_token != session['csrf_token']:
-            abort(403, 'Invalid anti-CSRF token.')
-
-
 # Generates an anti-CSRF token to be used for POST requests.
 def generate_csrf_token():
     if 'csrf_token' not in session:
@@ -119,6 +110,40 @@ def get_item_or_abort(item_id, category_id):
         abort(404)
 
 
+# Helper method that clears the user session context.
+def reset_session():
+    del session['credentials']
+    del session['gplus_id']
+    del session['username']
+    del session['email']
+    del session['picture']
+    del session['csrf_token']
+
+
+def get_user_id(email):
+#     try:
+#         user = catalog.query(User).filter_by(email = email).one()
+#         return user.id
+#     except:
+#         return None
+    return 1
+
+
+def get_user_info(user_id):
+    user = catalog.query(User).filter_by(id = user_id).one()
+    return user
+
+
+# def create_user():
+#     user = User(name = session['username'],
+#                 email = session['email'],
+#                 picture = session['picture'])
+#     catalog.add(new_user)
+#     catalog.commit()
+#     user = catalog.query(User).filter_by(email = session['email']).one()
+#     return user.id
+
+
 # Filter for creating the proper title for the templates.
 @app.template_filter('title')
 def title_filter(page_title):
@@ -133,6 +158,15 @@ def title_filter(page_title):
 def inject_categories():
     categories = catalog.query(Category).all()
     return dict(categories = categories)
+
+
+# Verifies that all POST requests have the correct anti-CSRF token.
+@app.before_request
+def csrf_protect():
+    if request.method == 'POST':
+        post_token = request.form.get('_csrf_token')
+        if post_token != session['csrf_token']:
+            abort(403, 'Invalid anti-CSRF token.')
 
 
 @app.route('/img/<filename>')
@@ -207,18 +241,8 @@ def gconnect():
     session['user_id'] = user_id
 
     # Inform user that they are logged in.
-    flash("you are now logged in as %s" % session['username'])
+    flash("You are now logged in as %s." % session['username'])
     return "Login successful."
-
-
-# Helper method that clears the user session context.
-def reset_session():
-    del session['credentials']
-    del session['gplus_id']
-    del session['username']
-    del session['email']
-    del session['picture']
-    del session['csrf_token']
 
 
 @app.route('/gdisconnect', methods=['POST'])
@@ -237,6 +261,7 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         reset_session()
+        flash("You have been logged out.")
         return "Logout successul."
     else:
         # For whatever reason, the given token was invalid.
@@ -245,30 +270,6 @@ def gdisconnect():
             json.dumps('Failed to revoke token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
         return response
-
-
-def get_user_id(email):
-#     try:
-#         user = catalog.query(User).filter_by(email = email).one()
-#         return user.id
-#     except:
-#         return None
-    return 1
-
-
-def get_user_info(user_id):
-    user = catalog.query(User).filter_by(id = user_id).one()
-    return user
-
-
-# def create_user():
-#     user = User(name = session['username'],
-#                 email = session['email'],
-#                 picture = session['picture'])
-#     catalog.add(new_user)
-#     catalog.commit()
-#     user = catalog.query(User).filter_by(email = session['email']).one()
-#     return user.id
 
 
 @app.route('/')
