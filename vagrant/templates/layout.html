@@ -7,15 +7,26 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href='https://fonts.googleapis.com/css?family=Sacramento'
+        rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Cinzel:400,700'
+        rel='stylesheet'>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
     </script>
     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-container">
         <header>
-            <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
+            <h1 id="main-heading">
+                <a href="{{ url_for('show_main') }}">
+                    The <span id="heading-accent">Music</span> Shop
+                </a>
+            </h1>
+            <h2 id="sub-heading">
+                <a href="/">Providing tools for creative expression.</a>
+            <h2>
 
             {% if not logged_in() %}
                 <div id="signinButton">
@@ -63,7 +74,8 @@
         {% block content %}{% endblock %}
 
         <footer>
-            This is the footer
+            &copy; 2015 | Site developed by
+            <a href="http://www.richgieg.com" target="_blank">Richard Gieg</a>.
         </footer>
     </div>
 
