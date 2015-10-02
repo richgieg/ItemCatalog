@@ -378,7 +378,7 @@ def edit_item(category_id, item_id):
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
-        flash("Item updated")
+        flash("Item updated.")
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
     else:
@@ -395,7 +395,7 @@ def delete_item(category_id, item_id):
         item.delete_image()
         catalog.delete(item)
         catalog.commit()
-        flash("Item '%s' deleted" % item.name)
+        flash("Item '%s' deleted." % item.name)
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
