@@ -81,6 +81,7 @@ class Item(Base):
             'id': self.id,
             'name': self.name,
             'description': self.description,
+            'short_description': self.short_description,
             'price': self.price,
             'image_path': self.image_path,
             'category_id': self.category_id
@@ -93,6 +94,8 @@ class Item(Base):
         category_id.text = self.category_id
         description = ET.SubElement(item, 'description')
         description.text = self.description
+        short_description = ET.SubElement(item, 'short_description')
+        short_description.text = self.short_description
         item_id = ET.SubElement(item, 'id')
         item_id.text = self.id
         image_path = ET.SubElement(item, 'image_path')
