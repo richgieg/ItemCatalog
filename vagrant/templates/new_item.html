@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
-{% block title %}{{ ("New Item in %s" % category.name) | title }}{% endblock %}
+{% block title %}{{ ("New Item (%s)" % category.name) | title }}{% endblock %}
 
 {% block content %}
 
-<h2>New Item in {{ category.name }}</h2>
+<h2 class="page-title">New Item ({{ category.name }})</h2>
 
 <form action="{{ url_for('new_item', category_id = category.id) }}"
       enctype="multipart/form-data" method="POST">
