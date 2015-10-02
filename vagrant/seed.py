@@ -80,6 +80,16 @@ ITEMS = [
     },
     {
         "category_id": "accessories",
+        "description": "Reap the benefits of time-tested Fender quality\r\nGauges: 45-65-85-105. Fender Super 7250M Nickel-Plated Steel (NPS) bass strings combine the high output and dynamic sound of steel with the smooth feel of nickel. Perfect for rock, funk, and other styles of music where the bass needs to cut through. Fender has been an instrument of choice for many of the greatest musicians since 1946. Fender's popularity through the generations is a result of their design innovations and commitment to quality. These medium bass strings reflect this legacy and are worthy of the Fender name. Attention to detail and the finest materials ensure that you will get the best feeling and greatest sounding replacement strings, set after set.",
+        "id": "fender-7250m-super-bass-nickel-plated-steel-long-scale-bass-strings-medium",
+        "image_path": "/img/fender-7250m-super-bass-nickel-plated-steel-long-scale-bass-strings-medium-20151002230015.png",
+        "name": "Fender 7250M Super Bass Nickel-Plated Steel Long Scale Bass Strings - Medium",
+        "price": "$16.95",
+        "short_description": "Reap the benefits of time-tested Fender quality. Perfect for rock, funk, and other styles of music where the bass needs to cut through.",
+        "user_id": 1
+    },
+    {
+        "category_id": "accessories",
         "description": "Lightweight quality drum protection at an affordable price. The Gator GP-Standard-100 5-Piece Padded Standard Drum Bag Set features drum bags constructed of rugged 600-denier nylon. They are heavily padded and lined, providing perfect protection for your drum kit's finish during daily cartage. Comfortable carrying straps. Designed to fit 22\" x 18\" bass; 12\" x 10\" and 13\" x 11\" toms; 16\" x 16\" floor tom; and 5-1/2\" x 14\" snare.",
         "id": "gator-gp-standard-100-padded-5-piece-standard-drum-bag-set",
         "image_path": "/img/gator-gp-standard-100-padded-5-piece-standard-drum-bag-set-20150925043911.png",
@@ -119,6 +129,16 @@ ITEMS = [
         "user_id": 1
     },
     {
+        "category_id": "amplifiers-effects",
+        "description": "Among the various VOX tube amps, the AC4 has remained one of the most popular over the years, as they provide a simple and hassle free way to enjoy the rich sound of a tube-driven amp. While previous models were equipped with a 10\" speaker, this new model features a 12\" Celestion speaker that delivers even more robust sound levels. With diamond grille cloth and basket-weave vinyl exterior, it also carries on the classic looks of the VOX tradition. This is a Class A tube amp that you can enjoy whether you're practicing at home, performing live, or recording. The AC30's Top Boost sound has fascinated guitarists around the world for over fifty years. Capable of massive crunch or the clean, classic \"chime,\" this Top Boost tone is the essence of VOX's identity. The AC4C1-12 now delivers this unbeatable sound in a portable, compact body. Gain control, Bass and Treble tone controls, and a Master Volume allow any player to easily recreate this historic sound.",
+        "id": "vox-ac4c1-12-1x12-classic-limited-edition-tube-guitar-combo-amp",
+        "image_path": "/img/vox-ac4c1-12-1x12-classic-limited-edition-tube-guitar-combo-amp-20151002225012.png",
+        "name": "Vox AC4C1-12 1x12 Classic Limited Edition Tube Guitar Combo Amp",
+        "price": "$349.99",
+        "short_description": "A solid 4-watt combo amplifier with a 12\u201d speaker sure to impress with traditionally VOX sound and design.",
+        "user_id": 1
+    },
+    {
         "category_id": "bass",
         "description": "A bolt-on neck joint on the Ibanez SR505 5-string bass guitar allows superb access to the upper frets of its five-piece jatoba/bubinga neck. Only 4/5\" thick at the first fret, the 34\" scale neck provides more comfortable playing than standard 5-string necks.",
         "id": "ibanez-sr505-5-string-electric-bass-guitar",
@@ -136,6 +156,16 @@ ITEMS = [
         "name": "MTD Kingston Andrew Gouche Signature 6-String Electric Bass",
         "price": "$2149.00",
         "short_description": "Michael Tobias and legendary bassist Andrew Gouche worked together to create the MTD Kingston AG, an amazing bass with many custom features that were personally selected by Andrew himself.",
+        "user_id": 1
+    },
+    {
+        "category_id": "bass",
+        "description": "The Schecter Guitar Research Stiletto Extreme-4 is an electric bass that delivers the ideal combination of hard-hitting Schecter sound and jaw-dropping aesthetics. The Stiletto Extreme-4 bass has a lower-cutaway mahogany body, exquisite figured maple top, maple neck, and 24-jumbo-fret rosewood fingerboard that provide a uniquely awesome playing experience. And for dialing in your ideal sound, the Stiletto Extreme-4 bass's 2 Schecter bass humbucker pickups with active EQ give you maximum control. If you like your sound heavy and your electric bass awe-inspiring, snag the Schecter Stiletto Extreme-4.",
+        "id": "schecter-guitar-research-stiletto-extreme-4-bass",
+        "image_path": "/img/schecter-guitar-research-stiletto-extreme-4-bass-20151002224827.png",
+        "name": "Schecter Guitar Research Stiletto Extreme-4 Bass",
+        "price": "$399.99",
+        "short_description": "Shake the earth in style with this hot, powerful axe. The Schecter Guitar Research Stiletto Extreme-4 is an electric bass that delivers the ideal combination of hard-hitting Schecter sound and jaw-dropping aesthetics.",
         "user_id": 1
     },
     {
@@ -166,6 +196,16 @@ ITEMS = [
         "name": "PDP Double Drive 8-Piece Shell Pack",
         "price": "$729.99",
         "short_description": "Punishing double-kick configuration for drummers who want to lay down a wall of sound. Poplar shells offer a great blend of sustain and punch, and are outfitted with Remo heads as well as attractive black lugs and hoops.",
+        "user_id": 1
+    },
+    {
+        "category_id": "drums-percussion",
+        "description": "Enhanced with SuperNATURAL power, the Roland TD-11KV V-Drums V-Compact Series brings a more natural and realistic playing experience to drummers of any skill level and budget. Affordable and easy to use, this new electronic kit is perfect for a variety of applications, including practice, teaching, recording, live performance, and more.",
+        "id": "roland-td-11kv-s-v-compact-series-electronic-drum-kit",
+        "image_path": "/img/roland-td-11kv-s-v-compact-series-electronic-drum-kit-20151002225256.png",
+        "name": "Roland TD-11KV-S V-Compact Series Electronic Drum Kit",
+        "price": "$1599.99",
+        "short_description": "Compact and Affordable V-Drums, Powered by SuperNATURAL. Affordable and easy to use, this new electronic kit is perfect for a variety of applications, including practice, teaching, recording, live performance, and more.",
         "user_id": 1
     },
     {
@@ -206,6 +246,26 @@ ITEMS = [
         "name": "Gibson 2015 Les Paul Traditional Electric Guitar",
         "price": "$2447.00",
         "short_description": "The Gibson 2015 Les Paul Traditional Electric Guitar combines classic features from the '50s along with some key updates for 2015.",
+        "user_id": 1
+    },
+    {
+        "category_id": "guitars",
+        "description": "Dual humbuckers and a semi-hollow ash body provide distinctive sound and personality. Squier's Vintage Modified '72 Telecaster Thinline evokes the popular second incarnation of that era's stylishly enlightened Tele model. The original late-'60s version, with its two single-coil pickups, was updated in 1972 with two great-big, great-sounding Wide Range humbucking pickups for an even more distinctive sound and personality, and that's exactly what Squier gives you here, along with a gorgeous semi-hollow ash body and white pearloid pickguard, smooth-playing maple neck and fingerboard, six-saddle string-through-body bridge and much more.",
+        "id": "squier-vintage-modified-72-telecaster-thinline-maple-neck-electric-guitar",
+        "image_path": "/img/squier-vintage-modified-72-telecaster-thinline-maple-neck-electric-guitar-20151002224533.png",
+        "name": "Squier Vintage Modified 72 Telecaster Thinline Maple Neck Electric Guitar",
+        "price": "$299.99",
+        "short_description": "Squier's Vintage Modified '72 Telecaster Thinline evokes the popular second incarnation of that era's stylishly enlightened Tele model.",
+        "user_id": 1
+    },
+    {
+        "category_id": "live-sound",
+        "description": "The frequency range and crossover of the TRUESONIC TSSUB18 has been tuned to provide smooth, low-end sound production in the 37Hz-125Hz range. It also offers stereo inputs, an internal active crossover, and is housed in a rugged, compact, 18mm birch plywood cabinet with durable metal recessed handles. When you're ready to extend the frequency range of your live performance reinforcement, a TRUESONIC TSSUB18 subwoofer is an effective, economical, and professional choice.",
+        "id": "alto-tssub18-18-1200w-peak-active-subwoofer",
+        "image_path": "/img/alto-tssub18-18-1200w-peak-active-subwoofer-20151002225459.png",
+        "name": "Alto TSSUB18 18\" 1200W Peak Active Subwoofer",
+        "price": "$699.99",
+        "short_description": "Affordable 18\" powered subwoofer with Class D power. Exacting details were planned and provided in the TRUESONIC TSSUB18.",
         "user_id": 1
     },
     {
@@ -256,6 +316,16 @@ ITEMS = [
         "name": "Focusrite Scarlett 2i2 MXL 990 Package",
         "price": "$349.99",
         "short_description": "Recording package with interface, monitors, mic and more. We've put together this recording package to make it easy for you to get the essential components you need with just one purchase, and at a price that's much more affordable than if you purchased everything individually.",
+        "user_id": 1
+    },
+    {
+        "category_id": "recording-gear",
+        "description": "The Mackie Control Universal Pro is a control surface made to give you tactile control over all the parameters of your computer recording software. Since it employs the proprietary Mackie communication protocol, Mackie Control Pro Series controllers know just how to sweet-talk your software, and your software knows just how to respond. You get deep, intuitive control of mix and plug-in parameters, realtime visual feedback, and setup is plug and play-no MIDI mapping head games! The Universal Pro control surface, Extender Pro control surface extension and C4 Pro plug-in and virtual instrument controller all seamlessly integrate, so you can put control of all your music software parameters right at your fingertips. Simply put, Mackie Control Pro Series controllers give your music production software what it needs to feel complete.",
+        "id": "mackie-control-universal-pro",
+        "image_path": "/img/mackie-control-universal-pro-20151002225710.png",
+        "name": "Mackie Control Universal Pro",
+        "price": "$1099.99",
+        "short_description": "Premium hands-on control of your music software. Simply put, Mackie Control Pro Series controllers give your music production software what it needs to feel complete.",
         "user_id": 1
     },
     {
