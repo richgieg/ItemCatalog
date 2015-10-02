@@ -465,6 +465,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'super_secret_key_man'
+    app.secret_key = 'cool_secret_key_man'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)

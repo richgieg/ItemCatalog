@@ -11,9 +11,12 @@
         rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Cinzel:400,700'
         rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Reenie+Beanie'
+        rel='stylesheet'>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
     </script>
-    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start"
+        async defer>
     </script>
 </head>
 <body>
@@ -21,7 +24,9 @@
         <header>
             <h1 id="main-heading">
                 <a href="{{ url_for('show_main') }}">
+                    <span class="music-notes">♫</span>
                     The <span id="heading-accent">Music</span> Shop
+                    <span id="notes-two" class="music-notes">♫</span>
                 </a>
             </h1>
             <h2 id="sub-heading">
@@ -29,8 +34,8 @@
             <h2>
 
             {% if not logged_in() %}
-                <div id="signinButton">
-                    <span class="g-signin"
+                <div id="google-button">
+                    <div class="g-signin"
                         data-scope="https://www.googleapis.com/auth/userinfo.email"
                         data-clientid="191985455830-6rgo9t6ossaspcr620aant7tq4lq4g3f.apps.googleusercontent.com"
                         data-redirecturi="postmessage"
@@ -38,7 +43,7 @@
                         data-cookiepolicy="single_host_origin"
                         data-callback="signInCallback"
                         data-approvalprompt="force">
-                    </span>
+                    </div>
                 </div>
             {% else %}
                 <a href="{{ url_for('show_user_items') }}">My Items</a><br>
@@ -49,27 +54,27 @@
             {% endif %}
 
             <nav>
-                {% for category in categories %}
-                <li>
-                    <a href="{{ url_for('show_items', category_id = category.id) }}">
-                        {{ category.name }}
-                    </a>
-                </li>
-                {% endfor %}
+                <ul>
+                    {% for category in categories %}
+                    <li>
+                        <a href="{{ url_for('show_items', category_id = category.id) }}">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
             </nav>
         </header>
 
-        <div id="flash">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <ul>
+                <ul id="flash">
                 {% for message in messages %}
                     <li><strong>{{ message }}</strong></li>
                 {% endfor %}
                 </ul>
             {% endif %}
         {% endwith %}
-        </div>
 
         {% block content %}{% endblock %}
 

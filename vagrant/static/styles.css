@@ -49,14 +49,37 @@ header {
 }
 
 #heading-accent {
-    color: #B0AAD8;
+    color: #8c8c8c;
     font-weight: bold;
+}
+
+.music-notes {
+    font-size: 1.2em;
 }
 
 #sub-heading {
     display: none;
-    font-family: 'Sacramento', cursive;
+    font-family: 'Reenie Beanie', cursive;
     text-align: center;
+}
+
+#google-button {
+    width: 112px;
+    height: 40px;
+    margin-top: .2em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#flash {
+    font-family: sans-serif;
+    list-style-type: none;
+    width: 100%;
+    color: white;
+    background-color: #9c9c9c;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-bottom: 2em;
 }
 
 #item-tile-container {
@@ -66,7 +89,7 @@ header {
 .page-title {
     width: 100%;
     text-align: center;
-    color: #8E89AD;
+    color: #8c8c8c;;
     font-size: 1em;
     margin-top: -1em;
     margin-bottom: .9em;
@@ -75,7 +98,7 @@ header {
 .item-page-price {
     display: none;
     width: 100%;
-    color: #8E89AD;
+    color: #8e89ad;
 }
 
 .tile {
@@ -123,7 +146,6 @@ footer a {
     header {
         border-bottom: none;
         margin-top: 2em;
-        margin-bottom: 2em;
     }
 
     #main-heading {
@@ -138,14 +160,15 @@ footer a {
     #sub-heading {
         display: block;
         font-size: 1.7em;
-        background-color: #F1EFFF;
+        color: white;
+        background-color: #ff7575;
         padding-bottom: .1em;
     }
 
     .page-title {
         font-size: 1.3em;
         font-weight: normal;
-        border-top: 1px solid #B0AAD8;
+        border-top: 1px solid #b0aad8;
         margin-top: -.2em;
     }
 
@@ -209,11 +232,14 @@ footer a {
         text-align: right;
     }
 
+    #notes-two {
+        display: none;
+    }
+
     #sub-heading {
         font-size: 2.1em;
         text-align: right;
         padding-right: .2em;
-        border-top-left-radius: 2em;
     }
 
     #main-container {
