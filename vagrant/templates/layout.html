@@ -17,7 +17,7 @@
         <header>
             <h1><a href="{{ url_for('show_main') }}">{{ "" | title }}</a></h1>
 
-            {% if 'username' not in session %}
+            {% if not logged_in() %}
                 <div id="signinButton">
                     <span class="g-signin"
                         data-scope="https://www.googleapis.com/auth/userinfo.email"
@@ -31,6 +31,9 @@
                 </div>
             {% else %}
                 <a href="{{ url_for('show_user_items') }}">My Items</a><br>
+                {% if admin() %}
+                <a href="{{ url_for('user_management') }}">User Management</a><br>
+                {% endif %}
                 <a id="signout" href="#">Sign Out [{{ session['username'] }}]</a>
             {% endif %}
 

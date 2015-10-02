@@ -69,6 +69,8 @@ def slugify(text):
 # Aborts if user is not logged in.
 def logged_in():
     return 'username' in session
+# Make logged_in() available to templates as logged_in().
+app.jinja_env.globals['logged_in'] = logged_in
 
 
 # Generates an anti-CSRF token to be used for POST requests.
@@ -77,8 +79,6 @@ def generate_csrf_token():
         session['csrf_token'] = get_nonce()
     print session['csrf_token']
     return session['csrf_token']
-
-
 # Make generate_csrf_token() available to templates as csrf_token().
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
@@ -154,14 +154,16 @@ def create_user(name, email, picture):
     return user.id
 
 
-def is_admin(user_id):
-    return get_user_info(user_id).admin
+def admin():
+    return 'user_id' in session and get_user_info(session['user_id']).admin
+# Make admin() available to templates as admin().
+app.jinja_env.globals['admin'] = admin
 
 
 def allowed_to_change_item(item):
     return (
         'user_id' in session
-        and (item.user_id == session['user_id'] or is_admin(session['user_id']))
+        and (item.user_id == session['user_id'] or admin())
     )
 
 
@@ -187,7 +189,9 @@ def csrf_protect():
     if request.method == 'POST':
         post_token = request.form.get('_csrf_token')
         if post_token != session['csrf_token']:
-            abort(403, 'Invalid anti-CSRF token.')
+            flash("Unable to process. Session expired.")
+            return redirect(url_for('show_main'))
+            # abort(403, 'Invalid anti-CSRF token.')
 
 
 @app.route('/img/<filename>')
@@ -397,6 +401,28 @@ def delete_item(category_id, item_id):
         return render_template('delete_item.html', item = item)
 
 
+@app.route('/user-management/', methods = ['GET', 'POST'])
+def user_management():
+    if not admin():
+        return redirect(url_for('show_main'))
+    users = (
+        catalog.query(User)
+            .filter(User.id != session['user_id'])
+            .order_by(User.email)
+            .all()
+    )
+    if request.method == 'POST':
+        for user in users:
+            if user.email in request.form:
+                user.admin = request.form[user.email] == 'admin'
+                catalog.add(user)
+        catalog.commit()
+        flash("User settings have been updated.")
+        return redirect(url_for('user_management'))
+    else:
+        return render_template('user_management.html', users = users)
+
+
 # JSON endpoints.
 @app.route('/catalog.json')
 def show_all_items_json():
@@ -439,6 +465,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'wild_secret_key_man'
+    app.secret_key = 'super_secret_key_man'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)
