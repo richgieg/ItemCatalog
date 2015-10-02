@@ -119,6 +119,7 @@ def reset_session():
     del session['email']
     del session['picture']
     del session['csrf_token']
+    del session['user_id']
 
 
 def get_user_id(email):
@@ -145,11 +146,23 @@ def update_user_info(user_id, name, picture):
 def create_user(name, email, picture):
     user = User(name = name,
                 email = email,
-                picture = picture)
+                picture = picture,
+                admin = False)
     catalog.add(user)
     catalog.commit()
     user = catalog.query(User).filter_by(email = session['email']).one()
     return user.id
+
+
+def is_admin(user_id):
+    return get_user_info(user_id).admin
+
+
+def allowed_to_change_item(item):
+    return (
+        'user_id' in session
+        and (item.user_id == session['user_id'] or is_admin(session['user_id']))
+    )
 
 
 # Filter for creating the proper title for the templates.
@@ -321,7 +334,7 @@ def show_user_items():
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     return render_template('show_item.html', item = item,
-                           user_authorized = item.user_id == session['user_id'])
+                           user_authorized = allowed_to_change_item(item))
 
 
 @app.route('/<category_id>/new', methods = ['GET', 'POST'])
@@ -349,12 +362,10 @@ def new_item(category_id):
 
 @app.route('/<category_id>/<item_id>/edit', methods = ['GET', 'POST'])
 def edit_item(category_id, item_id):
-    if not logged_in():
+    item = get_item_or_abort(item_id, category_id)
+    if not allowed_to_change_item(item):
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
-    item = get_item_or_abort(item_id, category_id)
-    if item.user_id != session['user_id']:
-        abort(403)
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
@@ -372,12 +383,10 @@ def edit_item(category_id, item_id):
 
 @app.route('/<category_id>/<item_id>/delete', methods = ['GET', 'POST'])
 def delete_item(category_id, item_id):
-    if not logged_in():
+    item = get_item_or_abort(item_id, category_id)
+    if not allowed_to_change_item(item):
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
-    item = get_item_or_abort(item_id, category_id)
-    if item.user_id != session['user_id']:
-        abort(403)
     if request.method == 'POST':
         item.delete_image()
         catalog.delete(item)

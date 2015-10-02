@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from xml.etree import ElementTree as ET
+from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import create_engine
 from sqlalchemy import DateTime
@@ -33,6 +34,7 @@ class User(Base):
     name = Column(String(256), nullable=False)
     email = Column(String(256), nullable=False)
     picture = Column(String(256), nullable=False)
+    admin = Column(Boolean, nullable=False)
 
 
 class Category(Base):
