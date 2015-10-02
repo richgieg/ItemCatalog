@@ -83,6 +83,15 @@ header {
     margin-bottom: 1.5em;
 }
 
+.item-image-container {
+    height: 300px;
+}
+
+.item-image {
+    max-height: 300px;
+    margin: 0 auto;
+}
+
 .item-info {
     text-align: center;
 }
@@ -191,15 +200,6 @@ footer a {
 }
 
 @media screen and (min-width: 1100px) {
-    .item-image-container {
-        height: 250px;
-    }
-
-    .item-image {
-        max-height: 250px;
-        margin: 0 auto;
-    }
-
     #main-heading {
         font-size: 3em;
         text-align: right;
