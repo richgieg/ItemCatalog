@@ -189,7 +189,7 @@ def csrf_protect():
     if request.method == 'POST':
         post_token = request.form.get('_csrf_token')
         if post_token != session['csrf_token']:
-            flash("Unable to process. Session expired.")
+            flash("Session expired")
             return redirect(url_for('show_main'))
             # abort(403, 'Invalid anti-CSRF token.')
 
@@ -276,7 +276,7 @@ def gconnect():
     session['user_id'] = user_id
 
     # Inform user that they are logged in.
-    flash("You are now logged in as %s." % session['username'])
+    flash("You are now logged in as %s" % session['username'])
     return "Login successful."
 
 
@@ -296,7 +296,7 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         reset_session()
-        flash("You have been logged out.")
+        flash("You have been logged out")
         return "Logout successul."
     else:
         # For whatever reason, the given token was invalid.
@@ -378,7 +378,7 @@ def edit_item(category_id, item_id):
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
-        flash("Item updated.")
+        flash("Item updated")
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
     else:
@@ -395,7 +395,7 @@ def delete_item(category_id, item_id):
         item.delete_image()
         catalog.delete(item)
         catalog.commit()
-        flash("Item '%s' deleted." % item.name)
+        flash("Item '%s' deleted" % item.name)
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
@@ -417,7 +417,7 @@ def user_management():
                 user.admin = request.form[user.email] == 'admin'
                 catalog.add(user)
         catalog.commit()
-        flash("User settings have been updated.")
+        flash("User settings have been updated")
         return redirect(url_for('user_management'))
     else:
         return render_template('user_management.html', users = users)
