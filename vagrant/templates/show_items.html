@@ -6,7 +6,7 @@
 <h2>{{ category.name }}</h2>
 
 {% if 'username' in session %}
-<a href="{{ url_for('new_item', category_id = category.id) }}">New Item</a>
+<a href="{{ url_for('new_item', category_id = category.id) }}">[ New Item ]</a>
 {% endif %}
 
 {% if items %}
