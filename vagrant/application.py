@@ -328,7 +328,7 @@ def show_user_items():
     items = (
         catalog.query(Item)
             .filter_by(user_id = session['user_id'])
-            .order_by(desc(Item.created))
+            .order_by(Item.name)
             .all()
     )
     return render_template('my_items.html', items = items)
