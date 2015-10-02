@@ -47,6 +47,7 @@ class Item(Base):
     __tablename__ = 'items'
     id = Column(String(256), primary_key=True)
     name = Column(String(256), nullable=False)
+    short_description = Column(String(256))
     description = Column(String(1024))
     price = Column(String(10))
     image_path = Column(String(256))

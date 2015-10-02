@@ -65,6 +65,7 @@ ITEMS = [
         "image_path": "/img/daddario-exl110-nickel-light-electric-guitar-strings-3-pack-20150925043619.png",
         "name": "D'Addario EXL110 Nickel Light Electric Guitar Strings 3-Pack",
         "price": "$9.99",
+        "short_description": "The string you need to get the sound you're after, again and again. World-renowned as \"The Player's Choice\" among guitarists of all genres and styles.",
         "user_id": 1
     },
     {
@@ -74,6 +75,7 @@ ITEMS = [
         "image_path": "/img/daddario-planet-waves-american-stage-instrument-cable-20150925043735.png",
         "name": "D'Addario Planet Waves American Stage Instrument Cable",
         "price": "$19.95",
+        "short_description": "Whether it's the studio or the stage this cable won't let you down. American Stage cables are built to ensure that your tone comes through exactly the way you want it.",
         "user_id": 1
     },
     {
@@ -83,6 +85,7 @@ ITEMS = [
         "image_path": "/img/gator-gp-standard-100-padded-5-piece-standard-drum-bag-set-20150925043911.png",
         "name": "Gator GP-Standard-100 Padded 5-Piece Standard Drum Bag Set",
         "price": "$139.99",
+        "short_description": "Lightweight quality drum protection at an affordable price. 5-Piece Padded Standard Drum Bag Set features drum bags constructed of rugged 600-denier nylon.",
         "user_id": 1
     },
     {
@@ -92,6 +95,7 @@ ITEMS = [
         "image_path": "/img/ampeg-pf-500-portaflex-and-pf-115he-stack-20150925035647.png",
         "name": "Ampeg PF-500 Portaflex and PF-115HE Stack",
         "price": "$799.98",
+        "short_description": "A bass cab that's ready to hit the road with certified Ampeg tone and style with a kick-ass head to match.",
         "user_id": 1
     },
     {
@@ -101,6 +105,7 @@ ITEMS = [
         "image_path": "/img/fender-blues-junior-lacquered-tweed-15w-1x12-combo-20150925035526.png",
         "name": "Fender Blues Junior Lacquered Tweed 15W 1x12 Combo",
         "price": "$599.99",
+        "short_description": "The Blues Jr. NOS takes Fender's 15W gem and gives it the true vintage treatment with tweed covering and a vintage-style 12\" Jensen speaker.",
         "user_id": 1
     },
     {
@@ -110,6 +115,7 @@ ITEMS = [
         "image_path": "/img/marshall-2555x-silver-jubilee-100-w-tube-guitar-head-20150925035802.png",
         "name": "Marshall 2555X Silver Jubilee 100 W Tube Guitar Head",
         "price": "$1899.99",
+        "short_description": "After much customer demand, Marshall is offering the most popular product from its Silver Jubilee range.",
         "user_id": 1
     },
     {
@@ -119,6 +125,7 @@ ITEMS = [
         "image_path": "/img/ibanez-sr505-5-string-electric-bass-guitar-20150925035347.png",
         "name": "Ibanez SR505 5-String Electric Bass Guitar",
         "price": "$649.99",
+        "short_description": "A bolt-on neck joint on the Ibanez SR505 5-string bass guitar allows superb access to the upper frets of its five-piece jatoba/bubinga neck.",
         "user_id": 1
     },
     {
@@ -128,6 +135,7 @@ ITEMS = [
         "image_path": "/img/mtd-kingston-andrew-gouche-signature-6-string-electric-bass-20150925035145.png",
         "name": "MTD Kingston Andrew Gouche Signature 6-String Electric Bass",
         "price": "$2149.00",
+        "short_description": "Michael Tobias and legendary bassist Andrew Gouche worked together to create the MTD Kingston AG, an amazing bass with many custom features that were personally selected by Andrew himself.",
         "user_id": 1
     },
     {
@@ -137,6 +145,7 @@ ITEMS = [
         "image_path": "/img/squier-vintage-modified-jaguar-bass-special-ss-short-scale-20150925042500.png",
         "name": "Squier Vintage Modified Jaguar Bass Special SS (Short Scale)",
         "price": "$179.99",
+        "short_description": "An affordable short-scale Jaguar Bass with classic Fender style!",
         "user_id": 1
     },
     {
@@ -146,6 +155,7 @@ ITEMS = [
         "image_path": "/img/dw-performance-series-5-piece-shell-pack-20150925035916.png",
         "name": "DW Performance Series 5-Piece Shell Pack",
         "price": "$2044.97",
+        "short_description": "No detail has been overlooked. No corners cut. Its look and sound are custom-inspired. Its value difficult to match.",
         "user_id": 1
     },
     {
@@ -155,6 +165,7 @@ ITEMS = [
         "image_path": "/img/pdp-double-drive-8-piece-shell-pack-20150925040142.png",
         "name": "PDP Double Drive 8-Piece Shell Pack",
         "price": "$729.99",
+        "short_description": "Punishing double-kick configuration for drummers who want to lay down a wall of sound. Poplar shells offer a great blend of sustain and punch, and are outfitted with Remo heads as well as attractive black lugs and hoops.",
         "user_id": 1
     },
     {
@@ -164,6 +175,7 @@ ITEMS = [
         "image_path": "/img/yamaha-stage-custom-birch-5-piece-shell-pack-with-22-bass-drum-20150925040011.png",
         "name": "Yamaha Stage Custom Birch 5-Piece Shell Pack with 22\" Bass Drum",
         "price": "$649.99",
+        "short_description": "Among Yamaha's most affordable 100% birch drum shell packs. This Yamaha Stage Custom birch drum shell pack is also great for the beginner or the working professional.",
         "user_id": 1
     },
     {
@@ -173,6 +185,7 @@ ITEMS = [
         "image_path": "/img/epiphone-pr-150-acoustic-guitar-20150925034301.png",
         "name": "Epiphone PR-150 Acoustic Guitar",
         "price": "$99.99",
+        "short_description": "The easy-to-afford dreadnought Epiphone PR-150 is the perfect instrument to get started on.",
         "user_id": 1
     },
     {
@@ -182,6 +195,7 @@ ITEMS = [
         "image_path": "/img/fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar-20150925034151.png",
         "name": "Fender Limited Edition American Standard Stratocaster Rosewood Fingerboard Electric Guitar",
         "price": "$999.99",
+        "short_description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster\u2014Vintage White with a tortoiseshell pickguard and rosewood fingerboard.",
         "user_id": 1
     },
     {
@@ -191,6 +205,7 @@ ITEMS = [
         "image_path": "/img/gibson-2015-les-paul-traditional-electric-guitar-20150925040736.png",
         "name": "Gibson 2015 Les Paul Traditional Electric Guitar",
         "price": "$2447.00",
+        "short_description": "The Gibson 2015 Les Paul Traditional Electric Guitar combines classic features from the '50s along with some key updates for 2015.",
         "user_id": 1
     },
     {
@@ -200,6 +215,7 @@ ITEMS = [
         "image_path": "/img/gem-sound-pxa115t-usb-15-powered-speaker-pair-20150925040332.png",
         "name": "Gem Sound PXA115T-USB 15\" Powered Speaker Pair",
         "price": "$699.98",
+        "short_description": "Gem Sound's PXA Series powered speakers provide an inexpensive sound reinforcement solution that satisfies all of the chief requirements for a powered speaker.",
         "user_id": 1
     },
     {
@@ -209,6 +225,7 @@ ITEMS = [
         "image_path": "/img/qsc-kw181-powered-sub-woofer-18-1000w-20150925040443.png",
         "name": "QSC KW181 Powered Sub Woofer 18\" 1000W",
         "price": "$1399.00",
+        "short_description": "An 18\" sub with 1000 Class D continuous output, and extended bass in a lighter birch enclosure.",
         "user_id": 1
     },
     {
@@ -218,6 +235,7 @@ ITEMS = [
         "image_path": "/img/yamaha-s115v-2-way-15-club-series-v-speaker-pair-20150925040631.png",
         "name": "Yamaha S115V 2-Way 15\" Club Series V Speaker Pair",
         "price": "$759.98",
+        "short_description": "These Yamaha S115V Club Series V Speakers are all about big house sound.",
         "user_id": 1
     },
     {
@@ -227,6 +245,7 @@ ITEMS = [
         "image_path": "/img/akai-professional-rpm500-black-studio-monitor-20150925042919.png",
         "name": "Akai Professional RPM500 Black Studio Monitor",
         "price": "$149.00",
+        "short_description": "Distinctive sound with a stylish look. Engineered for meticulous reproduction of even the most complex modern music, Akai Professional\u2019s RPM500 studio monitors easily handle layer after layer of sound, providing critical detail and the tools needed to mix with confidence.",
         "user_id": 1
     },
     {
@@ -236,6 +255,7 @@ ITEMS = [
         "image_path": "/img/focusrite-scarlett-2i2-mxl-990-package-20150925042749.png",
         "name": "Focusrite Scarlett 2i2 MXL 990 Package",
         "price": "$349.99",
+        "short_description": "Recording package with interface, monitors, mic and more. We've put together this recording package to make it easy for you to get the essential components you need with just one purchase, and at a price that's much more affordable than if you purchased everything individually.",
         "user_id": 1
     },
     {
@@ -245,6 +265,7 @@ ITEMS = [
         "image_path": "/img/yamaha-hs8-powered-studio-monitor-20150925043334.png",
         "name": "Yamaha HS8 Powered Studio Monitor",
         "price": "$349.99",
+        "short_description": "Two-way bass-reflex bi-amplified nearfield studio monitor with 8\" cone. The Yamaha HS8 is a 2-way bass-reflex bi-amplified nearfield studio monitor with 8\" cone woofer and 1\" dome tweeter.",
         "user_id": 1
     }
 ]
@@ -268,6 +289,7 @@ def seed_items():
     for item in ITEMS:
         catalog.add(
             Item(id = item['id'], name = item['name'],
+                 short_description = item['short_description'],
                  description = item['description'], price = item['price'],
                  image_path = item['image_path'],
                  category_id = item['category_id'],
