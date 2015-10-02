@@ -48,6 +48,7 @@
             </nav>
         </header>
 
+        <div id="flash">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul>
@@ -57,6 +58,7 @@
                 </ul>
             {% endif %}
         {% endwith %}
+        </div>
 
         {% block content %}{% endblock %}
 
@@ -120,6 +122,14 @@
             })
         </script>
     {% endif %}
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#flash').fadeOut(2000);
+            }, 2000)
+        })
+    </script>
 
 </body>
 </html>
