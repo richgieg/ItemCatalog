@@ -80,16 +80,14 @@ header {
 
 .tile {
     width: 100%;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 1em;
     margin-bottom: 1.5em;
-}
-
-.item-image-container {
-    height: 300px;
 }
 
 .item-image {
     max-height: 300px;
-    margin: 0 auto;
+    margin: 1em auto;
 }
 
 .item-info {
@@ -153,6 +151,7 @@ footer a {
 
     .tile {
         width: 44%;
+        border-bottom: none;
         margin-left: 4%;
         margin-bottom: 2em;
     }
@@ -162,6 +161,11 @@ footer a {
     .page-title {
         font-size: 1.9em;
         margin-bottom: .3em;
+    }
+
+    .item-image-container {
+        height: 300px;
+        margin-bottom: 1em;
     }
 
     .item-title {
