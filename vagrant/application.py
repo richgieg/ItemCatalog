@@ -69,6 +69,7 @@ def slugify(text):
 # Aborts if user is not logged in.
 def logged_in():
     return 'username' in session
+
 # Make logged_in() available to templates as logged_in().
 app.jinja_env.globals['logged_in'] = logged_in
 
@@ -79,6 +80,7 @@ def generate_csrf_token():
         session['csrf_token'] = get_nonce()
     print session['csrf_token']
     return session['csrf_token']
+
 # Make generate_csrf_token() available to templates as csrf_token().
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
@@ -156,6 +158,7 @@ def create_user(name, email, picture):
 
 def admin():
     return 'user_id' in session and get_user_info(session['user_id']).admin
+
 # Make admin() available to templates as admin().
 app.jinja_env.globals['admin'] = admin
 
@@ -188,10 +191,10 @@ def inject_categories():
 def csrf_protect():
     if request.method == 'POST':
         post_token = request.form.get('_csrf_token')
-        if post_token != session['csrf_token']:
+        session_token = session.get('csrf_token')
+        if post_token is None or post_token != session_token:
             flash("Session expired")
             return redirect(url_for('show_main'))
-            # abort(403, 'Invalid anti-CSRF token.')
 
 
 @app.route('/img/<filename>')
@@ -276,7 +279,7 @@ def gconnect():
     session['user_id'] = user_id
 
     # Inform user that they are logged in.
-    flash("You are now logged in as %s" % session['username'])
+    flash("You have signed in as %s" % session['username'])
     return "Login successful."
 
 
@@ -296,7 +299,7 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         reset_session()
-        flash("You have been logged out")
+        flash("You have signed out")
         return "Logout successul."
     else:
         # For whatever reason, the given token was invalid.
@@ -350,14 +353,16 @@ def new_item(category_id):
         item_name = request.form['name']
         item_id = slugify(item_name)
         item_desc = request.form['description']
+        item_short_desc = request.form['short_description']
         item_price = request.form['price']
         item = Item(id = item_id, name = item_name, description = item_desc,
+                    short_description = item_short_desc,
                     price = item_price, category_id = category.id,
                     user_id = session['user_id'])
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
-        flash("Item created")
+        flash("Item created: %s" % item.name)
         return redirect(url_for('show_item', category_id = category.id,
                                 item_id = item_id))
     else:
@@ -373,12 +378,13 @@ def edit_item(category_id, item_id):
     if request.method == 'POST':
         item.name = request.form['name']
         item.description = request.form['description']
+        item.short_description = request.form['short_description']
         item.price = request.form['price']
         item.category_id = request.form['category_id']
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
-        flash("Item updated")
+        flash("Item updated: %s" % item.name)
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
     else:
@@ -395,7 +401,7 @@ def delete_item(category_id, item_id):
         item.delete_image()
         catalog.delete(item)
         catalog.commit()
-        flash("Item '%s' deleted" % item.name)
+        flash("Item deleted: %s" % item.name)
         return redirect(url_for('show_items', category_id = item.category_id))
     else:
         return render_template('delete_item.html', item = item)
@@ -465,6 +471,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'cool_secret_key_man'
+    app.secret_key = 'horrible_secret_key_man'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)

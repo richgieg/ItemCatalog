@@ -21,19 +21,18 @@
 </head>
 <body>
     <div class="container" id="main-container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul id="flash">
+                {% for message in messages %}
+                    <li><strong>{{ message }}</strong></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
         <header>
-            <h1 id="main-heading">
-                <a href="{{ url_for('show_main') }}">
-                    <span class="music-notes">♫</span>
-                    The <span id="heading-accent">Music</span> Shop
-                    <span id="notes-two" class="music-notes">♫</span>
-                </a>
-            </h1>
-            <h2 id="sub-heading">
-                <a href="/">Providing tools for creative expression.</a>
-            <h2>
-
-            {% if not logged_in() %}
+            <div id="signin-container">
+                {% if not logged_in() %}
                 <div id="google-button">
                     <div class="g-signin"
                         data-scope="https://www.googleapis.com/auth/userinfo.email"
@@ -45,16 +44,33 @@
                         data-approvalprompt="force">
                     </div>
                 </div>
-            {% else %}
-                <a href="{{ url_for('show_user_items') }}">My Items</a><br>
-                {% if admin() %}
-                <a href="{{ url_for('user_management') }}">User Management</a><br>
+                {% else %}
+                <a id="signout-button" href="#">Sign Out [{{ session['username'] }}]</a>
                 {% endif %}
-                <a id="signout" href="#">Sign Out [{{ session['username'] }}]</a>
-            {% endif %}
+            </div>
+            <h1 id="main-heading">
+                <a href="{{ url_for('show_main') }}">
+                    <span class="music-notes">♫</span>
+                    The <span id="heading-accent">Music</span> Shop
+                    <span id="notes-two" class="music-notes">♫</span>
+                </a>
+            </h1>
+            <h2 id="sub-heading">
+                <a href="/">Providing tools for creative expression.</a>
+            <h2>
 
             <nav>
                 <ul>
+                    {% if logged_in() %}
+                    <li>
+                        <a href="{{ url_for('show_user_items') }}">My Items</a>
+                    </li>
+                        {% if admin() %}
+                        <li>
+                            <a href="{{ url_for('user_management') }}">User Management</a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
                     {% for category in categories %}
                     <li>
                         <a href="{{ url_for('show_items', category_id = category.id) }}">
@@ -65,16 +81,6 @@
                 </ul>
             </nav>
         </header>
-
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul id="flash">
-                {% for message in messages %}
-                    <li><strong>{{ message }}</strong></li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
 
         {% block content %}{% endblock %}
 
@@ -118,7 +124,7 @@
         </script>
     {% else %}
         <script>
-            $('#signout').click(function() {
+            $('#signout-button').click(function() {
                 var fd = new FormData();
                 fd.append('_csrf_token', '{{ csrf_token() }}')
                 $.ajax({
