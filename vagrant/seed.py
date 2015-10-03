@@ -230,12 +230,12 @@ ITEMS = [
     },
     {
         "category_id": "guitars",
-        "description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster\u2014Vintage White with a tortoiseshell pickguard and rosewood fingerboard. All the acclaimed features, sound and style of the archetypal American Standard Stratocaster, now in an even more beautiful finish.",
+        "description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster 2014 Vintage White with a tortoiseshell pickguard and rosewood fingerboard. All the acclaimed features, sound and style of the archetypal American Standard Stratocaster, now in an even more beautiful finish.",
         "id": "fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar",
         "image_path": "/img/fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar-20150925034151.png",
         "name": "Fender Limited Edition American Standard Stratocaster Rosewood Fingerboard Electric Guitar",
         "price": "$999.99",
-        "short_description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster\u2014Vintage White with a tortoiseshell pickguard and rosewood fingerboard.",
+        "short_description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster 2014 Vintage White with a tortoiseshell pickguard and rosewood fingerboard.",
         "user_id": 1
     },
     {
