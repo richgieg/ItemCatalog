@@ -60,19 +60,20 @@
             <h2>
 
             <nav>
-                <ul>
+                <ul id="nav-list">
                     {% if logged_in() %}
-                    <li>
+                    <li class="nav-link nav-user">
                         <a href="{{ url_for('show_user_items') }}">My Items</a>
                     </li>
                         {% if admin() %}
-                        <li>
+                        <li class="nav-link nav-user">
                             <a href="{{ url_for('user_management') }}">User Management</a>
                         </li>
                         {% endif %}
+                    <br>
                     {% endif %}
                     {% for category in categories %}
-                    <li>
+                    <li class="nav-link">
                         <a href="{{ url_for('show_items', category_id = category.id) }}">
                             {{ category.name }}
                         </a>
