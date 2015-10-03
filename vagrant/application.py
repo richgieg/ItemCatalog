@@ -384,7 +384,7 @@ def edit_item(category_id, item_id):
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
-        flash("Item updated: %s" % item.name)
+        flash("Item saved: %s" % item.name)
         return redirect(url_for('show_item', category_id = item.category_id,
                                 item_id = item.id))
     else:
@@ -423,7 +423,7 @@ def user_management():
                 user.admin = request.form[user.email] == 'admin'
                 catalog.add(user)
         catalog.commit()
-        flash("User settings have been updated")
+        flash("User settings have been saved")
         return redirect(url_for('user_management'))
     else:
         return render_template('user_management.html', users = users)
