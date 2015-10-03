@@ -135,7 +135,7 @@ ITEMS = [
         "image_path": "/img/vox-ac4c1-12-1x12-classic-limited-edition-tube-guitar-combo-amp-20151002225012.png",
         "name": "Vox AC4C1-12 1x12 Classic Limited Edition Tube Guitar Combo Amp",
         "price": "$349.99",
-        "short_description": "A solid 4-watt combo amplifier with a 12\u201d speaker sure to impress with traditionally VOX sound and design.",
+        "short_description": "A solid 4-watt combo amplifier with a 12\" speaker sure to impress with traditionally VOX sound and design.",
         "user_id": 1
     },
     {
@@ -230,12 +230,12 @@ ITEMS = [
     },
     {
         "category_id": "guitars",
-        "description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster 2014 Vintage White with a tortoiseshell pickguard and rosewood fingerboard. All the acclaimed features, sound and style of the archetypal American Standard Stratocaster, now in an even more beautiful finish.",
+        "description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster Vintage White with a tortoiseshell pickguard and rosewood fingerboard. All the acclaimed features, sound and style of the archetypal American Standard Stratocaster, now in an even more beautiful finish.",
         "id": "fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar",
         "image_path": "/img/fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar-20150925034151.png",
         "name": "Fender Limited Edition American Standard Stratocaster Rosewood Fingerboard Electric Guitar",
         "price": "$999.99",
-        "short_description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster 2014 Vintage White with a tortoiseshell pickguard and rosewood fingerboard.",
+        "short_description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster Vintage White with a tortoiseshell pickguard and rosewood fingerboard.",
         "user_id": 1
     },
     {
@@ -300,12 +300,12 @@ ITEMS = [
     },
     {
         "category_id": "recording-gear",
-        "description": "Distinctive sound with a stylish look. Engineered for meticulous reproduction of even the most complex modern music, Akai Professional\u2019s RPM500 studio monitors easily handle layer after layer of sound, providing critical detail and the tools needed to mix with confidence. The fast Kevlar cone provides lucid low-end agility, reproducing intricate bass patterns with ease. It\u2019s authoritative sound for the craft of music production, only from Akai Professional.",
+        "description": "Distinctive sound with a stylish look. Engineered for meticulous reproduction of even the most complex modern music, Akai Professional's RPM500 studio monitors easily handle layer after layer of sound, providing critical detail and the tools needed to mix with confidence. The fast Kevlar cone provides lucid low-end agility, reproducing intricate bass patterns with ease. It's authoritative sound for the craft of music production, only from Akai Professional.",
         "id": "akai-professional-rpm500-black-studio-monitor",
         "image_path": "/img/akai-professional-rpm500-black-studio-monitor-20150925042919.png",
         "name": "Akai Professional RPM500 Black Studio Monitor",
         "price": "$149.00",
-        "short_description": "Distinctive sound with a stylish look. Engineered for meticulous reproduction of even the most complex modern music, Akai Professional\u2019s RPM500 studio monitors easily handle layer after layer of sound, providing critical detail and the tools needed to mix with confidence.",
+        "short_description": "Distinctive sound with a stylish look. Engineered for meticulous reproduction of even the most complex modern music, Akai Professional's RPM500 studio monitors easily handle layer after layer of sound, providing critical detail and the tools needed to mix with confidence.",
         "user_id": 1
     },
     {
