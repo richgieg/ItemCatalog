@@ -20,7 +20,7 @@
     </select><br><br>
     {% endfor %}
 
-    <input type="submit" value="Save">
+    <input class="button" type="submit" value="Save">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 </form>
 {% else %}

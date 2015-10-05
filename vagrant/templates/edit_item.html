@@ -29,8 +29,8 @@
     <img class="item-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br>
     {% endif %}
     <input type="file" name="image_file"><br><br>
-    <input type="submit" value="Save">
-    <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
+    <input class="button" type="submit" value="Save">
+    <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 </form>
 

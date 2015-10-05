@@ -186,6 +186,10 @@ header {
 }
 
 .button {
+    height: 1.5em;
+    line-height: 1.5em;
+    vertical-align: middle;
+    box-sizing: content-box;
     display: inline-block;
     width: 6em;
     text-align: center;

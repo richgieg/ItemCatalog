@@ -17,8 +17,8 @@
     <input type="text" size="10" name="price"><br><br>
     Image:<br>
     <input type="file" name="image_file"><br><br>
-    <input type="submit" value="Save">
-    <a href="{{ url_for('show_items', category_id = category.id) }}">Cancel</a>
+    <input class="button" type="submit" value="Save">
+    <a class="button" href="{{ url_for('show_items', category_id = category.id) }}">Cancel</a>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 </form>
 
