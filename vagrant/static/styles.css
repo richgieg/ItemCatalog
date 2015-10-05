@@ -1,3 +1,4 @@
+/* General styles */
 body {
     font-size: 16px;
     line-height: 1.4;
@@ -23,7 +24,6 @@ a {
 
 img {
     display: block;
-    /*width: 100%;*/
     max-width: 100%;
 }
 
@@ -34,6 +34,8 @@ img {
     flex-wrap: wrap;
 }
 
+
+/* Flash message */
 #flash {
     font-family: sans-serif;
     list-style-type: none;
@@ -46,6 +48,8 @@ img {
     padding-bottom: .5em;
 }
 
+
+/* Header */
 header {
     width: 100%;
     font-family: 'Cinzel', serif;
@@ -90,28 +94,29 @@ header {
     text-align: center;
 }
 
+
+/* Navigation */
 #nav-list {
     list-style-type: none;
     padding: 0;
 }
 
-#item-tile-container {
-    width: 100%;
-}
 
+/* Page title */
 .page-title {
     width: 100%;
     text-align: center;
     color: #8c8c8c;;
     font-size: 1em;
+    padding: 0 1.5em;
     margin-top: -1em;
     margin-bottom: .9em;
 }
 
-.item-page-price {
-    display: none;
+
+/* Item tiles */
+#item-tile-container {
     width: 100%;
-    color: #8e89ad;
 }
 
 .tile {
@@ -144,6 +149,37 @@ header {
     text-align: justify;
 }
 
+
+/* Item pages */
+#item-page-container {
+    width: 100%;
+    padding: 0 1.5em 1.5em;
+}
+
+.item-page-price {
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 1em;
+}
+
+.item-page-description {
+    width: 100%;
+    text-align: justify;
+    padding-bottom: 2em;
+}
+
+.item-page-image-container {
+    width: 100%;
+}
+
+.item-page-image {
+    margin: 0 auto;
+}
+
+
+/* Footer */
 footer {
     width: 100%;
     text-align: center;
@@ -155,6 +191,8 @@ footer > a {
     text-decoration: underline;
 }
 
+
+/* Breakpoint for small devices in landscape mode */
 @media screen and (min-width: 450px) {
     header {
         border-bottom: none;
@@ -209,11 +247,17 @@ footer > a {
         transform: translateY(-50%);
     }
 
+    .item-page-container {
+        padding-bottom: 0;
+    }
+
     footer {
         margin-top: 3em;
     }
 }
 
+
+/* Breakpoint for tablets in portrait mode */
 @media screen and (min-width: 650px) {
     #flash {
         padding-top: 1em;
@@ -292,11 +336,17 @@ footer > a {
         margin-top: 1em;
     }
 
+    .item-page-description {
+        font-size: 1.2em;
+    }
+
     footer {
         font-size: .8em;
     }
 }
 
+
+/* Breakpoint for tablets in landscape mode */
 @media screen and (min-width: 1000px) {
     #main-heading {
         font-size: 2.3em;
@@ -310,8 +360,24 @@ footer > a {
         width: 28%;
         margin-bottom: 2em;
     }
+
+    .item-page-price {
+        margin-bottom: 2em;
+    }
+
+    .item-page-description {
+        width: 48%;
+        text-align: justify;
+        margin-right: 2%;
+    }
+
+    .item-page-image-container {
+        width: 50%;
+    }
 }
 
+
+/* Breakpoint for desktop screens */
 @media screen and (min-width: 1250px) {
     .item-title {
         font-size: 1.6em;
@@ -326,8 +392,18 @@ footer > a {
     .item-description {
         font-size: 1.2em;
     }
+
+    .item-page-price {
+        font-size: 1.2em;
+    }
+
+    .item-page-description {
+        font-size: 1.4em;
+    }
 }
 
+
+/* Breakpoint for large desktop screens */
 @media screen and (min-width: 1700px) {
     #google-button {
         margin-right: 0;
@@ -358,14 +434,8 @@ footer > a {
         text-align: left;
         font-size: 1.8em;
         line-height: 1em;
+        padding: 0;
         margin-bottom: 1em;
-    }
-
-    .item-page-price {
-        display: block;
-        text-align: right;
-        font-size: 1.2em;
-        margin-top: -3.1em;
     }
 
     .tile {
