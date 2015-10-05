@@ -92,7 +92,7 @@
         </footer>
     </div>
 
-    {% if 'username' not in session %}
+    {% if not logged_in() %}
         <script>
             function signInCallback(authResult) {
                 if (authResult['code']) {

@@ -5,8 +5,10 @@
 
 <h2 class="page-title">{{ category.name }}</h2>
 
-{% if 'username' in session %}
-<a href="{{ url_for('new_item', category_id = category.id) }}">[ New Item ]</a>
+{% if logged_in() %}
+<div class="item-action-container">
+    <a class="button" href="{{ url_for('new_item', category_id = category.id) }}">New Item</a>
+</div>
 {% endif %}
 
 {% if items %}

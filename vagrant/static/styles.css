@@ -179,6 +179,29 @@ header {
 }
 
 
+/* Button-related classes */
+.item-action-container {
+    width: 100%;
+    text-align: center;
+}
+
+.button {
+    display: inline-block;
+    width: 6em;
+    text-align: center;
+    font-family: sans-serif;
+    color: white;
+    background-color: #ff7575;
+    padding: .3em;
+    border: 1px solid white;
+    margin: 0 auto 2em;
+}
+
+.button:hover {
+    border: 1px solid black;
+}
+
+
 /* Footer */
 footer {
     width: 100%;
@@ -400,6 +423,10 @@ footer > a {
     .item-page-description {
         font-size: 1.4em;
     }
+
+    .button {
+        font-size: 1.2em;
+    }
 }
 
 
@@ -444,6 +471,11 @@ footer > a {
 
     .tile:nth-child(4n+1) {
         margin-left: 0;
+    }
+
+    .item-action-container {
+        text-align: right;
+        margin-top: -3.3em;
     }
 
     footer {
