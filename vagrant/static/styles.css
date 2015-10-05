@@ -151,7 +151,7 @@ footer {
     margin-bottom: 1em;
 }
 
-footer a {
+footer > a {
     text-decoration: underline;
 }
 
@@ -188,7 +188,29 @@ footer a {
         width: 44%;
         border-bottom: none;
         margin-left: 4%;
-        margin-bottom: 2em;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .item-image-container {
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        height: 200px;
+        margin-bottom: .2em;
+    }
+
+    .item-image {
+        position: relative;
+        max-width: 80%;
+        max-height: 170px;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    footer {
+        margin-top: 3em;
     }
 }
 
@@ -214,7 +236,6 @@ footer a {
         text-align: center;
         color: crimson;
         background-color: cornsilk;
-
         padding-bottom: .3em;
         border: 1px solid lightgray;
         margin-bottom: 1em;
@@ -243,8 +264,7 @@ footer a {
         margin-bottom: .3em;
     }
 
-    .item-image-container {
-        height: 300px;
+    .tile {
         margin-bottom: 1em;
     }
 
@@ -253,6 +273,14 @@ footer a {
         font-weight: normal;
         padding-bottom: .3em;
         border-bottom: 1px solid black;
+    }
+
+    .item-image-container {
+        height: 280px;
+    }
+
+    .item-image {
+        max-height: 250px;
     }
 
     .item-price {
@@ -269,7 +297,7 @@ footer a {
     }
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (min-width: 1000px) {
     #main-heading {
         font-size: 2.3em;
     }
@@ -280,10 +308,27 @@ footer a {
 
     .tile {
         width: 28%;
+        margin-bottom: 2em;
     }
 }
 
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1250px) {
+    .item-title {
+        font-size: 1.6em;
+        padding-bottom: .3em;
+        margin-bottom: .2em;
+    }
+
+    .item-price {
+        font-size: 1em;
+    }
+
+    .item-description {
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (min-width: 1700px) {
     #google-button {
         margin-right: 0;
     }
@@ -329,20 +374,6 @@ footer a {
 
     .tile:nth-child(4n+1) {
         margin-left: 0;
-    }
-
-    .item-title {
-        font-size: 1.6em;
-        padding-bottom: .3em;
-        margin-bottom: .2em;
-    }
-
-    .item-price {
-        font-size: 1em;
-    }
-
-    .item-description {
-        font-size: 1.2em;
     }
 
     footer {
