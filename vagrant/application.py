@@ -66,14 +66,6 @@ def slugify(text):
     return unicode(delim.join(result))
 
 
-# Aborts if user is not logged in.
-def logged_in():
-    return 'username' in session
-
-# Make logged_in() available to templates as logged_in().
-app.jinja_env.globals['logged_in'] = logged_in
-
-
 # Generates an anti-CSRF token to be used for POST requests.
 def generate_csrf_token():
     if 'csrf_token' not in session:
@@ -149,24 +141,44 @@ def create_user(name, email, picture):
     user = User(name = name,
                 email = email,
                 picture = picture,
-                admin = False)
+                group = 'readonly')
     catalog.add(user)
     catalog.commit()
     user = catalog.query(User).filter_by(email = session['email']).one()
     return user.id
 
 
-def admin():
-    return 'user_id' in session and get_user_info(session['user_id']).admin
+def logged_in():
+    return 'username' in session
 
-# Make admin() available to templates as admin().
-app.jinja_env.globals['admin'] = admin
+# Make logged_in() available to templates.
+app.jinja_env.globals['logged_in'] = logged_in
+
+
+def standard_rights():
+    if not logged_in():
+        return False
+    group = get_user_info(session['user_id']).group
+    return group == 'admin' or group =='standard'
+
+# Make standard_rights() available to templates.
+app.jinja_env.globals['standard_rights'] = standard_rights
+
+
+def admin_rights():
+    if not logged_in():
+        return False
+    group = get_user_info(session['user_id']).group
+    return group == 'admin'
+
+# Make admin_rights() available to templates.
+app.jinja_env.globals['admin_rights'] = admin_rights
 
 
 def allowed_to_change_item(item):
     return (
-        'user_id' in session
-        and (item.user_id == session['user_id'] or admin())
+        admin_rights()
+        or (standard_rights() and item.user_id == session['user_id'])
     )
 
 
@@ -280,6 +292,9 @@ def gconnect():
 
     # Inform user that they are logged in.
     flash("You have signed in as %s" % session['username'])
+    if get_user_info(session['user_id']).group == 'readonly':
+        flash("Access is restricted to read-only until account is approved by "
+              "administrators")
     return "Login successful."
 
 
@@ -326,7 +341,7 @@ def show_items(category_id):
 
 @app.route('/my-items/')
 def show_user_items():
-    if not logged_in():
+    if not standard_rights():
         return redirect(url_for('show_main'))
     items = (
         catalog.query(Item)
@@ -346,7 +361,7 @@ def show_item(category_id, item_id):
 
 @app.route('/<category_id>/new', methods = ['GET', 'POST'])
 def new_item(category_id):
-    if not logged_in():
+    if not standard_rights():
         return redirect(url_for('show_items', category_id = category_id))
     category = get_category_or_abort(category_id)
     if request.method == 'POST':
@@ -409,7 +424,7 @@ def delete_item(category_id, item_id):
 
 @app.route('/user-management/', methods = ['GET', 'POST'])
 def user_management():
-    if not admin():
+    if not admin_rights():
         return redirect(url_for('show_main'))
     users = (
         catalog.query(User)
@@ -420,7 +435,7 @@ def user_management():
     if request.method == 'POST':
         for user in users:
             if user.email in request.form:
-                user.admin = request.form[user.email] == 'admin'
+                user.group = request.form[user.email]
                 catalog.add(user)
         catalog.commit()
         flash("User settings have been saved")
@@ -471,6 +486,6 @@ def show_item_xml(category_id, item_id):
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'horrible_secret_key_man'
+    app.secret_key = 'terrible_secret_key_man'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)

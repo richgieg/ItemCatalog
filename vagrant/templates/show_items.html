@@ -5,7 +5,7 @@
 
 <h2 class="page-title">{{ category.name }}</h2>
 
-{% if logged_in() %}
+{% if standard_rights() %}
 <div class="item-action-container">
     <a class="button" href="{{ url_for('new_item', category_id = category.id) }}">New Item</a>
 </div>

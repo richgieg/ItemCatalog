@@ -61,11 +61,11 @@
 
             <nav>
                 <ul id="nav-list">
-                    {% if logged_in() %}
+                    {% if standard_rights() %}
                     <li class="nav-link nav-user">
                         <a href="{{ url_for('show_user_items') }}">My Items</a>
                     </li>
-                        {% if admin() %}
+                        {% if admin_rights() %}
                         <li class="nav-link nav-user">
                             <a href="{{ url_for('user_management') }}">User Management</a>
                         </li>

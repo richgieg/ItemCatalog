@@ -5,8 +5,6 @@
 
 <h2 class="page-title">{{ item.name }}</h2>
 
-
-
 {% if user_authorized %}
 <div class="item-action-container">
     <a class="button" href="{{ url_for('edit_item', category_id = item.category_id, item_id = item.id) }}">Edit</a>

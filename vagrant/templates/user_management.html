@@ -11,13 +11,15 @@
         {% for user in users %}
         <label for="{{ user.id }}">{{ user.email }}</label>
         <select class="text-field" id="{{ user.id }}" name="{{ user.email }}">
-            {% if user.admin %}
-            <option value="admin" selected>Administrator</option>
-            <option value="standard">Standard</option>
-            {% else %}
-            <option value="admin">Administrator</option>
-            <option value="standard" selected>Standard</option>
-            {% endif %}
+            <option value="readonly" {{ "selected" if user.group == 'readonly' }}>
+                Read-Only
+            </option>
+            <option value="standard" {{ "selected" if user.group == 'standard' }}>
+                Standard
+            </option>
+            <option value="admin" {{ "selected" if user.group == 'admin' }}>
+                Administrator
+            </option>
         </select><br><br>
         {% endfor %}
         <div class="form-button-container">

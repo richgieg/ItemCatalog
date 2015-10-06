@@ -35,7 +35,7 @@ class User(Base):
     name = Column(String(256), nullable=False)
     email = Column(String(256), nullable=False)
     picture = Column(String(256), nullable=False)
-    admin = Column(Boolean, nullable=False)
+    group = Column(String(10), nullable=False)
 
 
 class Category(Base):

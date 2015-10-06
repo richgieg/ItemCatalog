@@ -20,7 +20,7 @@ USERS = [
         'name': 'musicshop999@gmail.com',
         'email': 'musicshop999@gmail.com',
         'picture': 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
-        'admin': True
+        'group': 'admin'
     }
 ]
 
@@ -345,7 +345,7 @@ def seed_users():
     for user in USERS:
         catalog.add(User(id = user['id'], name = user['name'],
                          email = user['email'], picture = user['picture'],
-                         admin = user['admin']))
+                         group = user['group']))
     catalog.commit()
 
 
