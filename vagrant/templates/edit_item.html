@@ -32,7 +32,7 @@
         <img id="current-image" class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br>
         {% endif %}
         <br><br>
-        <div class="item-save-container">
+        <div class="form-button-container">
             <input class="button" type="submit" value="Save">
             <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
         </div>

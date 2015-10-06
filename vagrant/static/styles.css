@@ -206,7 +206,7 @@ header {
     text-align: center;
 }
 
-.item-save-container {
+.form-button-container {
     width: 100%;
     text-align: center;
 }
@@ -250,6 +250,10 @@ label {
     color: gray;
     border-bottom: 1px solid darkgray;
     margin-bottom: 1em;
+}
+
+.prompt {
+    text-align: center;
 }
 
 #input-name {
@@ -551,12 +555,16 @@ footer > a {
         margin-left: 0;
     }
 
+    .prompt {
+        text-align: left;
+    }
+
     .item-action-container {
         text-align: right;
         margin-top: -3.3em;
     }
 
-    .item-save-container {
+    .form-button-container {
         text-align: right;
     }
 

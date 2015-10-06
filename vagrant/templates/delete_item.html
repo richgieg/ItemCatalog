@@ -5,12 +5,19 @@
 
 <h2 class="page-title">Delete Item  ({{ item.name }})</h2>
 
-<p>{{ "Are you sure you want to delete '%s'?" % item.name }}</p>
-
-<form action="{{ url_for('delete_item', category_id = item.category_id, item_id = item.id) }}" method = "POST">
-    <input class="button" type="submit" value="Delete">
-    <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-</form>
+<div class="container" id="form-container">
+    <form action="{{ url_for('delete_item', category_id = item.category_id, item_id = item.id) }}" method = "POST">
+        <label class="prompt">{{ "Are you sure you want to delete '%s'?" % item.name }}</label>
+        {% if item.image_path %}
+        <br>
+        <img class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br><br>
+        {% endif %}
+        <div class="form-button-container">
+            <input class="button" type="submit" value="Delete">
+            <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    </form>
+</div>
 
 {% endblock %}
