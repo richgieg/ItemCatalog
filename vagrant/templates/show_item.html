@@ -15,13 +15,11 @@
 {% endif %}
 
 <div class="container" id="item-page-container">
-<p class="item-page-price">{{ item.price }}</p>
-<p class="item-page-description">{{ item.description }}</p>
-{% if item.image_path %}
-<div class="item-page-image-container">
-    <img class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
-</div>
-{% endif %}
+    <p class="item-page-price">{{ item.price }}</p>
+    <p class="item-page-description">{{ item.description }}</p>
+    <div class="item-page-image-container">
+        <img class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
+    </div>
 </div>
 
 {% endblock %}

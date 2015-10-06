@@ -27,10 +27,8 @@
         <input id="input-price" class="text-field" type="text" size="10" name="price" placeholder="$999.99" value="{{ item.price }}"><br><br>
         <label for="input-file">New Image</label>
         <input id="input-file" class="text-field" type="file" name="image_file"><br><br>
-        {% if item.image_path %}
         <label for="current-image">Current Image</label>
         <img id="current-image" class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br>
-        {% endif %}
         <br><br>
         <div class="form-button-container">
             <input class="button" type="submit" value="Save">
