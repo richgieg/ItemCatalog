@@ -24,7 +24,7 @@
         <label for="input-description">Description</label>
         <textarea id="input-description" class="text-field" rows="10" name="description">{{ item.description }}</textarea><br><br>
         <label for="input-price">Price</label>
-        <input id="input-price" class="text-field" type="text" size="10" name="price" value="{{ item.price }}"><br><br>
+        <input id="input-price" class="text-field" type="text" size="10" name="price" placeholder="$999.99" value="{{ item.price }}"><br><br>
         <label for="input-file">New Image</label>
         <input id="input-file" class="text-field" type="file" name="image_file"><br><br>
         {% if item.image_path %}

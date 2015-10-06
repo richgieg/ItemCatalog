@@ -5,21 +5,26 @@
 
 <h2 class="page-title">New Item ({{ category.name }})</h2>
 
-<form action="{{ url_for('new_item', category_id = category.id) }}"
+<div class="container" id="item-form-container">
+    <form action="{{ url_for('new_item', category_id = category.id) }}"
       enctype="multipart/form-data" method="POST">
-    Name:<br>
-    <input type="text" size="30" name="name"><br><br>
-    Short Description:<br>
-    <textarea rows="5" cols="50" name="short_description"></textarea><br><br>
-    Description:<br>
-    <textarea rows="10" cols="50" name="description"></textarea><br><br>
-    Price:<br>
-    <input type="text" size="10" name="price"><br><br>
-    Image:<br>
-    <input type="file" name="image_file"><br><br>
-    <input class="button" type="submit" value="Save">
-    <a class="button" href="{{ url_for('show_items', category_id = category.id) }}">Cancel</a>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-</form>
+        <label for="input-name">Name</label>
+        <input id="input-name" class="text-field" type="text" size="30" name="name"><br><br>
+        <label for="input-short-description">Short Description</label>
+        <textarea id="input-short-description" class="text-field" rows="5" name="short_description"></textarea><br><br>
+        <label for="input-description">Description</label>
+        <textarea id="input-description" class="text-field" rows="10" name="description"></textarea><br><br>
+        <label for="input-price">Price</label>
+        <input id="input-price" class="text-field" type="text" size="10" name="price" placeholder="$999.99"><br><br>
+        <label for="input-file">Image</label>
+        <input id="input-file" class="text-field" type="file" name="image_file"><br><br>
+        <br><br>
+        <div class="item-save-container">
+            <input class="button" type="submit" value="Save">
+            <a class="button" href="{{ url_for('show_items', category_id = category.id) }}">Cancel</a>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    </form>
+</div>
 
 {% endblock %}
