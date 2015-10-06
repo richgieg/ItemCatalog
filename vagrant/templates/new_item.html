@@ -9,13 +9,17 @@
     <form action="{{ url_for('new_item', category_id = category.id) }}"
       enctype="multipart/form-data" method="POST">
         <label for="input-name">Name</label>
-        <input id="input-name" class="text-field" type="text" size="30" name="name" required><br><br>
+        <input id="input-name" class="text-field" type="text" size="30" name="name"
+            maxlength="256" required><br><br>
         <label for="input-short-description">Short Description</label>
-        <textarea id="input-short-description" class="text-field" rows="5" name="short_description" required></textarea><br><br>
+        <textarea id="input-short-description" class="text-field" rows="5"
+            name="short_description" maxlength="256" required></textarea><br><br>
         <label for="input-description">Description</label>
-        <textarea id="input-description" class="text-field" rows="10" name="description"required></textarea><br><br>
+        <textarea id="input-description" class="text-field" rows="10"
+            name="description" maxlength="1024" required></textarea><br><br>
         <label for="input-price">Price</label>
-        <input id="input-price" class="text-field" type="text" size="10" name="price" placeholder="$999.99" required><br><br>
+        <input id="input-price" class="text-field" type="text" size="10"
+            name="price" placeholder="$999.99" maxlength="10" required><br><br>
         <label for="input-file">Image</label>
         <input id="input-file" class="text-field" type="file" name="image_file"><br><br>
         <br><br>
