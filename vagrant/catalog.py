@@ -16,6 +16,7 @@ from sqlalchemy.orm import relationship
 # Define constants.
 ITEM_IMAGE_DIRECTORY = 'img'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
+DEFAULT_IMAGE = '/static/default.png'
 
 
 # Define ORM base class.
@@ -57,7 +58,9 @@ class Item(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
 
-    # Save uploaded image to disk and set item's image_path field.
+    # Save uploaded image to disk and set item's image_path field. If file is
+    # blank, and this is a brand new item, then set the item's image_path field
+    # to DEFAULT_IMAGE.
     def save_image(self, file):
         if file and allowed_image_file(file.filename):
             self.delete_image()
@@ -68,10 +71,13 @@ class Item(Base):
             file.save(image_path)
             # Add leading slash so path works in HTML img tags.
             self.image_path = '/' + image_path
+        else:
+            if self.image_path is None:
+                self.image_path = DEFAULT_IMAGE
 
     # Delete image file from disk, if exists.
     def delete_image(self):
-        if self.image_path:
+        if self.image_path and self.image_path != DEFAULT_IMAGE:
             # Skip the initial slash in file path.
             os.remove(self.image_path[1:])
 
