@@ -5,31 +5,38 @@
 
 <h2 class="page-title">{{ category.name }}</h2>
 
+{# If user has standard rights, give them the option to create a new item. #}
 {% if standard_rights() %}
-<div class="item-action-container">
-    <a class="button" href="{{ url_for('new_item', category_id = category.id) }}">New Item</a>
-</div>
-{% endif %}
-
-{% if items %}
-<div class="container" id="item-tile-container">
-    {% for item in items %}
-    <div class="tile">
-        <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">
-            <div class="item-image-container">
-                <img class="item-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}">
-            </div>
-            <div class="item-info">
-                <h3 class="item-title">{{ item.name }}</h3>
-                <span class="item-price">{{ item.price }}</span>
-                <p class="item-description">{{ item.short_description }}</p>
-            </div>
+    <div class="item-action-container">
+        <a class="button" href="{{ url_for('new_item', category_id = category.id) }}">
+            New Item
         </a>
     </div>
-    {% endfor %}
-{% else %}
-<p class="no-items">No items to display.</p>
 {% endif %}
-</div>
+
+{# If there are items, display them in the item tile container. #}
+{% if items %}
+    <div class="container" id="item-tile-container">
+        {% for item in items %}
+            <div class="tile">
+                <a href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">
+                    <div class="item-image-container">
+                        <img class="item-image" src="{{ item.image_path }}"
+                            alt="Image of {{ item.name }}">
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-title">{{ item.name }}</h3>
+                        <span class="item-price">{{ item.price }}</span>
+                        <p class="item-description">
+                            {{ item.short_description }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="no-items">No items to display.</p>
+{% endif %}
 
 {% endblock %}
