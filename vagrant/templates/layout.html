@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href='https://fonts.googleapis.com/css?family=Cinzel:400,700'
-        rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Reenie+Beanie'
-        rel='stylesheet'>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Cinzel:400,700">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Reenie+Beanie">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
     </script>
     <script src="https://apis.google.com/js/client:platform.js?onload=start"
@@ -19,31 +20,36 @@
 </head>
 <body>
     <div class="container" id="main-container">
+        {# Display flash messages here, if any. #}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul id="flash">
-                {% for message in messages %}
-                    <li><strong>{{ message }}</strong></li>
-                {% endfor %}
+                    {% for message in messages %}
+                        <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
                 </ul>
             {% endif %}
         {% endwith %}
         <header>
             <div id="signin-container">
+                {# If user isn't logged in, display Google sign-in button. #}
                 {% if not logged_in() %}
-                <div id="google-button">
-                    <div class="g-signin"
-                        data-scope="https://www.googleapis.com/auth/userinfo.email"
-                        data-clientid="191985455830-6rgo9t6ossaspcr620aant7tq4lq4g3f.apps.googleusercontent.com"
-                        data-redirecturi="postmessage"
-                        data-accesstype="offline"
-                        data-cookiepolicy="single_host_origin"
-                        data-callback="signInCallback"
-                        data-approvalprompt="force">
+                    <div id="google-button">
+                        <div class="g-signin"
+                            data-scope="https://www.googleapis.com/auth/userinfo.email"
+                            data-clientid="191985455830-6rgo9t6ossaspcr620aant7tq4lq4g3f.apps.googleusercontent.com"
+                            data-redirecturi="postmessage"
+                            data-accesstype="offline"
+                            data-cookiepolicy="single_host_origin"
+                            data-callback="signInCallback"
+                            data-approvalprompt="force">
+                        </div>
                     </div>
-                </div>
+                {# Otherwise, display sign-out button. #}
                 {% else %}
-                <a id="signout-button" href="#">Sign Out [{{ session['username'] }}]</a>
+                    <a id="signout-button" href="#">
+                        Sign Out [{{ session['username'] }}]
+                    </a>
                 {% endif %}
             </div>
             <h1 id="main-heading">
@@ -60,50 +66,66 @@
             <div id="hamburger">☰</div>
             <nav>
                 <ul id="nav-list">
+                    {# If user has standard rights, display "My Items" link. #}
                     {% if standard_rights() %}
-                    <li class="nav-link nav-user">
-                        <a href="{{ url_for('show_user_items') }}">My Items</a>
-                    </li>
-                        {% if admin_rights() %}
                         <li class="nav-link nav-user">
-                            <a href="{{ url_for('user_management') }}">User Management</a>
+                            <a href="{{ url_for('show_user_items') }}">
+                                My Items
+                            </a>
                         </li>
-                        {% endif %}
-                    <br>
+                            {# If user has admin rights, display link for
+                               "User Management" #}
+                            {% if admin_rights() %}
+                                <li class="nav-link nav-user">
+                                    <a href="{{ url_for('user_management') }}">
+                                        User Management
+                                    </a>
+                                </li>
+                            {% endif %}
+                        <br>
                     {% endif %}
+                    {# Create a navigation link for each catagory. #}
                     {% for category in categories %}
-                    <li class="nav-link">
-                        <a href="{{ url_for('show_items', category_id = category.id) }}">
-                            {{ category.name }}
-                        </a>
-                    </li>
+                        <li class="nav-link">
+                            <a href="{{ url_for('show_items', category_id = category.id) }}">
+                                {{ category.name }}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </nav>
         </header>
 
+        {# Specific page content goes here. #}
         {% block content %}{% endblock %}
 
         <footer>
             &copy; 2015 | Site developed by
-            <a href="http://www.richgieg.com" target="_blank">Richard Gieg</a><br>
-            Item descriptions &copy; 2015 <a href="http://www.musiciansfriend.com" target="_blank">Musician's Friend Inc.</a>
+            <a href="http://www.richgieg.com" target="_blank">
+                Richard Gieg
+            </a><br>
+            Item descriptions &copy; 2015
+            <a href="http://www.musiciansfriend.com" target="_blank">
+                Musician's Friend Inc.
+            </a>
         </footer>
     </div>
 
-    {% if not logged_in() %}
-        <script>
+    <script>
+        {# If user is not logged in, define Google sign-in callback. #}
+        {% if not logged_in() %}
+            // The Google sign-in button calls this.
             function signInCallback(authResult) {
                 if (authResult['code']) {
-                    // Send the one-time-use code to the server. If the server
-                    // responds, write a 'login successful' message to the page
-                    // and then redirect back to the main restaurants page.
+                    // Send the one-time-use code and csrf token to the server.
+                    // If successful, redirect to the current page in order to
+                    // refresh.
                     var fd = new FormData();
                     fd.append('code', authResult['code']);
                     fd.append('_csrf_token', '{{ csrf_token() }}')
                     $.ajax({
                         type: 'POST',
-                        url: "/gconnect",
+                        url: '/gconnect',
                         processData: false,
                         contentType: false,
                         data: fd,
@@ -113,24 +135,26 @@
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            console.log(errorThrown + ' - ' + jqXHR.responseText);
+                            console.log(errorThrown + ' - ' +
+                                        jqXHR.responseText);
                         }
                     });
                 } else if (authResult['error']) {
                     console.log('There was an error: ' + authResult['error']);
                 } else {
-                    $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+                    console.log('Failed to make a server-side call. Check ' +
+                                'your configuration and console.');
                 }
             }
-        </script>
-    {% else %}
-        <script>
+        {# If user is signed in, define sign-out button callback. #}
+        {% else %}
+            // Sign-out button calls this.
             $('#signout-button').click(function() {
                 var fd = new FormData();
                 fd.append('_csrf_token', '{{ csrf_token() }}')
                 $.ajax({
                     type: 'POST',
-                    url: "/gdisconnect",
+                    url: '/gdisconnect',
                     processData: false,
                     contentType: false,
                     data: fd,
@@ -144,10 +168,8 @@
                     }
                 });
             });
-        </script>
-    {% endif %}
+        {% endif %}
 
-    <script>
         // Fade out the flash message div.
         $(document).ready(function() {
             setTimeout(function() {
@@ -155,11 +177,10 @@
             }, 2000);
         });
 
-        // Toggle the navigation menu when the hamburger icon is clicked.
+        // Toggle the navigation menu when the hamburger icon is pressed.
         $('#hamburger').click(function() {
             $('nav').toggle(500);
         });
     </script>
-
 </body>
 </html>
