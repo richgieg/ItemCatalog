@@ -73,16 +73,15 @@
                                 My Items
                             </a>
                         </li>
-                            {# If user has admin rights, display link for
-                               "User Management" #}
-                            {% if admin_rights() %}
-                                <li class="nav-link nav-user">
-                                    <a href="{{ url_for('user_management') }}">
-                                        User Management
-                                    </a>
-                                </li>
-                            {% endif %}
-                        <br>
+                        {# If user has admin rights, display link for
+                           "User Management" #}
+                        {% if admin_rights() %}
+                            <li class="nav-link nav-user">
+                                <a href="{{ url_for('user_management') }}">
+                                    User Management
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endif %}
                     {# Create a navigation link for each catagory. #}
                     {% for category in categories %}
@@ -96,7 +95,7 @@
             </nav>
         </header>
 
-        {# Specific page content goes here. #}
+        {# Rendered template content goes here. #}
         {% block content %}{% endblock %}
 
         <footer>
