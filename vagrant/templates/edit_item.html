@@ -9,36 +9,52 @@
     <form action="{{ url_for('edit_item', category_id = item.category_id, item_id = item.id) }}"
             enctype="multipart/form-data" method="POST">
         <label for="input-name">Name</label>
-        <input id="input-name" class="text-field" type="text" size="30" name="name"
-            value="{{ item.name }}" maxlength="256" required><br><br>
+        <input id="input-name" class="text-field" type="text" size="30"
+            name="name" value="{{ item.name }}" maxlength="256" required>
+        <br><br>
         <label for="input-category">Category</label>
-        <select id="input-category" class="text-field" name="category_id" required>
+        <select id="input-category" class="text-field" name="category_id"
+                required>
             {% for category in categories %}
-            {% if category.id == item.category_id %}
-                <option value="{{ category.id }}" selected="selected">{{ category.name }}</option>
-            {% else %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endif %}
+                {% if category.id == item.category_id %}
+                    <option value="{{ category.id }}" selected="selected">
+                        {{ category.name }}
+                    </option>
+                {% else %}
+                    <option value="{{ category.id }}">
+                        {{ category.name }}
+                    </option>
+                {% endif %}
             {% endfor %}
-        </select><br><br>
+        </select>
+        <br><br>
         <label for="input-short-description">Short Description</label>
         <textarea id="input-short-description" class="text-field" rows="5"
-            name="short_description" maxlength="256" required>{{ item.short_description }}</textarea><br><br>
+            name="short_description" maxlength="256"
+            required>{{ item.short_description }}</textarea>
+        <br><br>
         <label for="input-description">Description</label>
         <textarea id="input-description" class="text-field" rows="10"
-            name="description" maxlength="1024" required>{{ item.description }}</textarea><br><br>
+            name="description" maxlength="1024"
+            required>{{ item.description }}</textarea>
+        <br><br>
         <label for="input-price">Price</label>
         <input id="input-price" class="text-field" type="text" size="10"
             name="price" placeholder="$999.99" value="{{ item.price }}"
-            maxlength="10" required><br><br>
-        <label for="input-file">New Image</label>
-        <input id="input-file" class="text-field" type="file" name="image_file"><br><br>
-        <label for="current-image">Current Image</label>
-        <img id="current-image" class="item-page-image" src="{{ item.image_path }}" alt="Image of {{ item.name }}"><br>
+            maxlength="10" required>
         <br><br>
+        <label for="input-file">New Image</label>
+        <input id="input-file" class="text-field" type="file" name="image_file">
+        <br><br>
+        <label for="current-image">Current Image</label>
+        <img id="current-image" class="item-page-image"
+            src="{{ item.image_path }}" alt="Image of {{ item.name }}">
+        <br><br><br>
         <div class="form-button-container">
             <input class="button" type="submit" value="Save">
-            <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">Cancel</a>
+            <a class="button" href="{{ url_for('show_item', category_id = item.category_id, item_id = item.id) }}">
+                Cancel
+            </a>
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
     </form>
