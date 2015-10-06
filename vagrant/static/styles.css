@@ -69,6 +69,7 @@ header {
     width: 100%;
     font-family: 'Cinzel', serif;
     border-bottom: 1px solid black;
+    padding-bottom: 1.5em;
     margin-top: .4em;
     margin-bottom: 1.2em;
 }
@@ -92,6 +93,9 @@ header {
     font-size: 1.2em;
     text-align: center;
     text-transform: uppercase;
+
+
+    padding: .6em 0;
 }
 
 #heading-accent {
@@ -111,11 +115,36 @@ header {
 
 
 /* Navigation */
-#nav-list {
-    list-style-type: none;
-    padding: 0;
+#hamburger {
+    width: 90%;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+    border: 1px solid lightgray;
+    margin: 0 auto;
 }
 
+nav {
+    display: none;
+    width: 90%;
+    font-size: 1em;
+    margin: 0 auto;
+}
+
+#nav-list {
+    list-style-type: none;
+    padding: 0 1em;
+}
+
+.nav-link {
+    border-bottom: 1px solid lightgray;
+    margin-bottom: .3em;
+}
+
+.nav-link > a {
+    display: inline-block;
+    width: 100%;
+}
 
 /* Page title */
 .page-title {
@@ -291,6 +320,7 @@ footer > a {
     #main-heading {
         font-size: 1.8em;
         font-weight: normal;
+        padding: 0;
     }
 
     #heading-accent {
@@ -303,6 +333,11 @@ footer > a {
         color: white;
         background-color: #ff7575;
         padding-bottom: .1em;
+    }
+
+    #hamburger {
+        margin-top: .6em;
+        margin-bottom: 0em;
     }
 
     .page-title {
@@ -354,6 +389,10 @@ footer > a {
         padding-bottom: 1em;
     }
 
+    header {
+        padding-bottom: 0;
+    }
+
     #signin-container {
         text-align: right;
     }
@@ -366,8 +405,15 @@ footer > a {
         margin-right: .5em;
     }
 
+    #hamburger {
+        display: none;
+    }
+
     nav {
+        display: block;
+        width: 100%;
         text-align: center;
+        font-size: 1.5em;
         color: crimson;
         background-color: cornsilk;
         padding-bottom: .3em;
@@ -377,16 +423,23 @@ footer > a {
 
     #nav-list {
         display: inline;
+        padding: 0;
     }
 
     .nav-link {
         display: inline-block;
+        border: none;
         padding: .1em .8em;
         margin-top: .3em;
+        margin-bottom: 0;
     }
 
     .nav-link:hover {
         color: black;
+    }
+
+    .nav-link > a {
+        display: inline;
     }
 
     .nav-user {

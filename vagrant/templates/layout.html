@@ -57,8 +57,9 @@
             </h1>
             <h2 id="sub-heading">
                 <a href="/">Providing tools for creative expression.</a>
-            <h2>
+            </h2>
 
+            <div id="hamburger">☰</div>
             <nav>
                 <ul id="nav-list">
                     {% if standard_rights() %}
@@ -144,7 +145,7 @@
                         console.log(errorThrown + ' - ' + jqXHR.responseText);
                     }
                 });
-            })
+            });
         </script>
     {% endif %}
 
@@ -153,8 +154,13 @@
         $(document).ready(function() {
             setTimeout(function() {
                 $('#flash').fadeOut(2000);
-            }, 2000)
-        })
+            }, 2000);
+        });
+
+        // Toggle the navigation menu when the hamburger icon is clicked.
+        $('#hamburger').click(function() {
+            $('nav').toggle(500);
+        });
     </script>
 
 </body>
