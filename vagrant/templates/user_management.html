@@ -6,23 +6,26 @@
 <h2 class="page-title">User Management</h2>
 
 {% if users %}
-<form action="{{ url_for('user_management') }}" enctype="multipart/form-data" method="POST">
-    {% for user in users %}
-    <label for="{{ user.id }}">{{ user.email }}</label>
-    <select id="{{ user.id }}" name="{{ user.email }}">
-        {% if user.admin %}
-        <option value="admin" selected>Administrator</option>
-        <option value="standard">Standard</option>
-        {% else %}
-        <option value="admin">Administrator</option>
-        <option value="standard" selected>Standard</option>
-        {% endif %}
-    </select><br><br>
-    {% endfor %}
-
-    <input class="button" type="submit" value="Save">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-</form>
+<div class="container" id="form-container">
+    <form action="{{ url_for('user_management') }}" enctype="multipart/form-data" method="POST">
+        {% for user in users %}
+        <label for="{{ user.id }}">{{ user.email }}</label>
+        <select class="text-field" id="{{ user.id }}" name="{{ user.email }}">
+            {% if user.admin %}
+            <option value="admin" selected>Administrator</option>
+            <option value="standard">Standard</option>
+            {% else %}
+            <option value="admin">Administrator</option>
+            <option value="standard" selected>Standard</option>
+            {% endif %}
+        </select><br><br>
+        {% endfor %}
+        <div class="item-save-container">
+            <input class="button" type="submit" value="Save">
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    </form>
+</div>
 {% else %}
 <p class="no-items">No users to display.</p>
 {% endif %}

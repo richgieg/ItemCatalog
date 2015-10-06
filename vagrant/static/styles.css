@@ -164,6 +164,12 @@ header {
     text-align: justify;
 }
 
+.no-items {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
 
 /* Item pages */
 #item-page-container {
@@ -227,7 +233,7 @@ header {
 
 
 /* Form-related styles */
-#item-form-container {
+#form-container {
     width: 100%;
     background-color: #ecebeb;
     padding: 1.5em 1.5em 0;

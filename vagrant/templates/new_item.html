@@ -5,7 +5,7 @@
 
 <h2 class="page-title">New Item ({{ category.name }})</h2>
 
-<div class="container" id="item-form-container">
+<div class="container" id="form-container">
     <form action="{{ url_for('new_item', category_id = category.id) }}"
       enctype="multipart/form-data" method="POST">
         <label for="input-name">Name</label>
