@@ -27,6 +27,21 @@ img {
     max-width: 100%;
 }
 
+input[type='submit'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    font-size: 1em;
+}
+
+input[type='text'],
+textarea {
+    -moz-box-sizing: border-box;
+    -webkit-sizing: border-box;
+    box-sizing: border-box;
+}
+
 .container {
     display: -webkit-flex;
     display: flex;
@@ -179,8 +194,13 @@ header {
 }
 
 
-/* Button-related classes */
+/* Button-related styles */
 .item-action-container {
+    width: 100%;
+    text-align: center;
+}
+
+.item-save-container {
     width: 100%;
     text-align: center;
 }
@@ -203,6 +223,39 @@ header {
 
 .button:hover {
     border: 1px solid black;
+}
+
+
+/* Form-related styles */
+#item-form-container {
+    width: 100%;
+    background-color: #ecebeb;
+    padding: 1.5em 1.5em 0;
+    margin-bottom: 1.5em;
+}
+
+form {
+    width: 100%;
+    padding-top: 1em;
+}
+
+label {
+    display: block;
+    color: gray;
+    border-bottom: 1px solid darkgray;
+    margin-bottom: 1em;
+}
+
+#input-name {
+    width: 100%;
+}
+
+#input-short-description {
+    width: 100%;
+}
+
+#input-description {
+    width: 100%;
 }
 
 
@@ -367,6 +420,15 @@ footer > a {
         font-size: 1.2em;
     }
 
+    form {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .text-field {
+        font-size: 1.1em;
+    }
+
     footer {
         font-size: .8em;
     }
@@ -428,7 +490,13 @@ footer > a {
         font-size: 1.4em;
     }
 
-    .button {
+    label {
+        font-size: 1.3em;
+        margin-top: 1em;
+    }
+
+    .button,
+    input[type='submit'] {
         font-size: 1.2em;
     }
 }
@@ -480,6 +548,10 @@ footer > a {
     .item-action-container {
         text-align: right;
         margin-top: -3.3em;
+    }
+
+    .item-save-container {
+        text-align: right;
     }
 
     footer {
