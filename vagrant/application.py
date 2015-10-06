@@ -182,6 +182,27 @@ def allowed_to_change_item(item):
     )
 
 
+# Returns true if all required new_item form fields are not blank.
+def validate_new_item_form():
+    return (
+        request.form['name'] and
+        request.form['short_description'] and
+        request.form['description'] and
+        request.form['price']
+    )
+
+
+# Returns true if all required edit_item form fields are not blank.
+def validate_edit_item_form():
+    return (
+        request.form['name'] and
+        request.form['short_description'] and
+        request.form['description'] and
+        request.form['price'] and
+        request.form['category_id']
+    )
+
+
 # Filter for creating the proper title for the templates.
 @app.template_filter('title')
 def title_filter(page_title):
@@ -365,6 +386,9 @@ def new_item(category_id):
         return redirect(url_for('show_items', category_id = category_id))
     category = get_category_or_abort(category_id)
     if request.method == 'POST':
+        if not validate_new_item_form():
+            flash("Form fields cannot be blank")
+            return redirect(url_for('new_item', category_id = category_id))
         item_name = request.form['name']
         item_id = slugify(item_name)
         item_desc = request.form['description']
@@ -391,6 +415,10 @@ def edit_item(category_id, item_id):
         return redirect(url_for('show_item', category_id = category_id,
                                 item_id = item_id))
     if request.method == 'POST':
+        if not validate_edit_item_form():
+            flash("Form fields cannot be blank")
+            return redirect(url_for('edit_item', category_id = category_id,
+                                    item_id = item_id))
         item.name = request.form['name']
         item.description = request.form['description']
         item.short_description = request.form['short_description']
