@@ -5,31 +5,37 @@
 
 <h2 class="page-title">User Management</h2>
 
+{# If there are users to manage, display form. #}
 {% if users %}
-<div class="container" id="form-container">
-    <form action="{{ url_for('user_management') }}" enctype="multipart/form-data" method="POST">
-        {% for user in users %}
-        <label for="{{ user.id }}">{{ user.email }}</label>
-        <select class="text-field" id="{{ user.id }}" name="{{ user.email }}">
-            <option value="readonly" {{ "selected" if user.group == 'readonly' }}>
-                Read-Only
-            </option>
-            <option value="standard" {{ "selected" if user.group == 'standard' }}>
-                Standard
-            </option>
-            <option value="admin" {{ "selected" if user.group == 'admin' }}>
-                Administrator
-            </option>
-        </select><br><br>
-        {% endfor %}
-        <div class="form-button-container">
-            <input class="button" type="submit" value="Save">
-        </div>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-    </form>
-</div>
+    <div class="container" id="form-container">
+        <form action="{{ url_for('user_management') }}"
+                enctype="multipart/form-data" method="POST">
+            {% for user in users %}
+                <label for="{{ user.id }}">{{ user.email }}</label>
+                <select class="text-field" id="{{ user.id }}"
+                        name="{{ user.email }}">
+                    <option value="readonly"
+                            {{ "selected" if user.group == 'readonly' }}>
+                        Read-Only
+                    </option>
+                    <option value="standard"
+                            {{ "selected" if user.group == 'standard' }}>
+                        Standard
+                    </option>
+                    <option value="admin"
+                            {{ "selected" if user.group == 'admin' }}>
+                        Administrator
+                    </option>
+                </select><br><br>
+            {% endfor %}
+            <div class="form-button-container">
+                <input class="button" type="submit" value="Save">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        </form>
+    </div>
 {% else %}
-<p class="no-items">No users to display.</p>
+    <p class="no-items">No users to display.</p>
 {% endif %}
 
 {% endblock %}
