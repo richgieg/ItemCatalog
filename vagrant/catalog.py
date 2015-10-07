@@ -21,15 +21,8 @@ ITEM_IMAGE_DIRECTORY = 'img'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 DEFAULT_IMAGE = '/static/default.png'
 
-
 # Define ORM base class.
 Base = declarative_base()
-
-
-# Helper that checks if image file is of a legal file type.
-def allowed_image_file(filename):
-    return ('.' in filename and
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS)
 
 
 class User(Base):
@@ -61,11 +54,17 @@ class Item(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User)
 
+    # Returns true if image file is of a legal file type.
+    @staticmethod
+    def is_legal_image_file(filename):
+        return ('.' in filename and
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS)
+
     # Save uploaded image to disk and set item's image_path field. If file is
-    # blank, and this is a brand new item, then set the item's image_path field
-    # to DEFAULT_IMAGE.
+    # blank or illegal, and this is a brand new item, then set the item's
+    # image_path field to DEFAULT_IMAGE.
     def save_image(self, file):
-        if file and allowed_image_file(file.filename):
+        if file and self.is_legal_image_file(file.filename):
             self.delete_image()
             filename, extension = os.path.splitext(file.filename)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
