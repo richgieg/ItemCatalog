@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Standard library imports.
 from os import remove
 from os.path import isfile
