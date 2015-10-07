@@ -96,6 +96,7 @@ http://localhost:8000
 
 3. Fill out the form appropriately and click "Save"
 
+
 **Edit an existing item:**
 
 1. Navigate to the item you would like to edit
@@ -104,13 +105,27 @@ http://localhost:8000
 
 3. Fill out the form appropriately and click "Save"
 
-** Delete an existing item:**
+
+**Delete an existing item:**
 
 1. Navigate to the item you would like to delete
 
 2. Click the "Delete" button
 
 3. Answer the confirmation prompt
+
+
+**User Management:**
+
+When a new user signs in, an account will be created but will have read-only
+access to the site until approved by an administrator. When logged in as
+an account with administrator privileges, you will see a "User Management"
+navigation link. This page will allow you to change a user account from
+read-only access to either standard or administrator. Standard accounts can
+create new items. They can also edit or delete items they created. Administrator
+accounts can create new items and edit or delete any item on the site. If a
+standard user has created items, but gets demoted to read-only, they will no
+longer have the ability to edit or delete the items they created.
 
 
 **View JSON dump for all items:**
