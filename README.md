@@ -63,7 +63,7 @@ steps.*
 
 **Add yourself as site administrator:**
 
-1. Open ```seed.py``` in your favorite editor
+1. Open ```ItemCatalog/vagrant/seed.py``` in your favorite editor
 
 2. Edit the "email" field of the dictionary literal in the global USERS list to
 reflect your Google+ / Gmail account (replacing musicshop999), which will give
