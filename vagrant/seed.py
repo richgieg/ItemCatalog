@@ -12,9 +12,9 @@ from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
 USERS = [
     {
         'id': 1,
-        'name': 'musicshop999@gmail.com',
+        'name': '',
         'email': 'musicshop999@gmail.com',
-        'picture': 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
+        'picture': '',
         'group': 'admin'
     }
 ]

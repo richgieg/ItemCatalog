@@ -61,6 +61,12 @@ configuration must take place. Please be patient. Once the process is complete,
 your terminal prompt will be returned, thus allowing you to execute the next
 steps.*
 
+**Add yourself as site administrator:**
+1. Open ```seed.py``` in your favorite editor
+2. Edit the "email" field of the dictionary literal in the global USERS list to
+reflect your Google+ / Gmail account, which will give your account
+administrative rights on the Music Shop site
+
 **Connect to the VM via SSH, seed the database, then run the application:**
 ```
 vagrant ssh
