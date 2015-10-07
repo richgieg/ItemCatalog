@@ -87,7 +87,7 @@ def get_category_or_abort(category_id):
         abort(404)
 
 
-# Helper that concatenates the XML output from a list of items into proper XML.
+# Concatenates the XML output from a list of items into proper XML.
 def xmlify(items):
     lines = []
     lines.append('<?xml version="1.0"?>')
@@ -236,11 +236,216 @@ def csrf_protect():
             return redirect(url_for('show_main'))
 
 
+# Display the home page.
+@app.route('/')
+def show_main():
+    items = catalog.query(Item).order_by(desc(Item.created)).limit(10).all()
+    return render_template('show_main.html', items=items)
+
+
+# Display all items in a given catagory.
+@app.route('/<category_id>/')
+def show_items(category_id):
+    category = get_category_or_abort(category_id)
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
+    return render_template('show_items.html', category=category,
+                           items=items)
+
+
+# My Items page, for signed-in users with standard rights or above.
+@app.route('/my-items/')
+def show_user_items():
+    if not standard_rights():
+        return redirect(url_for('show_main'))
+    items = (
+        catalog.query(Item)
+            .filter_by(user_id=session['user_id'])
+            .order_by(Item.name)
+            .all()
+    )
+    return render_template('my_items.html', items=items)
+
+
+# Create an item.
+@app.route('/<category_id>/new', methods=['GET', 'POST'])
+def new_item(category_id):
+    if not standard_rights():
+        return redirect(url_for('show_items', category_id=category_id))
+    category = get_category_or_abort(category_id)
+    if request.method == 'POST':
+        if not validate_new_item_form():
+            flash("Form fields cannot be blank")
+            return redirect(url_for('new_item', category_id=category_id))
+        item_name = request.form['name']
+        item_id = slugify(item_name)
+        item_desc = request.form['description']
+        item_short_desc = request.form['short_description']
+        item_price = request.form['price']
+        item = Item(id=item_id, name=item_name, description=item_desc,
+                    short_description=item_short_desc,
+                    price=item_price, category_id=category.id,
+                    user_id=session['user_id'])
+        item.save_image(request.files['image_file'])
+        catalog.add(item)
+        catalog.commit()
+        flash("Item created: %s" % item.name)
+        return redirect(url_for('show_item', category_id=category.id,
+                                item_id=item_id))
+    else:
+        return render_template('new_item.html', category=category)
+
+
+# Read (display) an item.
+@app.route('/<category_id>/<item_id>')
+def show_item(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    return render_template('show_item.html', item=item,
+                           user_authorized=allowed_to_change_item(item))
+
+
+# Update an item.
+@app.route('/<category_id>/<item_id>/edit', methods=['GET', 'POST'])
+def edit_item(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    if not allowed_to_change_item(item):
+        return redirect(url_for('show_item', category_id=category_id,
+                                item_id=item_id))
+    if request.method == 'POST':
+        if not validate_edit_item_form():
+            flash("Form fields cannot be blank")
+            return redirect(url_for('edit_item', category_id=category_id,
+                                    item_id=item_id))
+        item.name = request.form['name']
+        item.description = request.form['description']
+        item.short_description = request.form['short_description']
+        item.price = request.form['price']
+        item.category_id = request.form['category_id']
+        item.save_image(request.files['image_file'])
+        catalog.add(item)
+        catalog.commit()
+        flash("Item saved: %s" % item.name)
+        return redirect(url_for('show_item', category_id=item.category_id,
+                                item_id=item.id))
+    else:
+        return render_template('edit_item.html', item=item)
+
+
+# Delete an item.
+@app.route('/<category_id>/<item_id>/delete', methods=['GET', 'POST'])
+def delete_item(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    if not allowed_to_change_item(item):
+        return redirect(url_for('show_item', category_id=category_id,
+                                item_id=item_id))
+    if request.method == 'POST':
+        item.delete_image()
+        catalog.delete(item)
+        catalog.commit()
+        flash("Item deleted: %s" % item.name)
+        return redirect(url_for('show_items', category_id=item.category_id))
+    else:
+        return render_template('delete_item.html', item=item)
+
+
+# User Management page.
+@app.route('/user-management/', methods=['GET', 'POST'])
+def user_management():
+    if not admin_rights():
+        return redirect(url_for('show_main'))
+    users = (
+        catalog.query(User)
+            .filter(User.id != session['user_id'])
+            .order_by(User.email)
+            .all()
+    )
+    if request.method == 'POST':
+        for user in users:
+            if user.email in request.form:
+                user.group = request.form[user.email]
+                catalog.add(user)
+        catalog.commit()
+        flash("User settings have been saved")
+        return redirect(url_for('user_management'))
+    else:
+        return render_template('user_management.html', users=users)
+
+
+# Serve an item image.
 @app.route('/img/<filename>')
 def serve_image(filename):
     return send_from_directory(ITEM_IMAGE_DIRECTORY, filename)
 
 
+# JSON endpoint for the whole catalog.
+@app.route('/catalog.json')
+def show_all_items_json():
+    items = (
+        catalog.query(Item)
+            .order_by(Item.category_id)
+            .order_by(Item.name)
+            .all()
+    )
+    return jsonify(Items=[i.serialize for i in items])
+
+
+# JSON endpoint for a category.
+@app.route('/<category_id>.json')
+def show_items_json(category_id):
+    category = get_category_or_abort(category_id)
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
+    return jsonify(Items=[i.serialize for i in items])
+
+
+# JSON endpoint for an item.
+@app.route('/<category_id>/<item_id>.json')
+def show_item_json(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    return jsonify(Item=item.serialize)
+
+
+# XML endpoint for the whole catalog.
+@app.route('/catalog.xml')
+def show_all_items_xml():
+    items = (
+        catalog.query(Item)
+            .order_by(Item.category_id)
+            .order_by(Item.name)
+            .all()
+    )
+    return xmlify(items)
+
+
+# XML endpoint for a category.
+@app.route('/<category_id>.xml')
+def show_items_xml(category_id):
+    category = get_category_or_abort(category_id)
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
+    return xmlify(items)
+
+
+# XML endpoint for an item.
+@app.route('/<category_id>/<item_id>.xml')
+def show_item_xml(category_id, item_id):
+    item = get_item_or_abort(item_id, category_id)
+    return xmlify([item])
+
+
+# User sign-in, using Google API.
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     code = request.form.get('code')
@@ -328,6 +533,7 @@ def gconnect():
     return "Login successful."
 
 
+# User sign-out, using Google API.
 @app.route('/gdisconnect', methods=['POST'])
 def gdisconnect():
     # Only disconnect a connected user.
@@ -352,197 +558,6 @@ def gdisconnect():
             json.dumps('Failed to revoke token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
         return response
-
-
-@app.route('/')
-def show_main():
-    items = catalog.query(Item).order_by(desc(Item.created)).limit(10).all()
-    return render_template('show_main.html', items=items)
-
-
-@app.route('/<category_id>/')
-def show_items(category_id):
-    category = get_category_or_abort(category_id)
-    items = (
-        catalog.query(Item)
-            .filter_by(category_id=category.id)
-            .order_by(Item.name)
-            .all()
-    )
-    return render_template('show_items.html', category=category,
-                           items=items)
-
-
-@app.route('/my-items/')
-def show_user_items():
-    if not standard_rights():
-        return redirect(url_for('show_main'))
-    items = (
-        catalog.query(Item)
-            .filter_by(user_id=session['user_id'])
-            .order_by(Item.name)
-            .all()
-    )
-    return render_template('my_items.html', items=items)
-
-
-@app.route('/<category_id>/<item_id>')
-def show_item(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    return render_template('show_item.html', item=item,
-                           user_authorized=allowed_to_change_item(item))
-
-
-@app.route('/<category_id>/new', methods=['GET', 'POST'])
-def new_item(category_id):
-    if not standard_rights():
-        return redirect(url_for('show_items', category_id=category_id))
-    category = get_category_or_abort(category_id)
-    if request.method == 'POST':
-        if not validate_new_item_form():
-            flash("Form fields cannot be blank")
-            return redirect(url_for('new_item', category_id=category_id))
-        item_name = request.form['name']
-        item_id = slugify(item_name)
-        item_desc = request.form['description']
-        item_short_desc = request.form['short_description']
-        item_price = request.form['price']
-        item = Item(id=item_id, name=item_name, description=item_desc,
-                    short_description=item_short_desc,
-                    price=item_price, category_id=category.id,
-                    user_id=session['user_id'])
-        item.save_image(request.files['image_file'])
-        catalog.add(item)
-        catalog.commit()
-        flash("Item created: %s" % item.name)
-        return redirect(url_for('show_item', category_id=category.id,
-                                item_id=item_id))
-    else:
-        return render_template('new_item.html', category=category)
-
-
-@app.route('/<category_id>/<item_id>/edit', methods=['GET', 'POST'])
-def edit_item(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    if not allowed_to_change_item(item):
-        return redirect(url_for('show_item', category_id=category_id,
-                                item_id=item_id))
-    if request.method == 'POST':
-        if not validate_edit_item_form():
-            flash("Form fields cannot be blank")
-            return redirect(url_for('edit_item', category_id=category_id,
-                                    item_id=item_id))
-        item.name = request.form['name']
-        item.description = request.form['description']
-        item.short_description = request.form['short_description']
-        item.price = request.form['price']
-        item.category_id = request.form['category_id']
-        item.save_image(request.files['image_file'])
-        catalog.add(item)
-        catalog.commit()
-        flash("Item saved: %s" % item.name)
-        return redirect(url_for('show_item', category_id=item.category_id,
-                                item_id=item.id))
-    else:
-        return render_template('edit_item.html', item=item)
-
-
-@app.route('/<category_id>/<item_id>/delete', methods=['GET', 'POST'])
-def delete_item(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    if not allowed_to_change_item(item):
-        return redirect(url_for('show_item', category_id=category_id,
-                                item_id=item_id))
-    if request.method == 'POST':
-        item.delete_image()
-        catalog.delete(item)
-        catalog.commit()
-        flash("Item deleted: %s" % item.name)
-        return redirect(url_for('show_items', category_id=item.category_id))
-    else:
-        return render_template('delete_item.html', item=item)
-
-
-@app.route('/user-management/', methods=['GET', 'POST'])
-def user_management():
-    if not admin_rights():
-        return redirect(url_for('show_main'))
-    users = (
-        catalog.query(User)
-            .filter(User.id != session['user_id'])
-            .order_by(User.email)
-            .all()
-    )
-    if request.method == 'POST':
-        for user in users:
-            if user.email in request.form:
-                user.group = request.form[user.email]
-                catalog.add(user)
-        catalog.commit()
-        flash("User settings have been saved")
-        return redirect(url_for('user_management'))
-    else:
-        return render_template('user_management.html', users=users)
-
-
-# JSON endpoints.
-@app.route('/catalog.json')
-def show_all_items_json():
-    items = (
-        catalog.query(Item)
-            .order_by(Item.category_id)
-            .order_by(Item.name)
-            .all()
-    )
-    return jsonify(Items=[i.serialize for i in items])
-
-
-@app.route('/<category_id>.json')
-def show_items_json(category_id):
-    category = get_category_or_abort(category_id)
-    items = (
-        catalog.query(Item)
-            .filter_by(category_id=category.id)
-            .order_by(Item.name)
-            .all()
-    )
-    return jsonify(Items=[i.serialize for i in items])
-
-
-@app.route('/<category_id>/<item_id>.json')
-def show_item_json(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    return jsonify(Item=item.serialize)
-
-
-# XML endpoints.
-@app.route('/catalog.xml')
-def show_all_items_xml():
-    items = (
-        catalog.query(Item)
-            .order_by(Item.category_id)
-            .order_by(Item.name)
-            .all()
-    )
-    return xmlify(items)
-
-
-@app.route('/<category_id>.xml')
-def show_items_xml(category_id):
-    category = get_category_or_abort(category_id)
-    items = (
-        catalog.query(Item)
-            .filter_by(category_id=category.id)
-            .order_by(Item.name)
-            .all()
-    )
-    return xmlify(items)
-
-
-@app.route('/<category_id>/<item_id>.xml')
-def show_item_xml(category_id, item_id):
-    item = get_item_or_abort(item_id, category_id)
-    return xmlify([item])
 
 
 # Run the application.
