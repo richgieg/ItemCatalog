@@ -122,11 +122,7 @@ def reset_session():
 
 def get_user_id(email):
     try:
-        user = (
-            catalog.query(User)
-                .filter_by(email=email)
-                .one()
-        )
+        user = catalog.query(User).filter_by(email=email).one()
         return user.id
     except:
         return None
@@ -185,8 +181,8 @@ app.jinja_env.globals['admin_rights'] = admin_rights
 
 def allowed_to_change_item(item):
     return (
-        admin_rights()
-        or (standard_rights() and item.user_id == session['user_id'])
+        admin_rights() or
+        (standard_rights() and item.user_id == session['user_id'])
     )
 
 
@@ -252,7 +248,8 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -286,7 +283,8 @@ def gconnect():
     stored_credentials = session.get('credentials')
     stored_gplus_id = session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response = make_response(
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -299,6 +297,7 @@ def gconnect():
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
     data = answer.json()
+
     # If the name field isn't blank, set the user's name to that. Otherwise,
     # set the user's name to their email address.
     if data['name']:
@@ -362,7 +361,12 @@ def show_main():
 @app.route('/<category_id>/')
 def show_items(category_id):
     category = get_category_or_abort(category_id)
-    items = catalog.query(Item).filter_by(category_id=category.id).order_by(Item.name).all()
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
     return render_template('show_items.html', category=category,
                            items=items)
 
@@ -482,14 +486,24 @@ def user_management():
 # JSON endpoints.
 @app.route('/catalog.json')
 def show_all_items_json():
-    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
+    items = (
+        catalog.query(Item)
+            .order_by(Item.category_id)
+            .order_by(Item.name)
+            .all()
+    )
     return jsonify(Items=[i.serialize for i in items])
 
 
 @app.route('/<category_id>.json')
 def show_items_json(category_id):
     category = get_category_or_abort(category_id)
-    items = catalog.query(Item).filter_by(category_id=category.id).order_by(Item.name).all()
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
     return jsonify(Items=[i.serialize for i in items])
 
 
@@ -502,7 +516,12 @@ def show_item_json(category_id, item_id):
 # XML endpoints.
 @app.route('/catalog.xml')
 def show_all_items_xml():
-    items = catalog.query(Item).order_by(Item.category_id).order_by(Item.name).all()
+    items = (
+        catalog.query(Item)
+            .order_by(Item.category_id)
+            .order_by(Item.name)
+            .all()
+    )
     return xmlify(items)
 
 
