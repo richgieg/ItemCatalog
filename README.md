@@ -82,10 +82,19 @@ python application.py
 http://localhost:8000
 ```
 
+**View all items in a category:**
+
+Select a category link from the navigation area.
+
+
+**View details of a specific item:**
+
+Click on the item's tile in the category or homepage layout.
+
 
 **Authenticate:**
 
-- Use the red Google+ sign-in button at the top of the page
+Use the red Google+ sign-in button at the top of the page.
 
 
 **Add a new item:**
@@ -95,6 +104,11 @@ http://localhost:8000
 2. Click the "New Item" button near the top of the page
 
 3. Fill out the form appropriately and click "Save"
+
+
+**View items you have created:**
+
+Use the "My Items" link in the navigation area.
 
 
 **Edit an existing item:**
