@@ -115,7 +115,7 @@ nav {
     margin: 0 auto;
 }
 
-#nav-list {
+.nav-list {
     list-style-type: none;
     padding: 0 1em;
 }
@@ -429,7 +429,7 @@ footer > a {
         margin-bottom: 1em;
     }
 
-    #nav-list {
+    .nav-list {
         display: inline;
         padding: 0;
     }
