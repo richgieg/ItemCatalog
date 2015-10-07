@@ -82,9 +82,11 @@ python application.py
 http://localhost:8000
 ```
 
+
 **Authenticate:**
 
 - Use the red Google+ sign-in button at the top of the page
+
 
 **Add a new item:**
 
@@ -110,24 +112,27 @@ http://localhost:8000
 
 3. Answer the confirmation prompt
 
+
 **View JSON dump for all items:**
 ```
 http://localhost:8000/catalog.json
 ```
 
+
 **View JSON dump for all items in a category:**
 ```
-http://localhost:8000/guitars.json ("guitars" can be replaced with any valid
-category)
+http://localhost:8000/guitars.json
 ```
+*The word "guitars" can be replaced with any valid category.*
+
 
 **View JSON dump for a single item:**
 ```
 http://localhost:8000/guitars/epiphone-pr-150-acoustic-guitar.json
 ```
-*("guitars" can be replaced with any valid category and
+*The word "guitars" can be replaced with any valid category and
 "epiphone-pr-150-acoustic-guitar" can be replaced with any valid item in the
-specified category)*
+specified category.*
 
 
 **View XML dump for all items:**
@@ -137,16 +142,19 @@ http://localhost:8000/catalog.xml
 
 **View XML dump for all items in a category:**
 ```
-http://localhost:8000/guitars.xml ("guitars" can be replaced with any valid
-category)
+http://localhost:8000/guitars.xml
 ```
+*The word "guitars" can be replaced with any valid category.*
+
 
 **View XML dump for a single item:**
 ```
-http://localhost:8000/guitars/epiphone-pr-150-acoustic-guitar.xml ("guitars"
-can be replaced with any valid category and "epiphone-pr-150-acoustic-guitar"
-can be replaced with any valid item in the specified category)
+http://localhost:8000/guitars/epiphone-pr-150-acoustic-guitar.xml
 ```
+*The word "guitars" can be replaced with any valid category and
+"epiphone-pr-150-acoustic-guitar" can be replaced with any valid item in the
+specified category.*
+
 
 **Stop the application, exit the SSH session and shutdown the VM:**
 ```
