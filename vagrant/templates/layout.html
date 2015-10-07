@@ -67,8 +67,8 @@
             <nav>
                 {# If user has standard rights, display "My Items" link. #}
                 {% if standard_rights() %}
-                    <ul class="nav-list">
-                        <li class="nav-link nav-user">
+                    <ul id="user-nav" class="nav-list">
+                        <li class="nav-link">
                             <a href="{{ url_for('show_user_items') }}">
                                 My Items
                             </a>
@@ -76,7 +76,7 @@
                         {# If user has admin rights, display link for
                            "User Management". #}
                         {% if admin_rights() %}
-                            <li class="nav-link nav-user">
+                            <li class="nav-link">
                                 <a href="{{ url_for('user_management') }}">
                                     User Management
                                 </a>

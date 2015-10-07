@@ -121,6 +121,7 @@ nav {
 }
 
 .nav-link {
+    white-space: nowrap;
     border-bottom: 1px solid lightgray;
     margin-bottom: 0.3em;
 }
@@ -449,7 +450,7 @@ footer > a {
         display: inline;
     }
 
-    .nav-user {
+    #user-nav {
         color: darkgray;
     }
 
