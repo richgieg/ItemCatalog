@@ -1,40 +1,19 @@
 #!/usr/bin/python
-
-# Standard library imports.
 import json
 import random
 import re
 import string
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from unicodedata import normalize
 
-# Third-party imports.
 import httplib2
 import requests
-from flask import abort
-from flask import flash
-from flask import Flask
-from flask import jsonify
-from flask import make_response
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import send_from_directory
-from flask import session
-from flask import url_for
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
-from sqlalchemy import create_engine
-from sqlalchemy import desc
+from flask import abort, flash, Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, session, url_for
+from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 
-# Application-specific imports.
-from catalog import Base
-from catalog import Category
-from catalog import Item
-from catalog import ITEM_IMAGE_DIRECTORY
-from catalog import User
+from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
 
 
 # Define constants.

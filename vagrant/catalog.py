@@ -1,17 +1,8 @@
-# Standard library imports.
 import os
 from datetime import datetime
 from xml.etree import ElementTree as ET
 
-# Third-party imports.
-from sqlalchemy import Boolean
-from sqlalchemy import Column
-from sqlalchemy import create_engine
-from sqlalchemy import DateTime
-from sqlalchemy import ForeignKey
-from sqlalchemy import func
-from sqlalchemy import Integer
-from sqlalchemy import String
+from sqlalchemy import Boolean, Column, create_engine, DateTime, ForeignKey, func, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 

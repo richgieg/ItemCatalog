@@ -1,21 +1,12 @@
 #!/usr/bin/python
-
-# Standard library imports.
 from os import remove
 from os.path import isfile
-from shutil import copytree
-from shutil import rmtree
+from shutil import copytree, rmtree
 
-# Third-party imports.
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Application-specific imports.
-from catalog import Base
-from catalog import Category
-from catalog import Item
-from catalog import ITEM_IMAGE_DIRECTORY
-from catalog import User
+from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
 
 
 USERS = [
