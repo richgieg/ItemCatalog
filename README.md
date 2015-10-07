@@ -110,6 +110,9 @@ Use the red Google+ sign-in button at the top of the page.
 
 Use the "My Items" link in the navigation area.
 
+*All 28 of the site's default items are owned by the main site
+administrator account.*
+
 
 **Edit an existing item:**
 
