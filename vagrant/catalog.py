@@ -1,6 +1,9 @@
+# Standard library imports.
 import os
 from datetime import datetime
 from xml.etree import ElementTree as ET
+
+# Third-party imports.
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import create_engine
