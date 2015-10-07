@@ -65,16 +65,6 @@ def get_category_or_abort(category_id):
         abort(404)
 
 
-# Concatenates the XML output from a list of items into proper XML.
-def xmlify(items):
-    lines = []
-    lines.append('<?xml version="1.0"?>')
-    lines.append('<items>')
-    lines += [i.xml for i in items]
-    lines.append('</items>')
-    return '\n'.join(lines)
-
-
 # Returns the requested Item object or aborts if it doesn't exist. Or if the
 # item exists in the database, but it isn't linked to the specified category,
 # then abort() will be called.
@@ -87,6 +77,16 @@ def get_item_or_abort(item_id, category_id):
         )
     except:
         abort(404)
+
+
+# Concatenates the XML output from a list of items into proper XML.
+def xmlify(items):
+    lines = []
+    lines.append('<?xml version="1.0"?>')
+    lines.append('<items>')
+    lines += [i.xml for i in items]
+    lines.append('</items>')
+    return '\n'.join(lines)
 
 
 # Clears the user session context.
@@ -205,14 +205,17 @@ def title_filter(page_title):
         return "%s | %s" % (page_title, SITE_TITLE)
 
 
-# Context Processor that makes category list available in templates.
+# Context processor that makes category list available to layout template for
+# purpose of building the navigation links.
 @app.context_processor
 def inject_categories():
     categories = catalog.query(Category).all()
     return dict(categories=categories)
 
 
-# Verifies that all POST requests have the correct anti-CSRF token.
+# Verifies that all POST requests have the correct anti-CSRF token. If the
+# _csrf_token field is not present, or does not match the current session's
+# token, the browser will be redirected to the home page.
 @app.before_request
 def csrf_protect():
     if request.method == 'POST':
