@@ -123,10 +123,12 @@ category)
 
 **View JSON dump for a single item:**
 ```
-http://localhost:8000/guitars/epiphone-pr-150-acoustic-guitar.json ("guitars"
-can be replaced with any valid category and "epiphone-pr-150-acoustic-guitar"
-can be replaced with any valid item in the specified category)
+http://localhost:8000/guitars/epiphone-pr-150-acoustic-guitar.json
 ```
+*("guitars" can be replaced with any valid category and
+"epiphone-pr-150-acoustic-guitar" can be replaced with any valid item in the
+specified category)*
+
 
 **View XML dump for all items:**
 ```
