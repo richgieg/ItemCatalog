@@ -66,8 +66,8 @@ steps.*
 1. Open ```seed.py``` in your favorite editor
 
 2. Edit the "email" field of the dictionary literal in the global USERS list to
-reflect your Google+ / Gmail account, which will give your account
-administrative rights on the Music Shop site
+reflect your Google+ / Gmail account (replacing musicshop999), which will give
+your account administrative rights on the Music Shop site when you sign in
 
 **Connect to the VM via SSH, seed the database, then run the application:**
 ```
@@ -80,6 +80,22 @@ python application.py
 **Navigate to the following URL in your browser:**
 ```
 http://localhost:8000
+```
+
+**View JSON dump for all items:**
+```
+http://localhost:8000/catalog.json
+```
+
+**View JSON dump for a category:**
+```
+http://localhost:8000/guitars.json (guitars can be replaced with any valid
+category)
+```
+
+**View XML dump for all items:**
+```
+http://localhost:8000/catalog.xml
 ```
 
 **Stop the application, exit the SSH session and shutdown the VM:**
