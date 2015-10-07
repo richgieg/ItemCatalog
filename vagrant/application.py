@@ -145,7 +145,7 @@ def logged_in():
 app.jinja_env.globals['logged_in'] = logged_in
 
 
-# Returns true if the user is signed in and has, at least, standard rights.
+# Returns true if the user is signed in and has standard rights or better.
 def standard_rights():
     if not logged_in():
         return False
