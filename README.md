@@ -145,6 +145,11 @@ standard user has created items, but gets demoted to read-only, they will no
 longer have the ability to edit or delete the items they created.
 
 
+**Sign Out:**
+
+Use the "Sign Out [name or email address]" link at the top of the page.
+
+
 **View JSON dump for all items:**
 ```
 http://localhost:8000/catalog.json
