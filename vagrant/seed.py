@@ -4,9 +4,6 @@ from shutil import copytree
 from shutil import rmtree
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# Remove catalog.db, if exists, before importing Base (which recreates it).
-if isfile('catalog.db'):
-    remove('catalog.db')
 from catalog import Base
 from catalog import Category
 from catalog import Item
@@ -341,43 +338,39 @@ ITEMS = [
 ]
 
 
-def seed_users():
-    for user in USERS:
-        catalog.add(User(id = user['id'], name = user['name'],
-                         email = user['email'], picture = user['picture'],
-                         group = user['group']))
-    catalog.commit()
-
-
-def seed_categories():
-    for category in CATEGORIES:
-        catalog.add(Category(id = category['id'], name = category['name']))
-    catalog.commit()
-
-
-def seed_items():
-    for item in ITEMS:
-        catalog.add(
-            Item(id = item['id'], name = item['name'],
-                 short_description = item['short_description'],
-                 description = item['description'], price = item['price'],
-                 image_path = item['image_path'],
-                 category_id = item['category_id'],
-                 user_id = item['user_id']))
-    catalog.commit()
-
-
 # Copy seed images to img.
 rmtree('img', ignore_errors = True)
 copytree('seed_images', ITEM_IMAGE_DIRECTORY)
 
-# Create database session.
+# Remove catalog.db, if exists.
+if isfile('catalog.db'):
+    remove('catalog.db')
+
+# Create the database.
 engine = create_engine('sqlite:///catalog.db')
-Base.metadata.bind = engine
+Base.metadata.create_all(engine)
 db_session = sessionmaker(bind = engine)
 catalog = db_session()
 
-# Seed the database.
-seed_users()
-seed_categories()
-seed_items()
+# Add users to the database.
+for user in USERS:
+    catalog.add(User(id = user['id'], name = user['name'],
+                     email = user['email'], picture = user['picture'],
+                     group = user['group']))
+
+# Add categories to the database.
+for category in CATEGORIES:
+    catalog.add(Category(id = category['id'], name = category['name']))
+
+# Add items to the database.
+for item in ITEMS:
+    catalog.add(
+        Item(id = item['id'], name = item['name'],
+             short_description = item['short_description'],
+             description = item['description'], price = item['price'],
+             image_path = item['image_path'],
+             category_id = item['category_id'],
+             user_id = item['user_id']))
+
+# Commit all the database changes.
+catalog.commit()

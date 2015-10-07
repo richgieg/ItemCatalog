@@ -111,7 +111,3 @@ class Item(Base):
         price = ET.SubElement(item, 'price')
         price.text = self.price
         return ET.tostring(item)
-
-
-engine = create_engine('sqlite:///catalog.db')
-Base.metadata.create_all(engine)
