@@ -44,7 +44,7 @@ CLIENT_ID = json.loads(
 app = Flask(__name__)
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
-db_session = sessionmaker(bind = engine)
+db_session = sessionmaker(bind=engine)
 catalog = db_session()
 
 
@@ -80,7 +80,7 @@ app.jinja_env.globals['csrf_token'] = generate_csrf_token
 # Returns the requested Category object or aborts if it doesn't exist.
 def get_category_or_abort(category_id):
     try:
-        return catalog.query(Category).filter_by(id = category_id).one()
+        return catalog.query(Category).filter_by(id=category_id).one()
     except:
         abort(404)
 
@@ -100,7 +100,11 @@ def xmlify(items):
 # then abort() will be called.
 def get_item_or_abort(item_id, category_id):
     try:
-        return catalog.query(Item).filter_by(id = item_id, category_id = category_id).one()
+        return (
+            catalog.query(Item)
+                .filter_by(id=item_id, category_id=category_id)
+                .one()
+        )
     except:
         abort(404)
 
@@ -118,19 +122,23 @@ def reset_session():
 
 def get_user_id(email):
     try:
-        user = catalog.query(User).filter_by(email = email).one()
+        user = (
+            catalog.query(User)
+                .filter_by(email=email)
+                .one()
+        )
         return user.id
     except:
         return None
 
 
 def get_user_info(user_id):
-    user = catalog.query(User).filter_by(id = user_id).one()
+    user = catalog.query(User).filter_by(id=user_id).one()
     return user
 
 
 def update_user_info(user_id, name, picture):
-    user = catalog.query(User).filter_by(id = user_id).one()
+    user = catalog.query(User).filter_by(id=user_id).one()
     user.name = name
     user.picture = picture
     catalog.add(user)
@@ -138,13 +146,13 @@ def update_user_info(user_id, name, picture):
 
 
 def create_user(name, email, picture):
-    user = User(name = name,
-                email = email,
-                picture = picture,
-                group = 'readonly')
+    user = User(name=name,
+                email=email,
+                picture=picture,
+                group='readonly')
     catalog.add(user)
     catalog.commit()
-    user = catalog.query(User).filter_by(email = session['email']).one()
+    user = catalog.query(User).filter_by(email=session['email']).one()
     return user.id
 
 
@@ -159,7 +167,7 @@ def standard_rights():
     if not logged_in():
         return False
     group = get_user_info(session['user_id']).group
-    return group == 'admin' or group =='standard'
+    return group == 'admin' or group == 'standard'
 
 # Make standard_rights() available to templates.
 app.jinja_env.globals['standard_rights'] = standard_rights
@@ -216,7 +224,7 @@ def title_filter(page_title):
 @app.context_processor
 def inject_categories():
     categories = catalog.query(Category).all()
-    return dict(categories = categories)
+    return dict(categories=categories)
 
 
 # Verifies that all POST requests have the correct anti-CSRF token.
@@ -240,7 +248,7 @@ def gconnect():
     code = request.form.get('code')
     try:
         # Upgrade the authorization code into a credentials object.
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope = '')
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -322,14 +330,13 @@ def gconnect():
 @app.route('/gdisconnect', methods=['POST'])
 def gdisconnect():
     # Only disconnect a connected user.
-    credentials = session.get('credentials')
-    if credentials is None:
+    access_token = session.get('credentials')
+    if access_token is None:
         response = make_response(json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Execute HTTP GET request to revoke current token.
-    access_token = credentials
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
@@ -349,15 +356,15 @@ def gdisconnect():
 @app.route('/')
 def show_main():
     items = catalog.query(Item).order_by(desc(Item.created)).limit(10).all()
-    return render_template('show_main.html', items = items)
+    return render_template('show_main.html', items=items)
 
 
 @app.route('/<category_id>/')
 def show_items(category_id):
     category = get_category_or_abort(category_id)
-    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
-    return render_template('show_items.html', category = category,
-                           items = items)
+    items = catalog.query(Item).filter_by(category_id=category.id).order_by(Item.name).all()
+    return render_template('show_items.html', category=category,
+                           items=items)
 
 
 @app.route('/my-items/')
@@ -366,59 +373,59 @@ def show_user_items():
         return redirect(url_for('show_main'))
     items = (
         catalog.query(Item)
-            .filter_by(user_id = session['user_id'])
+            .filter_by(user_id=session['user_id'])
             .order_by(Item.name)
             .all()
     )
-    return render_template('my_items.html', items = items)
+    return render_template('my_items.html', items=items)
 
 
 @app.route('/<category_id>/<item_id>')
 def show_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
-    return render_template('show_item.html', item = item,
-                           user_authorized = allowed_to_change_item(item))
+    return render_template('show_item.html', item=item,
+                           user_authorized=allowed_to_change_item(item))
 
 
-@app.route('/<category_id>/new', methods = ['GET', 'POST'])
+@app.route('/<category_id>/new', methods=['GET', 'POST'])
 def new_item(category_id):
     if not standard_rights():
-        return redirect(url_for('show_items', category_id = category_id))
+        return redirect(url_for('show_items', category_id=category_id))
     category = get_category_or_abort(category_id)
     if request.method == 'POST':
         if not validate_new_item_form():
             flash("Form fields cannot be blank")
-            return redirect(url_for('new_item', category_id = category_id))
+            return redirect(url_for('new_item', category_id=category_id))
         item_name = request.form['name']
         item_id = slugify(item_name)
         item_desc = request.form['description']
         item_short_desc = request.form['short_description']
         item_price = request.form['price']
-        item = Item(id = item_id, name = item_name, description = item_desc,
-                    short_description = item_short_desc,
-                    price = item_price, category_id = category.id,
-                    user_id = session['user_id'])
+        item = Item(id=item_id, name=item_name, description=item_desc,
+                    short_description=item_short_desc,
+                    price=item_price, category_id=category.id,
+                    user_id=session['user_id'])
         item.save_image(request.files['image_file'])
         catalog.add(item)
         catalog.commit()
         flash("Item created: %s" % item.name)
-        return redirect(url_for('show_item', category_id = category.id,
-                                item_id = item_id))
+        return redirect(url_for('show_item', category_id=category.id,
+                                item_id=item_id))
     else:
-        return render_template('new_item.html', category = category)
+        return render_template('new_item.html', category=category)
 
 
-@app.route('/<category_id>/<item_id>/edit', methods = ['GET', 'POST'])
+@app.route('/<category_id>/<item_id>/edit', methods=['GET', 'POST'])
 def edit_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     if not allowed_to_change_item(item):
-        return redirect(url_for('show_item', category_id = category_id,
-                                item_id = item_id))
+        return redirect(url_for('show_item', category_id=category_id,
+                                item_id=item_id))
     if request.method == 'POST':
         if not validate_edit_item_form():
             flash("Form fields cannot be blank")
-            return redirect(url_for('edit_item', category_id = category_id,
-                                    item_id = item_id))
+            return redirect(url_for('edit_item', category_id=category_id,
+                                    item_id=item_id))
         item.name = request.form['name']
         item.description = request.form['description']
         item.short_description = request.form['short_description']
@@ -428,29 +435,29 @@ def edit_item(category_id, item_id):
         catalog.add(item)
         catalog.commit()
         flash("Item saved: %s" % item.name)
-        return redirect(url_for('show_item', category_id = item.category_id,
-                                item_id = item.id))
+        return redirect(url_for('show_item', category_id=item.category_id,
+                                item_id=item.id))
     else:
-        return render_template('edit_item.html', item = item)
+        return render_template('edit_item.html', item=item)
 
 
-@app.route('/<category_id>/<item_id>/delete', methods = ['GET', 'POST'])
+@app.route('/<category_id>/<item_id>/delete', methods=['GET', 'POST'])
 def delete_item(category_id, item_id):
     item = get_item_or_abort(item_id, category_id)
     if not allowed_to_change_item(item):
-        return redirect(url_for('show_item', category_id = category_id,
-                                item_id = item_id))
+        return redirect(url_for('show_item', category_id=category_id,
+                                item_id=item_id))
     if request.method == 'POST':
         item.delete_image()
         catalog.delete(item)
         catalog.commit()
         flash("Item deleted: %s" % item.name)
-        return redirect(url_for('show_items', category_id = item.category_id))
+        return redirect(url_for('show_items', category_id=item.category_id))
     else:
-        return render_template('delete_item.html', item = item)
+        return render_template('delete_item.html', item=item)
 
 
-@app.route('/user-management/', methods = ['GET', 'POST'])
+@app.route('/user-management/', methods=['GET', 'POST'])
 def user_management():
     if not admin_rights():
         return redirect(url_for('show_main'))
@@ -469,7 +476,7 @@ def user_management():
         flash("User settings have been saved")
         return redirect(url_for('user_management'))
     else:
-        return render_template('user_management.html', users = users)
+        return render_template('user_management.html', users=users)
 
 
 # JSON endpoints.
@@ -482,7 +489,7 @@ def show_all_items_json():
 @app.route('/<category_id>.json')
 def show_items_json(category_id):
     category = get_category_or_abort(category_id)
-    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    items = catalog.query(Item).filter_by(category_id=category.id).order_by(Item.name).all()
     return jsonify(Items=[i.serialize for i in items])
 
 
@@ -502,7 +509,12 @@ def show_all_items_xml():
 @app.route('/<category_id>.xml')
 def show_items_xml(category_id):
     category = get_category_or_abort(category_id)
-    items = catalog.query(Item).filter_by(category_id = category.id).order_by(Item.name).all()
+    items = (
+        catalog.query(Item)
+            .filter_by(category_id=category.id)
+            .order_by(Item.name)
+            .all()
+    )
     return xmlify(items)
 
 
@@ -516,4 +528,4 @@ def show_item_xml(category_id, item_id):
 if __name__ == '__main__':
     app.secret_key = 'terrible_secret_key_man'
     app.debug = True
-    app.run(host = '0.0.0.0', port = 8000)
+    app.run(host='0.0.0.0', port=8000)

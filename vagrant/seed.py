@@ -339,7 +339,7 @@ ITEMS = [
 
 
 # Copy seed images to img.
-rmtree('img', ignore_errors = True)
+rmtree('img', ignore_errors=True)
 copytree('seed_images', ITEM_IMAGE_DIRECTORY)
 
 # Remove catalog.db, if exists.
@@ -349,28 +349,28 @@ if isfile('catalog.db'):
 # Create the database.
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)
-db_session = sessionmaker(bind = engine)
+db_session = sessionmaker(bind=engine)
 catalog = db_session()
 
 # Add users to the database.
 for user in USERS:
-    catalog.add(User(id = user['id'], name = user['name'],
-                     email = user['email'], picture = user['picture'],
-                     group = user['group']))
+    catalog.add(User(id=user['id'], name=user['name'],
+                     email=user['email'], picture=user['picture'],
+                     group=user['group']))
 
 # Add categories to the database.
 for category in CATEGORIES:
-    catalog.add(Category(id = category['id'], name = category['name']))
+    catalog.add(Category(id=category['id'], name=category['name']))
 
 # Add items to the database.
 for item in ITEMS:
     catalog.add(
-        Item(id = item['id'], name = item['name'],
-             short_description = item['short_description'],
-             description = item['description'], price = item['price'],
-             image_path = item['image_path'],
-             category_id = item['category_id'],
-             user_id = item['user_id']))
+        Item(id=item['id'], name=item['name'],
+             short_description=item['short_description'],
+             description=item['description'], price=item['price'],
+             image_path=item['image_path'],
+             category_id=item['category_id'],
+             user_id=item['user_id']))
 
 # Commit all the database changes.
 catalog.commit()
