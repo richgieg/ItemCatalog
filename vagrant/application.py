@@ -51,7 +51,6 @@ def slugify(text):
 def generate_csrf_token():
     if 'csrf_token' not in session:
         session['csrf_token'] = get_nonce()
-    print session['csrf_token']
     return session['csrf_token']
 
 # Make generate_csrf_token() available to templates as csrf_token().
@@ -90,7 +89,7 @@ def get_item_or_abort(item_id, category_id):
         abort(404)
 
 
-# Helper method that clears the user session context.
+# Clears the user session context.
 def reset_session():
     del session['credentials']
     del session['gplus_id']
@@ -101,6 +100,8 @@ def reset_session():
     del session['user_id']
 
 
+# Returns the id for the user with the given email address. If the email
+# address does not exist, returns None.
 def get_user_id(email):
     try:
         user = catalog.query(User).filter_by(email=email).one()
@@ -109,11 +110,13 @@ def get_user_id(email):
         return None
 
 
+# Returns a user object associated with the given id.
 def get_user_info(user_id):
     user = catalog.query(User).filter_by(id=user_id).one()
     return user
 
 
+# Updates the name and picture fields of a user in the database.
 def update_user_info(user_id, name, picture):
     user = catalog.query(User).filter_by(id=user_id).one()
     user.name = name
@@ -122,6 +125,7 @@ def update_user_info(user_id, name, picture):
     catalog.commit()
 
 
+# Creates a new user in the database.
 def create_user(name, email, picture):
     user = User(name=name,
                 email=email,
@@ -133,6 +137,7 @@ def create_user(name, email, picture):
     return user.id
 
 
+# Returns true if the user is signed in.
 def logged_in():
     return 'username' in session
 
@@ -140,6 +145,7 @@ def logged_in():
 app.jinja_env.globals['logged_in'] = logged_in
 
 
+# Returns true if the user is signed in and has, at least, standard rights.
 def standard_rights():
     if not logged_in():
         return False
@@ -150,6 +156,7 @@ def standard_rights():
 app.jinja_env.globals['standard_rights'] = standard_rights
 
 
+# Returns true if the user is signed in and has administrative rights.
 def admin_rights():
     if not logged_in():
         return False
@@ -160,6 +167,7 @@ def admin_rights():
 app.jinja_env.globals['admin_rights'] = admin_rights
 
 
+# Returns true if the current user is authorized to modify the given item.
 def allowed_to_change_item(item):
     return (
         admin_rights() or
@@ -541,6 +549,6 @@ def gdisconnect():
 
 # Run the application.
 if __name__ == '__main__':
-    app.secret_key = 'terrible_secret_key_man'
+    app.secret_key = 'hsjUhAej382D83g3khIjFliFDo8ng83jgh2734ht9ghhsjklea'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
