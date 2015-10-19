@@ -16,20 +16,19 @@ from sqlalchemy.orm import sessionmaker
 from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
 
 
-# Define constants.
-SITE_TITLE = 'Music Shop'
-CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
-
-
 # Set up the app.
 app = Flask(__name__)
-app.secret_key = 'hsjUhAej382D83g3khIjFliFDo8ng83jgh2734ht9ghhsjklea'
+app.secret_key = open('secret_key', 'r').read()
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 db_session = sessionmaker(bind=engine)
 catalog = db_session()
 
+
+# Define constants.
+SITE_TITLE = 'Music Shop'
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
 
 # Make CLIENT_ID available to templates.
 app.jinja_env.globals['CLIENT_ID'] = CLIENT_ID
