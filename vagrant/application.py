@@ -117,13 +117,13 @@ def get_user_id(email):
 
 # Returns a user object associated with the given id.
 def get_user_info(user_id):
-    user = catalog.query(User).filter_by(id=user_id).one()
+    user = catalog.query(User).get(user_id)
     return user
 
 
 # Updates the name and picture fields of a user in the database.
 def update_user_info(user_id, name, picture):
-    user = catalog.query(User).filter_by(id=user_id).one()
+    user = catalog.query(User).get(user_id)
     user.name = name
     user.picture = picture
     catalog.add(user)
@@ -138,7 +138,7 @@ def create_user(name, email, picture):
                 group='readonly')
     catalog.add(user)
     catalog.commit()
-    user = catalog.query(User).filter_by(email=session['email']).one()
+    user = catalog.query(User).filter_by(email=email).one()
     return user.id
 
 
