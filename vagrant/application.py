@@ -231,12 +231,6 @@ def csrf_protect():
             return redirect(url_for('show_main'))
 
 
-# Test route.
-@app.route('/test')
-def test():
-    return "hello"
-
-
 # Display the home page.
 @app.route('/')
 def show_main():
