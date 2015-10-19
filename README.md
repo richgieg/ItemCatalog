@@ -21,13 +21,6 @@ VirtualBox 4.3 is required for Vagrant to function. The steps for installing it
 vary depending on your operating system. You can find the installer for many
 operating systems [here](https://www.virtualbox.org/wiki/Download_Old_Builds_4_3).
 
-If you happen to be using Ubuntu 15.04 (as I did for this project), you can try
-this terminal command:
-```
-sudo apt-get install virtualbox-4.3
-```
-
-*This command will probably work for other versions of Ubuntu as well.*
 
 ----
 ## Install Vagrant
@@ -38,13 +31,6 @@ PostgreSQL. The steps for installing Vagrant vary depending on your operating
 system. You can find the installer for many operating systems
 [here](https://www.vagrantup.com/downloads.html).
 
-If you happen to be using Ubuntu 15.04 (as I did for this project), you can try
-this terminal command:
-```
-sudo apt-get install vagrant
-```
-
-*This command will probably work for other versions of Ubuntu as well.*
 
 ----
 ## Run the Application
