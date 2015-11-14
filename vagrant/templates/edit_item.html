@@ -47,7 +47,7 @@
         <br><br>
         <label>Current Image</label>
         <img id="current-image" class="item-page-image"
-            src="{{ item.image_path }}" alt="Image of {{ item.name }}">
+            src="{{ request.script_root + item.image_path }}" alt="Image of {{ item.name }}">
         <br><br><br>
         <div class="form-button-container">
             <input class="button" type="submit" value="Save">

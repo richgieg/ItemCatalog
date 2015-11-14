@@ -12,7 +12,7 @@
             {{ "Are you sure you want to delete '%s'?" % item.name }}
         </label>
         <br>
-        <img class="item-page-image" src="{{ item.image_path }}"
+        <img class="item-page-image" src="{{ request.script_root + item.image_path }}"
             alt="Image of {{ item.name }}">
         <br><br>
         <div class="form-button-container">

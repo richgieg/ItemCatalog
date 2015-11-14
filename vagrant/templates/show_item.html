@@ -21,7 +21,7 @@
     <p class="item-page-price">{{ item.price }}</p>
     <p class="item-page-description">{{ item.description }}</p>
     <div class="item-page-image-container">
-        <img class="item-page-image" src="{{ item.image_path }}"
+        <img class="item-page-image" src="{{ request.script_root + item.image_path }}"
             alt="Image of {{ item.name }}">
     </div>
 </div>
