@@ -17,6 +17,7 @@
     <script src="https://apis.google.com/js/client:platform.js?onload=start"
         async defer>
     </script>
+    <script>$SCRIPT_ROOT = {{ request.script_root|tojson }};</script>
 </head>
 <body>
     <div class="container" id="main-container">
@@ -127,13 +128,13 @@
                     fd.append('_csrf_token', '{{ csrf_token() }}')
                     $.ajax({
                         type: 'POST',
-                        url: '/gconnect',
+                        url: '{{ url_for('gconnect') }}',
                         processData: false,
                         contentType: false,
                         data: fd,
                         success: function(result) {
                             if (result) {
-                                window.location.href = '{{ request.path }}';
+                                window.location.href = $SCRIPT_ROOT + '{{ request.path }}';
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
@@ -156,13 +157,13 @@
                 fd.append('_csrf_token', '{{ csrf_token() }}')
                 $.ajax({
                     type: 'POST',
-                    url: '/gdisconnect',
+                    url: '{{ url_for('gdisconnect') }}',
                     processData: false,
                     contentType: false,
                     data: fd,
                     success: function(result) {
                         if (result) {
-                            window.location.href = '{{ request.path }}';
+                            window.location.href = $SCRIPT_ROOT + '{{ request.path }}';
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
