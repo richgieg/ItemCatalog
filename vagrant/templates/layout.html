@@ -17,7 +17,6 @@
     <script src="https://apis.google.com/js/client:platform.js?onload=start"
         async defer>
     </script>
-    <script>$SCRIPT_ROOT = {{ request.script_root|tojson }};</script>
 </head>
 <body>
     <div class="container" id="main-container">
@@ -134,7 +133,7 @@
                         data: fd,
                         success: function(result) {
                             if (result) {
-                                window.location.href = $SCRIPT_ROOT + '{{ request.path }}';
+                                window.location.href = {{ request.url|tojson }};
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
@@ -163,7 +162,7 @@
                     data: fd,
                     success: function(result) {
                         if (result) {
-                            window.location.href = $SCRIPT_ROOT + '{{ request.path }}';
+                            window.location.href = {{ request.url|tojson }};
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
