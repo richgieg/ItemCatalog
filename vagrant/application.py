@@ -14,7 +14,7 @@ from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 
-from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
+from catalog import Base, Category, Item, ABSOLUTE_IMAGE_DIRECTORY, User
 
 
 # Create absolute path variables.
@@ -382,7 +382,7 @@ def user_management():
 # Serve an item image.
 @app.route('/img/<filename>')
 def serve_image(filename):
-    return send_from_directory(ITEM_IMAGE_DIRECTORY, filename)
+    return send_from_directory(ABSOLUTE_IMAGE_DIRECTORY, filename)
 
 
 # JSON endpoint for the whole catalog.

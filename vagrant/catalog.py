@@ -7,8 +7,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
+# Create absolute path variables.
+WORKING_DIRECTORY = os.path.dirname(__file__)
+RELATIVE_IMAGE_DIRECTORY = 'img'
+ABSOLUTE_IMAGE_DIRECTORY = os.path.join(WORKING_DIRECTORY, 'img')
+
 # Define constants.
-ITEM_IMAGE_DIRECTORY = 'img'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png'])
 DEFAULT_IMAGE = '/static/default.png'
 
@@ -60,10 +64,11 @@ class Item(Base):
             filename, extension = os.path.splitext(file.filename)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             filename = '%s-%s%s' % (self.id, timestamp, extension.lower())
-            image_path = os.path.join(ITEM_IMAGE_DIRECTORY, filename)
-            file.save(image_path)
+            absolute_path = os.path.join(ABSOLUTE_IMAGE_DIRECTORY, filename)
+            file.save(absolute_path)
+            relative_path = os.path.join(RELATIVE_IMAGE_DIRECTORY, filename)
             # Add leading slash so path works in HTML img tags.
-            self.image_path = '/' + image_path
+            self.image_path = '/' + relative_path
         else:
             if self.image_path is None:
                 self.image_path = DEFAULT_IMAGE
@@ -71,8 +76,8 @@ class Item(Base):
     # Delete image file from disk, if exists.
     def delete_image(self):
         if self.image_path and self.image_path != DEFAULT_IMAGE:
-            # Skip the initial slash in file path.
-            os.remove(self.image_path[1:])
+            # Skip the initial slash in image_path so join works properly.
+            os.remove(os.path.join(WORKING_DIRECTORY, self.image_path))
 
     @property
     def serialize(self):
