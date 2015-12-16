@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import json
+import os
 import random
 import re
 import string
@@ -16,10 +17,17 @@ from sqlalchemy.orm import sessionmaker
 from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
 
 
+# Create absolute path variables.
+WORKING_DIRECTORY = os.path.dirname(__file__)
+SECRET_KEY_FILE = os.path.join(WORKING_DIRECTORY, 'secret_key')
+DATABASE_FILE = os.path.join(WORKING_DIRECTORY, 'catalog.db')
+CLIENT_SECRETS_FILE = os.path.join(WORKING_DIRECTORY, 'client_secrets.json')
+
+
 # Set up the app.
 app = Flask(__name__)
-app.secret_key = open('secret_key', 'r').read()
-engine = create_engine('sqlite:///catalog.db')
+app.secret_key = open(SECRET_KEY_FILE, 'r').read()
+engine = create_engine('sqlite:///' + DATABASE_FILE)
 Base.metadata.bind = engine
 db_session = sessionmaker(bind=engine)
 catalog = db_session()
@@ -28,7 +36,7 @@ catalog = db_session()
 # Define constants.
 SITE_TITLE = 'Music Shop'
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(CLIENT_SECRETS_FILE, 'r').read())['web']['client_id']
 
 # Make CLIENT_ID available to templates.
 app.jinja_env.globals['CLIENT_ID'] = CLIENT_ID
