@@ -353,7 +353,7 @@ catalog = db_session()
 
 # Add users to the database.
 for user in USERS:
-    catalog.add(User(id=user['id'], name=user['name'],
+    catalog.add(User(name=user['name'],
                      email=user['email'], picture=user['picture'],
                      group=user['group']))
 
