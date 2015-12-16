@@ -6,7 +6,7 @@ from shutil import copytree, rmtree
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from catalog import Base, Category, Item, ITEM_IMAGE_DIRECTORY, User
+from catalog import Base, Category, Item, RELATIVE_IMAGE_DIRECTORY, User
 
 
 USERS = [
@@ -338,7 +338,7 @@ ITEMS = [
 
 # Copy seed images to img.
 rmtree('img', ignore_errors=True)
-copytree('seed_images', ITEM_IMAGE_DIRECTORY)
+copytree('seed_images', RELATIVE_IMAGE_DIRECTORY)
 
 # Remove catalog.db, if exists.
 if isfile('catalog.db'):
