@@ -28,6 +28,7 @@ CLIENT_SECRETS_FILE = os.path.join(WORKING_DIRECTORY, 'client_secrets.json')
 app = Flask(__name__)
 app.secret_key = open(SECRET_KEY_FILE, 'r').read()
 engine = create_engine('sqlite:///' + DATABASE_FILE)
+# engine = create_engine('postgresql://catalog:catalog@localhost/catalog')
 Base.metadata.bind = engine
 db_session = sessionmaker(bind=engine)
 catalog = db_session()
