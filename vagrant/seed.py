@@ -346,6 +346,7 @@ if isfile('catalog.db'):
 
 # Create the database.
 engine = create_engine('sqlite:///catalog.db')
+# engine = create_engine('postgresql://catalog:catalog@localhost/catalog')
 Base.metadata.create_all(engine)
 db_session = sessionmaker(bind=engine)
 catalog = db_session()
