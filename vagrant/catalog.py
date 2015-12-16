@@ -77,7 +77,7 @@ class Item(Base):
     def delete_image(self):
         if self.image_path and self.image_path != DEFAULT_IMAGE:
             # Skip the initial slash in image_path so join works properly.
-            os.remove(os.path.join(WORKING_DIRECTORY, self.image_path))
+            os.remove(os.path.join(WORKING_DIRECTORY, self.image_path[1:]))
 
     @property
     def serialize(self):
