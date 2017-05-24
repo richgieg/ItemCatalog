@@ -13,7 +13,7 @@ application itself utilizing Flask."
 
 To execute this project, please follow the steps in the sections below.
 Alternatively, you can check out the live website at
-[http://www.richmusicshop.com](http://www.richmusicshop.com).
+[https://www.richgieg.com/musicshop/](https://www.richgieg.com/musicshop/).
 
 ----
 ## Install VirtualBox 4.3
